@@ -11,10 +11,16 @@
 # assert longest_unique_substring("pwwkew") == 3
 
 def man(arr):
-    bro  = [i for i in arr]
-    c= 0
-    return c
-# print(man("abcabcbb"))
-# print(man("bbbbb")) 
-# print(man(""))
-print(man("pwwkew")) 
+    long = 0
+    _str = ''
+    for char in arr:
+        if char in _str:
+            _str = _str[_str.index(char) + 1:]
+        _str += char
+        long = max(long, len(_str))
+    return long
+        
+print(man("abcabcbb"))
+print(man("bbbbb")) 
+print(man(""))
+print(man("pwwkeww")) 

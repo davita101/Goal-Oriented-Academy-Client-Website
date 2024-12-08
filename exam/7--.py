@@ -20,6 +20,6 @@ def main(arr):
                     break
     return bro
     
-print(main([-1, 0, 1, 2, -1, -4]))
+# print(main([-1, 0, 1, 2, -1, -4]))
 # print(main([0, 0, 0]))
 # print(main([1, 2, -2, -1]))
