@@ -13,4 +13,25 @@
 # Input: start = 1, end = 1
 #  Output: [1]
 
+def prime(num):
+    if num == 1:
+        return False
+    for i in range(2, num):
+        if num % i == 0:
+            return False
+    return True
 
+def main(start ,end):
+    res = []
+    for i in range(start, end + 1):
+        if not prime(i):
+            res.append(i)
+    # if len(res) == 0:
+    #     return [1]
+    return res
+
+print(main(10, 20))
+print(main(1,10))
+print(main(20,30))
+print(main(10,20))
+print(main(20,30))
