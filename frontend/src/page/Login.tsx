@@ -1,52 +1,71 @@
-import React, { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { formSchema, formSchemaEmail } from "@/schema/login";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import React, { useState, useEffect } from "react"
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { formSchemaEmail } from "@/schema/login"
+import { set, useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import axios from "axios"
+import { Check, MoveLeft } from "lucide-react"
+import { Link } from "react-router-dom"
 
 export default function Login() {
-  const [users, setUsers] = useState([]);
-  const [errorMessage, setErrorMessage] = useState(false);
+  const [users, setUsers] = useState([])
+  const [errorMessage, setErrorMessage] = useState(false)
+  const [emailValue, setEmailValue] = useState("")
+  const [sendInfo, setSendInfo] = useState(false)
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api") 
+      .get("http://localhost:3000/api")
       .then((response) => setUsers(response.data))
-      .catch((error) => console.error("Error fetching users:", error));
-  }, []);
+      .catch((error) => console.error("Error fetching users:", error))
+  }, [])
 
   const form = useForm({
-    resolver: zodResolver(errorMessage ? formSchema :  formSchemaEmail),
+    resolver: zodResolver(formSchemaEmail),
     defaultValues: {
       email: "",
     },
-  });
+  })
 
-  // Form submission handler
   const onSubmit = (data) => {
-    const { email } = data;
-
-    // Check if the email exists in the users array
-    const userExists = users.some((user) => user.email === email);
-
-    if (!userExists) {
-      setErrorMessage(false);
+    const validationResult = formSchemaEmail.safeParse(data)
+    if (validationResult.success) {
+      setErrorMessage(false)
     } else {
-      setErrorMessage(true);
-      console.log("Email found:", email);
+      setErrorMessage(true)
     }
-  };
+  }
 
+  // ! this is important if i want change values and update it instant
+  const handleEmailChange = (e) => {
+    setEmailValue(e.target.value)
+  }
+  // ! this is important if i want change values and update it instant
+  const emailValidationResult = formSchemaEmail.safeParse(form.getValues())
+  // * client email 
+  const clientEmail = emailValidationResult.data.email
+  const handleEmailSubmit = () => {
+    if (emailValidationResult.success) {
+      setSendInfo(true)
+    } else {
+      setSendInfo(false)
+    }
+  }
   return (
-    <div className="max-w-[600px] mx-auto h-screen w-full flex flex-col items-center justify-center">
-      <Card className="w-full px-2 py-4 mb-2">
-        <p className="text-center text-green-500">Goal Oriented Academy</p>
-      </Card>
-      <Card className="p-2 w-full mx-2">
+    <div className="max-w-[400px] mx-auto h-screen w-full flex flex-col items-center justify-center">
+      <p className="text-center text-[35px] pb-4 font-bold text-green-500">Goal Oriented Academy</p>
+      {!sendInfo ? (<div className="p-2 w-full mx-2">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
@@ -56,20 +75,51 @@ export default function Login() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your email" {...field} />
+                    <Input
+                      className="p-2 px-4"
+                      placeholder="Enter your email"
+                      {...field}
+                      // ! this is important if i want change values and update it instant
+                      onChange={(e) => {
+                        field.onChange(e) // Let React Hook Form handle the change //! this is important if i want change values and update it instant
+                        handleEmailChange(e) // Also update our local state //! ! this is important if i want change values and update it instant
+                      }}
+                    />
                   </FormControl>
                   <FormDescription>
-                    This is your Goal-Oriented Academy email.
+                    Enter your Goal-Oriented Academy email.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            {/* {errorMessage && <p className="text-red-500">{errorMessage}</p>} */}
-            <Button type="submit">Submit</Button>
+            <Button
+              type={`${emailValidationResult.success ? "submit" : "button"}`}
+              onClick={handleEmailSubmit}
+              // ! this is important if i want change values and update it instant ---> emailValidationResult.success
+              className={`w-full py-6 ${emailValidationResult.success ? "bg-green-500 hover:bg-green-300" : "bg-green-300 hover:bg-green-300"}`}
+            >
+              Submit
+            </Button>
           </form>
         </Form>
-      </Card>
+      </div>)
+        :
+        < >
+
+          <MoveLeft onClick={() => setSendInfo(false)} className="mr-auto cursor-pointer w-[30px] h-[30px] mb-2 bg-slate-300 hover:bg-slate-200 rounded-full p-2" />
+          <div className="w-full bg-green-100 rounded-sm p-2">
+            <div className="flex items-start space-x-3">
+              <div className=" mt-1 flex items-center justify-center w-4 h-4 p-[1px] bg-green-500 text-white rounded-full">
+                <Check className="text-white" />
+              </div>
+              <p className="text-sm text-gray-700">
+                <b>{clientEmail}</b> Information has been sent successfully to your email. Please check your email to enter in GOA.
+              </p>
+            </div>
+          </div>
+        </>
+      }
     </div>
-  );
+  )
 }
