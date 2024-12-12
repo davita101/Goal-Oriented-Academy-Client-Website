@@ -29,19 +29,46 @@ app.post("/login", async (req, res) => {
   }
 
 })
-app.get("/verify", (req, res) => {
+app.get("/verify", async (req, res) => {
   const token = req.query.token
   if (token == null) return res.sendStatus(401)
-
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
-    const user = UserModel.find(u => u._id === decodedToken.userId)
+    const user = await UserModel.findById(decodedToken.userId)
+    user.login = true
+
+    await user.save()
     res.send(`Atuhed as ${user.username}`)
   } catch (e) {
     res.sendStatus(401)
   }
 })
+app.post('/users', async (req, res) => {
+  try {
+    const { username, email, login } = req.body;
 
+    // Check if username or email already exists in the database
+    const existingUser = await UserModel.findOne({ $or: [{ username }, { email }] });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Username or email already exists.' });
+    }
+
+    // Create a new user
+    const newUser = new UserModel({
+      username,
+      email,
+      login: login || false,  // If 'login' is not provided, default to false
+    });
+
+    // Save the new user to the database
+    await newUser.save();
+
+    res.status(201).json({ message: 'User created successfully', user: newUser });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 app.get("/api", async (req, res) => {
   try {
     const users = await UserModel.find()
@@ -62,17 +89,17 @@ mongoose.connect(uri)
   .catch((error) => {
     console.error("Error connecting to MongoDB:", error)
   })
-crypto.subtle
-  .generateKey(
-    {
-      name: "HMAC",
-      hash: { name: "SHA-256" }
-    },
-    true,
-    ["sign", "verify"]
-  )
-  .then(key => {
-    crypto.subtle.exportKey("jwk", key).then(exported => {
-      console.log(exported.k)
-    })
-  })
+// crypto.subtle
+//   .generateKey(
+//     {
+//       name: "HMAC",
+//       hash: { name: "SHA-256" }
+//     },
+//     true,
+//     ["sign", "verify"]
+//   )
+//   .then(key => {
+//     crypto.subtle.exportKey("jwk", key).then(exported => {
+//       console.log(exported.k)
+//     })
+//   })

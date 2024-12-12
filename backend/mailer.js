@@ -1,12 +1,19 @@
-
-import sendGridMailer from "@sendgrid/mail"
-sendGridMailer.setApiKey(process.env.SEND_GRID_API_KEY)
-export const sendMagicLinkEmail = ({ email, token }) => {
-    console.log(email, token)
-    return sendGridMailer.send({
+import nodeMailer from "nodemailer"
+export const sendMagicLinkEmail = async ({ email, token }) => {
+    const transporter = nodeMailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        auth: {
+            user: process.env.ADMIN_USER,
+            pass: process.env.SMTP_PASS
+        }
+    })
+    const info = await transporter.sendMail({
+        from: "bro from <grdzelishvilidaviti@gmail.com>",
         to: email,
-        from: process.env.FROM_MAIL,
-        subject:"Finish Login in",
+        subject: "test!",
         html: `<a href="http://localhost:3000/verify?token=${token}">log in</a>`,
     })
+    console.log("message send: !", info.messageId)
 }
