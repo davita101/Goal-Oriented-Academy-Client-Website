@@ -66,12 +66,12 @@ export default function Login() {
         .post("http://localhost:3000/login", { email: clientEmail })
         .then((response) => setFormData(response.data))
         .catch((error) => console.error("Error fetching users:", error))
-    }
 
-    if (emailValidationResult.success) {
-      setSendInfo(true)
-    } else {
-      setSendInfo(false)
+      if (emailValidationResult.success) {
+        setSendInfo(true)
+      } else {
+        setSendInfo(false)
+      }
     }
   }
   return (
