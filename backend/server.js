@@ -17,6 +17,7 @@ app.use(express.json())
 
 app.post("/login", async (req, res) => {
   const user = await UserModel.findOne({ email: req.body.email });
+  console.log(user)
   if (user !== null) {
     try {
       const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
@@ -24,7 +25,7 @@ app.post("/login", async (req, res) => {
       })
       await sendMagicLinkEmail({ email: user.email, token })
     } catch (e) {
-      return res.send("Error Login in. Please try again.")
+      return res.send("Error login in. Please try again.")
     }
   }
 
@@ -47,28 +48,31 @@ app.post('/users', async (req, res) => {
   try {
     const { username, email, login } = req.body;
 
-    // Check if username or email already exists in the database
+    if (!username || !email) {
+      return res.status(400).json({ message: 'Username and email are required.' });
+    }
+
     const existingUser = await UserModel.findOne({ $or: [{ username }, { email }] });
     if (existingUser) {
       return res.status(400).json({ message: 'Username or email already exists.' });
     }
 
-    // Create a new user
     const newUser = new UserModel({
       username,
       email,
-      login: login || false,  // If 'login' is not provided, default to false
+      login: login || false,
     });
 
-    // Save the new user to the database
     await newUser.save();
+    return res.status(201).json({ message: 'User created successfully', user: newUser });
 
-    res.status(201).json({ message: 'User created successfully', user: newUser });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Server error' });
+  } catch (error) {
+    console.error('Error creating user:', error);
+    return res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
+
+
 app.get("/api", async (req, res) => {
   try {
     const users = await UserModel.find()
