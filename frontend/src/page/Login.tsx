@@ -23,6 +23,10 @@ export default function Login() {
   const [errorMessage, setErrorMessage] = useState(false)
   const [emailValue, setEmailValue] = useState("")
   const [sendInfo, setSendInfo] = useState(false)
+  const [formData, setFormData] = useState({
+    email: '',
+    // ... other fields
+  });
 
   useEffect(() => {
     axios
@@ -30,7 +34,6 @@ export default function Login() {
       .then((response) => setUsers(response.data))
       .catch((error) => console.error("Error fetching users:", error))
   }, [])
-
   const form = useForm({
     resolver: zodResolver(formSchemaEmail),
     defaultValues: {
@@ -54,8 +57,17 @@ export default function Login() {
   // ! this is important if i want change values and update it instant
   const emailValidationResult = formSchemaEmail.safeParse(form.getValues())
   // * client email 
-  const clientEmail = emailValidationResult.data.email
-  const handleEmailSubmit = () => {
+  const clientEmail = formSchemaEmail.safeParse(form.getValues()).success && emailValidationResult.data.email
+  const handleEmailSubmit = async (e) => {
+    e.preventDefault()
+    if (clientEmail) {
+
+      axios
+        .post("http://localhost:3000/login", { email: clientEmail })
+        .then((response) => setFormData(response.data))
+        .catch((error) => console.error("Error fetching users:", error))
+    }
+
     if (emailValidationResult.success) {
       setSendInfo(true)
     } else {
@@ -67,15 +79,17 @@ export default function Login() {
       <p className="text-center text-[35px] pb-4 font-bold text-green-500">Goal Oriented Academy</p>
       {!sendInfo ? (<div className="p-2 w-full mx-2">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form method="get" action="http://localhost:3000/login" onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
               name="email"
+              rules={{ required: "Email is required", pattern: { value: /\S+@\S+\.\S+/, message: "Invalid email format" } }}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
+
                       className="p-2 px-4"
                       placeholder="Enter your email"
                       {...field}
@@ -94,7 +108,7 @@ export default function Login() {
               )}
             />
             <Button
-              type={`${emailValidationResult.success ? "submit" : "button"}`}
+              type={"submit"}
               onClick={handleEmailSubmit}
               // ! this is important if i want change values and update it instant ---> emailValidationResult.success
               className={`w-full py-6 ${emailValidationResult.success ? "bg-green-500 hover:bg-green-300" : "bg-green-300 hover:bg-green-300"}`}
