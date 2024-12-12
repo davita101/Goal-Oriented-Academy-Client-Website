@@ -16,9 +16,9 @@ import { set, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import { Check, MoveLeft } from "lucide-react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
-export default function Login() {
+export default function Login({ currentUsers, setCurrentUsers }) {
   const [users, setUsers] = useState([])
   const [errorMessage, setErrorMessage] = useState(false)
   const [emailValue, setEmailValue] = useState("")
@@ -66,7 +66,7 @@ export default function Login() {
         .post("http://localhost:3000/login", { email: clientEmail })
         .then((response) => setFormData(response.data))
         .catch((error) => console.error("Error fetching users:", error))
-
+      setCurrentUsers(users.filter(i => i.email == clientEmail))
       if (emailValidationResult.success) {
         setSendInfo(true)
       } else {
@@ -74,6 +74,8 @@ export default function Login() {
       }
     }
   }
+
+ 
   return (
     <div className="max-w-[400px] mx-auto h-screen w-full flex flex-col items-center justify-center">
       <p className="text-center text-[35px] pb-4 font-bold text-green-500">Goal Oriented Academy</p>

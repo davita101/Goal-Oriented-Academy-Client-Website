@@ -1,13 +1,31 @@
 import { useEffect, useState } from "react";
 import Login from "./page/Login";
-import axios from "axios";
-import { Link } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import Dashboard from "./page/Dashboard"
 export default function App() {
+  const [currentUsers, setCurrentUsers] = useState('')
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (currentUsers && currentUsers.length > 0 && currentUsers[0]["login"]) {
+      setTimeout(() => {
+        navigate(`/goa/${currentUsers[0]["_id"]}/dashboard`);
+      }, 1000)
+    } else {
+      setTimeout(() => {
+        navigate('/login')
+      }, 1000)
+    }
+  }, [currentUsers, navigate]);
 
   return (
     <div>
       <header className="text-green-300 text-3xl font-bold p-2 absolute">GOA</header>
-      <Login/>
-    </div>  
+      <Routes>
+        <Route path="/login" element={<Login currentUsers={currentUsers} setCurrentUsers={setCurrentUsers} />} />
+        <Route path="/goa/:id" element={<Dashboard />} />
+        <Route path="/" element={<></>} />
+      </Routes>
+    </div>
   )
 }
