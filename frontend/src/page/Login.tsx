@@ -113,7 +113,7 @@ export default function Login({ currentUsers, setCurrentUsers }) {
               type={"submit"}
               onClick={handleEmailSubmit}
               // ! this is important if i want change values and update it instant ---> emailValidationResult.success
-              className={`w-full py-6 ${emailValidationResult.success ? "bg-green-500 hover:bg-green-300" : "bg-green-300 hover:bg-green-300"}`}
+              className={`w-full py-6 ${emailValidationResult.success ? "bg-green-500 hover:bg-green-300" : "bg-green-300 hover:bg-green-300 cursor-not-allowed"}`}
             >
               Submit
             </Button>
