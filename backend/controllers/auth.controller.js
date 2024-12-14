@@ -1,8 +1,6 @@
 import { UserModel } from "../models/user.models.js"
 import { generateTokenAndSetCookie } from "../utils/generateTokenAndSetCookie.js"
 import { sendVerificationEmail } from "../utils/sendVerificationEmail.js"
-import { v4 as uuidv4 } from 'uuid'
-
 const SIX_HOURS = 6 * 60 * 60 * 1000 // 6 საათი მილიწამებში
 
 export const signup = async (req, res) => {
@@ -43,8 +41,6 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
     const { email } = req.body
-    const clientId = req.cookies.clientId || uuidv4()
-
     try {
         const user = await UserModel.findOne({ email })
 
@@ -64,7 +60,7 @@ export const login = async (req, res) => {
             return res.status(400).json({ success: false, message: "Email not verified. Verification token sent to email." })
         }
 
-        if (user.clientId && user.clientId !== clientId) {
+        if (!user.isVerified) {
             user.isVerified = false
             user.verificationToken = Math.floor(100000 + Math.random() * 900000).toString()
             user.verificationTokenExpiresAt = now + 24 * 60 * 60 * 1000 // 24 საათი
@@ -81,6 +77,7 @@ export const login = async (req, res) => {
 
         res.cookie('clientId', clientId, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }) // 24 საათი
         generateTokenAndSetCookie(res, user._id)
+        res.cookie('goa_auth_is_verified', user.isVerified, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }) // 24 საათი
         res.status(200).json({
             success: true,
             message: "Login successful",
@@ -112,7 +109,7 @@ export const verifyEmail = async (req, res) => {
         user.verificationTokenExpiresAt = undefined
         await user.save()
 
-        res.cookie('isVerified', true, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }) // 24 საათი
+        res.cookie('goa_auth_is_verified', true, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }) // 24 საათი
 
         res.status(200).json({ success: true, message: "Email verified successfully" })
     } catch (error) {
@@ -123,6 +120,6 @@ export const verifyEmail = async (req, res) => {
 export const logout = async (req, res) => {
     res.clearCookie('token')
     res.clearCookie('clientId')
-    res.clearCookie('isVerified')
+    res.clearCookie('goa_auth_is_verified')
     res.status(200).json({ success: true, message: "Logged out successfully" })
 }

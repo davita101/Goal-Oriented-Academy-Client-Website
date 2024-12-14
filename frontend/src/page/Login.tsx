@@ -30,7 +30,7 @@ export default function Login({ currentUsers, setCurrentUsers }) {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api")
+      .get("http://localhost:5000/api")
       .then((response) => setUsers(response.data))
       .catch((error) => console.error("Error fetching users:", error))
   }, [])
@@ -63,7 +63,7 @@ export default function Login({ currentUsers, setCurrentUsers }) {
     if (clientEmail) {
 
       axios
-        .post("http://localhost:3000/login", { email: clientEmail })
+        .post("http://localhost:5000/api/auth/login", { email: clientEmail })
         .then((response) => setFormData(response.data))
         .catch((error) => console.error("Error fetching users:", error))
       setCurrentUsers(users.filter(i => i.email == clientEmail))
@@ -81,7 +81,7 @@ export default function Login({ currentUsers, setCurrentUsers }) {
       <p className="text-center text-[35px] pb-4 font-bold text-green-500">Goal Oriented Academy</p>
       {!sendInfo ? (<div className="p-2 w-full mx-2">
         <Form {...form}>
-          <form method="get" action="http://localhost:3000/login" onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form method="get" action="http://localhost:5000/login" onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
               name="email"
