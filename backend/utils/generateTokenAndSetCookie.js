@@ -11,7 +11,7 @@ export const generateTokenAndSetCookie = (res, userId) => {
         httpOnly: true, // რომ ფრონტიდან არ შეიძლოს წვდომა
         secure: process.env.NODE_ENV === "production", // რომ მხოლოდ https კანექშენზიებისთვის შეიყვანოს
         sameSite: "none", // რომ მხოლოდ სამესამე საიტზე გადასვლისას გამოიყენოს
-        maxAge: 1000 * 60 * 60 * 24, // 1 დღე
+        maxAge: 1000 * 60 * 60 * 1, // 1 დღე
     })
 
     return token

@@ -12,43 +12,23 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { formSchemaEmail } from "@/schema/login"
-import { set, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import { Check, MoveLeft } from "lucide-react"
-import { Link, useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
-export default function Login({ currentUsers, setCurrentUsers }) {
-  const [users, setUsers] = useState([])
-  const [errorMessage, setErrorMessage] = useState(false)
+export default function Login() {
   const [emailValue, setEmailValue] = useState("")
   const [sendInfo, setSendInfo] = useState(false)
-  const [formData, setFormData] = useState({
-    email: '',
-    // ... other fields
-  });
+  const [message, setMessage] = useState('');
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/api")
-      .then((response) => setUsers(response.data))
-      .catch((error) => console.error("Error fetching users:", error))
-  }, [])
   const form = useForm({
     resolver: zodResolver(formSchemaEmail),
     defaultValues: {
       email: "",
     },
   })
-
-  const onSubmit = (data) => {
-    const validationResult = formSchemaEmail.safeParse(data)
-    if (validationResult.success) {
-      setErrorMessage(false)
-    } else {
-      setErrorMessage(true)
-    }
-  }
 
   // ! this is important if i want change values and update it instant
   const handleEmailChange = (e) => {
@@ -64,24 +44,18 @@ export default function Login({ currentUsers, setCurrentUsers }) {
 
       axios
         .post("http://localhost:5000/api/auth/login", { email: clientEmail })
-        .then((response) => setFormData(response.data))
         .catch((error) => console.error("Error fetching users:", error))
-      setCurrentUsers(users.filter(i => i.email == clientEmail))
-      if (emailValidationResult.success) {
-        setSendInfo(true)
-      } else {
-        setSendInfo(false)
-      }
+      setSendInfo(true)
     }
   }
 
- 
+
   return (
     <div className="max-w-[400px] mx-auto h-screen w-full flex flex-col items-center justify-center">
       <p className="text-center text-[35px] pb-4 font-bold text-green-500">Goal Oriented Academy</p>
       {!sendInfo ? (<div className="p-2 w-full mx-2">
         <Form {...form}>
-          <form method="get" action="http://localhost:5000/login" onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form method="get" action="http://localhost:5000/login" className="space-y-8">
             <FormField
               control={form.control}
               name="email"
