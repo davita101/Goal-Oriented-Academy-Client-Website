@@ -23,6 +23,8 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { UserProvider, useUser } from "@/utils/user-provider"
+
 
 // This is sample data.
 const data = {
@@ -50,21 +52,25 @@ const data = {
   ],
   navMain: [
     {
-      title: "Playground",
+      title: "Squad",
       url: "#",
       icon: SquareTerminal,
       isActive: true,
       items: [
         {
-          title: "History",
+          title: "All Squad Members",
           url: "#",
         },
         {
-          title: "Starred",
+          title: "Mini Leaders",
+          url: "lomi",
+        },
+        {
+          title: "Mini Members",
           url: "#",
         },
         {
-          title: "Settings",
+          title: "Members",
           url: "#",
         },
       ],
@@ -137,22 +143,18 @@ const data = {
   ],
   projects: [
     {
-      name: "Design Engineering",
+      name: "Design & Development",
       url: "#",
       icon: Frame,
     },
     {
-      name: "Sales & Marketing",
+      name: " & Marketing",
       url: "#",
       icon: PieChart,
     },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
   ],
 }
+
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -161,7 +163,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavUser user={data.user} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        < NavMain items={data.navMain} />
         <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>

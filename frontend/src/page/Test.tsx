@@ -9,11 +9,11 @@ const VerifyEmail = () => {
 
     useEffect(() => {
         if (token) {
-            axios.get(`http://localhost:5000/api/auth/verify-email/${token}`)
+            axios.get(`${import.meta.env.VITE_API_URL}/api/auth/verify-email/${token}`)
                 .then(response => {
                     setMessage('Email verified successfully!');
                     // Save the JWT token and redirect to the dashboard
-                    localStorage.setItem('token', response.data.token);
+                    localStorage.setItem('token', response.data);
                     navigate('/dashboard');
                 })
                 .catch(error => {

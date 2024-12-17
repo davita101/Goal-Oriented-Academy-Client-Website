@@ -11,7 +11,11 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 
 app.use(cookieParser())
-app.use(cors());
+// Enable CORS middleware
+app.use(cors({
+  origin: 'http://localhost:5173', // Adjust the origin as needed
+  credentials: true
+}));
 app.use(express.json());
 app.use("/api/auth", authRouters);
 

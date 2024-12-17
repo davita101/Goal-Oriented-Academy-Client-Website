@@ -58,7 +58,7 @@ export const signup = [signupLimiter, async (req, res) => {
 }]
 
 // * Login controller
-export const login = [signupLimiter, async (req, res) => {
+export const login = async (req, res) => {
     const { email } = req.body
     try {
         // ? Find user by email
@@ -77,30 +77,28 @@ export const login = [signupLimiter, async (req, res) => {
             user.verificationToken = generateVerificationToken()
             user.verificationTokenExpiresAt = now + 24 * 60 * 60 * 1000 // 24 საათი
             await user.save()
+            await sendVerificationEmail({ email, token: user.verificationToken })
+
             return res.status(400).json({ success: false, message: "Invalid session" })
         }
 
         // ? Check if last login was more than six hours ago
         if (user.lastLogin && (now - user.lastLogin.getTime() > SIX_HOURS)) {
             user.isVerified = false
+            user.clientId = undefined
             user.verificationToken = generateVerificationToken()
             user.verificationTokenExpiresAt = now + 24 * 60 * 60 * 1000 // 24 საათი
             await user.save()
-
-            await sendVerificationEmail({ email, token: user.verificationToken })
-
             return res.status(400).json({ success: false, message: "Email not verified. Verification token sent to email." })
         }
 
         // ? Check if user is verified
         if (!user.isVerified) {
             user.isVerified = false
+            user.clientId = undefined
             user.verificationToken = generateVerificationToken()
             user.verificationTokenExpiresAt = now + 24 * 60 * 60 * 1000 // 24 საათი
             await user.save()
-
-            await sendVerificationEmail({ email, token: user.verificationToken })
-
             return res.status(400).json({ success: false, message: "Email not verified. Verification token sent to email." })
         }
 
@@ -112,8 +110,10 @@ export const login = [signupLimiter, async (req, res) => {
         // ? Update last login and set clientId
         user.lastLogin = now
         const clientId = generateVerificationToken() // ან სხვა მეთოდი clientId-ს გენერაციისთვის
-        user.clientId = clientId
+        // user.clientId = clientId
         await user.save()
+
+        await sendVerificationEmail({ email, token: user.verificationToken })
 
         // ? Set cookies and respond with success
         res.cookie('clientId', clientId, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }) // 24 საათი
@@ -127,9 +127,10 @@ export const login = [signupLimiter, async (req, res) => {
             }
         })
     } catch (error) {
+        console.error("Login error:", error)
         res.status(400).json({ success: false, message: "An error occurred" })
     }
-}]
+}
 
 // * Logout controller
 export const logout = async (req, res) => {
@@ -172,7 +173,7 @@ export const logout = async (req, res) => {
 }
 
 // * Verify email controller
-export const verifyEmail = [signupLimiter, async (req, res) => {
+export const verifyEmail = async (req, res) => {
     const { token } = req.params
     try {
         // ? Find user by verification token
@@ -190,13 +191,16 @@ export const verifyEmail = [signupLimiter, async (req, res) => {
         // ? Verify user and clear verification token
         user.isVerified = true
         user.verificationToken = undefined
+        const clientIdMain = generateVerificationToken() // ან სხვა მეთოდი clientId-ს გენერაციისთვის
+        user.clientId = clientIdMain
+
         user.verificationTokenExpiresAt = undefined
         await user.save()
 
         // ? Set cookies and respond with success
         const verificationTime = new Date().toISOString()
-        res.cookie('clientId', generateVerificationToken(), { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }) // 24 საათი
-        generateTokenAndSetCookie(res, user._id)
+        res.cookie('clientId', clientIdMain, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }) // 24 საათი
+        await generateTokenAndSetCookie(res, user._id)
         res.cookie('goa_auth_is_verified', true, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }) // 24 საათი
         res.cookie('verificationTime', verificationTime, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }) // 24 საათი
 
@@ -204,15 +208,16 @@ export const verifyEmail = [signupLimiter, async (req, res) => {
     } catch (error) {
         res.status(400).json({ success: false, message: "An error occurred" })
     }
-}]
+}
 
 // * Check authentication controller
 export const checkAuth = async (req, res) => {
     const { user } = req
     const clientId = req.cookies?.clientId
-
     // ? Check if user is authenticated
     if (!user) {
+        res.status(200).json({ success: true, user })
+
         return res.status(401).json({ success: false, message: "Unauthorized" })
     }
 
@@ -222,7 +227,7 @@ export const checkAuth = async (req, res) => {
     }
 
     // ? Check if session is valid
-    if (!clientId || user.clientId !== clientId) {
+    if (user.clientId !== clientId) {
         return res.status(401).json({ success: false, message: "Invalid session" })
     }
 

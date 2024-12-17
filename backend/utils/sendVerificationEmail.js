@@ -8,7 +8,6 @@ export const sendVerificationEmail = async ({ email, token }) => {
         // <p>Click the link below to verify your account:</p>
         // <a href="http://localhost:${process.env.PORT}/api/auth/verify-email/${token}">Click Verify</a>
         // `
-
         // const transporter = nodemailer.createTransport({
         //     host: "smtp.gmail.com",
         //     port: 465,
