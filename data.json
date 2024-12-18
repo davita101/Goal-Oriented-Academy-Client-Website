@@ -10,6 +10,8 @@
       "githubLink": "https://github.com/johndoe",
       "speed": 5,
       "group": "47",
+      "group": "47",
+      "leaderName": "675dee40a1bb4008aab7ce43",
       "parentFbLink": "https://facebook.com/johndoeparent",
       "fines": {
         "githubFine": 0,
@@ -24,7 +26,15 @@
         "camera": 6,
         "answers": 5
       },
-      "payedInfo": false
+      "payedInfo": false,
+      "comment": {
+        "leaderComment": "",
+        "leaderProof": "",
+        "controller": {
+          "miniLeaderController": "",
+          "leaderController": ""
+        }
+      }
     },
     {
       "_id": "8f352623-7e89-46e3-830c-ea02252f8daa",
@@ -35,6 +45,8 @@
       "githubLink": "https://github.com/janesmith",
       "speed": 6,
       "group": "47",
+      "group": "47",
+      "leaderName": "675dee40a1bb4008aab7ce43",
       "parentFbLink": "https://facebook.com/janesmithparent",
       "fines": {
         "githubFine": 0,
@@ -49,7 +61,15 @@
         "camera": 5,
         "answers": 4
       },
-      "payedInfo": false
+      "payedInfo": false,
+      "comment": {
+        "leaderComment": "",
+        "leaderProof": "",
+        "controller": {
+          "miniLeaderController": "",
+          "leaderController": ""
+        }
+      }
     },
     {
       "_id": "49c6589f-aba8-4d02-bce2-548de0b51d40",
@@ -60,6 +80,8 @@
       "githubLink": "https://github.com/alicejohnson",
       "speed": 7,
       "group": "47",
+      "group": "47",
+      "leaderName": "675dee40a1bb4008aab7ce43",
       "parentFbLink": "https://facebook.com/alicejohnsonparent",
       "fines": {
         "githubFine": 0,
@@ -74,7 +96,15 @@
         "camera": 4,
         "answers": 3
       },
-      "payedInfo": false
+      "payedInfo": false,
+      "comment": {
+        "leaderComment": "",
+        "leaderProof": "",
+        "controller": {
+          "miniLeaderController": "",
+          "leaderController": ""
+        }
+      }
     },
     {
       "_id": "9a5854c5-7b68-4d56-a7a7-d7dc427aa7f4",
@@ -85,6 +115,8 @@
       "githubLink": "https://github.com/bobbrown",
       "speed": 8,
       "group": "47",
+      "group": "47",
+      "leaderName": "675dee40a1bb4008aab7ce43",
       "parentFbLink": "https://facebook.com/bobbrownparent",
       "fines": {
         "githubFine": 0,
@@ -99,7 +131,15 @@
         "camera": 3,
         "answers": 2
       },
-      "payedInfo": false
+      "payedInfo": false,
+      "comment": {
+        "leaderComment": "",
+        "leaderProof": "",
+        "controller": {
+          "miniLeaderController": "",
+          "leaderController": ""
+        }
+      }
     },
     {
       "_id": "a4e6a7b4-1c43-417b-b642-1ea126715a41",
@@ -110,6 +150,8 @@
       "githubLink": "https://github.com/charliedavis",
       "speed": 9,
       "group": "47",
+      "group": "47",
+      "leaderName": "675dee40a1bb4008aab7ce43",
       "parentFbLink": "https://facebook.com/charliedavisparent",
       "fines": {
         "githubFine": 0,
@@ -124,7 +166,15 @@
         "camera": 2,
         "answers": 1
       },
-      "payedInfo": false
+      "payedInfo": false,
+      "comment": {
+        "leaderComment": "",
+        "leaderProof": "",
+        "controller": {
+          "miniLeaderController": "",
+          "leaderController": ""
+        }
+      }
     },
     {
       "_id": "0f0a7be5-c577-4bd9-984b-4e0e5f322efd",
@@ -135,6 +185,8 @@
       "githubLink": "https://github.com/dianaevans",
       "speed": 10,
       "group": "47",
+      "group": "47",
+      "leaderName": "675dee40a1bb4008aab7ce43",
       "parentFbLink": "https://facebook.com/dianaevansparent",
       "fines": {
         "githubFine": 0,
@@ -149,7 +201,15 @@
         "camera": 1,
         "answers": 0
       },
-      "payedInfo": false
+      "payedInfo": false,
+      "comment": {
+        "leaderComment": "",
+        "leaderProof": "",
+        "controller": {
+          "miniLeaderController": "",
+          "leaderController": ""
+        }
+      }
     },
     {
       "_id": "6e4b1ab7-d869-4b41-96e7-2b5cafdf5a4c",
@@ -160,6 +220,8 @@
       "githubLink": "https://github.com/ethanfoster",
       "speed": 11,
       "group": "47",
+      "group": "47",
+      "leaderName": "675dee40a1bb4008aab7ce43",
       "parentFbLink": "https://facebook.com/ethanfosterparent",
       "fines": {
         "githubFine": 0,
@@ -174,7 +236,15 @@
         "camera": 0,
         "answers": 10
       },
-      "payedInfo": false
+      "payedInfo": false,
+      "comment": {
+        "leaderComment": "",
+        "leaderProof": "",
+        "controller": {
+          "miniLeaderController": "",
+          "leaderController": ""
+        }
+      }
     },
     {
       "_id": "a2b315ce-631b-49b1-8623-78b427af4eee",
@@ -185,6 +255,8 @@
       "githubLink": "https://github.com/fionagreen",
       "speed": 12,
       "group": "47",
+      "group": "47",
+      "leaderName": "675dee40a1bb4008aab7ce43",
       "parentFbLink": "https://facebook.com/fionagreenparent",
       "fines": {
         "githubFine": 0,
@@ -199,7 +271,15 @@
         "camera": 10,
         "answers": 9
       },
-      "payedInfo": false
+      "payedInfo": false,
+      "comment": {
+        "leaderComment": "",
+        "leaderProof": "",
+        "controller": {
+          "miniLeaderController": "",
+          "leaderController": ""
+        }
+      }
     },
     {
       "_id": "fdb082ec-c328-4b80-b01c-51bb6b5bc9be",
@@ -210,6 +290,8 @@
       "githubLink": "https://github.com/georgeharris",
       "speed": 13,
       "group": "47",
+      "group": "47",
+      "leaderName": "675dee40a1bb4008aab7ce43",
       "parentFbLink": "https://facebook.com/georgeharrisparent",
       "fines": {
         "githubFine": 0,
@@ -224,7 +306,15 @@
         "camera": 9,
         "answers": 8
       },
-      "payedInfo": false
+      "payedInfo": false,
+      "comment": {
+        "leaderComment": "",
+        "leaderProof": "",
+        "controller": {
+          "miniLeaderController": "",
+          "leaderController": ""
+        }
+      }
     },
     {
       "_id": "cf8c6095-b95c-4a4e-8ac5-bd86b41ca9fc",
@@ -235,6 +325,8 @@
       "githubLink": "https://github.com/hannahjohnson",
       "speed": 14,
       "group": "47",
+      "group": "47",
+      "leaderName": "675dee40a1bb4008aab7ce43",
       "parentFbLink": "https://facebook.com/hannahjohnsonparent",
       "fines": {
         "githubFine": 0,
@@ -249,7 +341,15 @@
         "camera": 8,
         "answers": 7
       },
-      "payedInfo": false
+      "payedInfo": false,
+      "comment": {
+        "leaderComment": "",
+        "leaderProof": "",
+        "controller": {
+          "miniLeaderController": "",
+          "leaderController": ""
+        }
+      }
     },
     {
       "_id": "6377adc1-d9c2-47f6-b5b4-cd312d8482f8",
@@ -260,6 +360,8 @@
       "githubLink": "https://github.com/ianking",
       "speed": 15,
       "group": "47",
+      "group": "47",
+      "leaderName": "675dee40a1bb4008aab7ce43",
       "parentFbLink": "https://facebook.com/iankingparent",
       "fines": {
         "githubFine": 0,
@@ -274,7 +376,15 @@
         "camera": 7,
         "answers": 6
       },
-      "payedInfo": false
+      "payedInfo": false,
+      "comment": {
+        "leaderComment": "",
+        "leaderProof": "",
+        "controller": {
+          "miniLeaderController": "",
+          "leaderController": ""
+        }
+      }
     },
     {
       "_id": "6a5459f6-187b-4827-9b0f-12be8b452b83",
@@ -285,6 +395,8 @@
       "githubLink": "https://github.com/jacklee",
       "speed": 16,
       "group": "47",
+      "group": "47",
+      "leaderName": "675dee40a1bb4008aab7ce43",
       "parentFbLink": "https://facebook.com/jackleeparent",
       "fines": {
         "githubFine": 0,
@@ -299,7 +411,15 @@
         "camera": 6,
         "answers": 5
       },
-      "payedInfo": false
+      "payedInfo": false,
+      "comment": {
+        "leaderComment": "",
+        "leaderProof": "",
+        "controller": {
+          "miniLeaderController": "",
+          "leaderController": ""
+        }
+      }
     },
     {
       "_id": "1ee74e4c-4a0e-4795-a9d3-66f5874e6c13",
@@ -310,6 +430,8 @@
       "githubLink": "https://github.com/karenmiller",
       "speed": 17,
       "group": "47",
+      "group": "47",
+      "leaderName": "675dee40a1bb4008aab7ce43",
       "parentFbLink": "https://facebook.com/karenmillerparent",
       "fines": {
         "githubFine": 0,
@@ -324,7 +446,15 @@
         "camera": 5,
         "answers": 4
       },
-      "payedInfo": false
+      "payedInfo": false,
+      "comment": {
+        "leaderComment": "",
+        "leaderProof": "",
+        "controller": {
+          "miniLeaderController": "",
+          "leaderController": ""
+        }
+      }
     },
     {
       "_id": "5eae7275-5774-4bd1-9530-d6729e9e5efb",
@@ -335,6 +465,8 @@
       "githubLink": "https://github.com/liamnelson",
       "speed": 18,
       "group": "47",
+      "group": "47",
+      "leaderName": "675dee40a1bb4008aab7ce43",
       "parentFbLink": "https://facebook.com/liamnelsonparent",
       "fines": {
         "githubFine": 0,
@@ -349,7 +481,15 @@
         "camera": 4,
         "answers": 3
       },
-      "payedInfo": false
+      "payedInfo": false,
+      "comment": {
+        "leaderComment": "",
+        "leaderProof": "",
+        "controller": {
+          "miniLeaderController": "",
+          "leaderController": ""
+        }
+      }
     },
     {
       "_id": "0e54321c-5525-444e-93e4-502809550856",
@@ -360,6 +500,8 @@
       "githubLink": "https://github.com/miaowens",
       "speed": 19,
       "group": "47",
+      "group": "47",
+      "leaderName": "675dee40a1bb4008aab7ce43",
       "parentFbLink": "https://facebook.com/miaowensparent",
       "fines": {
         "githubFine": 0,
@@ -374,7 +516,15 @@
         "camera": 3,
         "answers": 2
       },
-      "payedInfo": false
+      "payedInfo": false,
+      "comment": {
+        "leaderComment": "",
+        "leaderProof": "",
+        "controller": {
+          "miniLeaderController": "",
+          "leaderController": ""
+        }
+      }
     },
     {
       "_id": "25bfb57b-0d51-4b14-9add-3010ec706969",
@@ -385,6 +535,8 @@
       "githubLink": "https://github.com/noahparker",
       "speed": 20,
       "group": "47",
+      "group": "47",
+      "leaderName": "675dee40a1bb4008aab7ce43",
       "parentFbLink": "https://facebook.com/noahparkerparent",
       "fines": {
         "githubFine": 0,
@@ -399,7 +551,15 @@
         "camera": 2,
         "answers": 1
       },
-      "payedInfo": false
+      "payedInfo": false,
+      "comment": {
+        "leaderComment": "",
+        "leaderProof": "",
+        "controller": {
+          "miniLeaderController": "",
+          "leaderController": ""
+        }
+      }
     },
     {
       "_id": "1b186900-f1f1-4364-b3cc-58f03741d24b",
@@ -410,6 +570,8 @@
       "githubLink": "https://github.com/oliviaquinn",
       "speed": 21,
       "group": "47",
+      "group": "47",
+      "leaderName": "675dee40a1bb4008aab7ce43",
       "parentFbLink": "https://facebook.com/oliviaquinnparent",
       "fines": {
         "githubFine": 0,
@@ -424,7 +586,15 @@
         "camera": 1,
         "answers": 0
       },
-      "payedInfo": false
+      "payedInfo": false,
+      "comment": {
+        "leaderComment": "",
+        "leaderProof": "",
+        "controller": {
+          "miniLeaderController": "",
+          "leaderController": ""
+        }
+      }
     },
     {
       "_id": "5a8e8942-5e01-48f2-9ac4-95c464975676",
@@ -435,6 +605,8 @@
       "githubLink": "https://github.com/paulroberts",
       "speed": 22,
       "group": "47",
+      "group": "47",
+      "leaderName": "675dee40a1bb4008aab7ce43",
       "parentFbLink": "https://facebook.com/paulrobertsparent",
       "fines": {
         "githubFine": 0,
@@ -449,7 +621,15 @@
         "camera": 0,
         "answers": 10
       },
-      "payedInfo": false
+      "payedInfo": false,
+      "comment": {
+        "leaderComment": "",
+        "leaderProof": "",
+        "controller": {
+          "miniLeaderController": "",
+          "leaderController": ""
+        }
+      }
     },
     {
       "_id": "f55a8443-12e4-4c02-a560-5263dd979ea3",
@@ -460,6 +640,8 @@
       "githubLink": "https://github.com/quinnstevens",
       "speed": 23,
       "group": "47",
+      "group": "47",
+      "leaderName": "675dee40a1bb4008aab7ce43",
       "parentFbLink": "https://facebook.com/quinnstevensparent",
       "fines": {
         "githubFine": 0,
@@ -474,7 +656,15 @@
         "camera": 10,
         "answers": 9
       },
-      "payedInfo": false
+      "payedInfo": false,
+      "comment": {
+        "leaderComment": "",
+        "leaderProof": "",
+        "controller": {
+          "miniLeaderController": "",
+          "leaderController": ""
+        }
+      }
     },
     {
       "_id": "1aa2c368-9208-43aa-84ad-4085d05ca4e0",
@@ -485,6 +675,8 @@
       "githubLink": "https://github.com/rachelturner",
       "speed": 24,
       "group": "47",
+      "group": "47",
+      "leaderName": "675dee40a1bb4008aab7ce43",
       "parentFbLink": "https://facebook.com/rachelturnerparent",
       "fines": {
         "githubFine": 0,
@@ -499,7 +691,15 @@
         "camera": 9,
         "answers": 8
       },
-      "payedInfo": false
+      "payedInfo": false,
+      "comment": {
+        "leaderComment": "",
+        "leaderProof": "",
+        "controller": {
+          "miniLeaderController": "",
+          "leaderController": ""
+        }
+      }
     },
     {
       "_id": "ad82039e-e4f8-4c08-9507-0d4e79f02c4a",
@@ -510,6 +710,8 @@
       "githubLink": "https://github.com/samunderwood",
       "speed": 25,
       "group": "47",
+      "group": "47",
+      "leaderName": "675dee40a1bb4008aab7ce43",
       "parentFbLink": "https://facebook.com/samunderwoodparent",
       "fines": {
         "githubFine": 0,
@@ -524,7 +726,15 @@
         "camera": 8,
         "answers": 7
       },
-      "payedInfo": false
+      "payedInfo": false,
+      "comment": {
+        "leaderComment": "",
+        "leaderProof": "",
+        "controller": {
+          "miniLeaderController": "",
+          "leaderController": ""
+        }
+      }
     },
     {
       "_id": "e8da3a89-b3c6-4ab2-a140-820fcbd6a219",
@@ -535,6 +745,8 @@
       "githubLink": "https://github.com/tinavance",
       "speed": 26,
       "group": "47",
+      "group": "47",
+      "leaderName": "675dee40a1bb4008aab7ce43",
       "parentFbLink": "https://facebook.com/tinavanceparent",
       "fines": {
         "githubFine": 0,
@@ -549,7 +761,15 @@
         "camera": 7,
         "answers": 6
       },
-      "payedInfo": false
+      "payedInfo": false,
+      "comment": {
+        "leaderComment": "",
+        "leaderProof": "",
+        "controller": {
+          "miniLeaderController": "",
+          "leaderController": ""
+        }
+      }
     },
     {
       "_id": "2ebc2159-45ca-4284-9fe9-30107d9759a6",
@@ -560,6 +780,8 @@
       "githubLink": "https://github.com/umawalker",
       "speed": 27,
       "group": "47",
+      "group": "47",
+      "leaderName": "675dee40a1bb4008aab7ce43",
       "parentFbLink": "https://facebook.com/umawalkerparent",
       "fines": {
         "githubFine": 0,
@@ -574,7 +796,15 @@
         "camera": 6,
         "answers": 5
       },
-      "payedInfo": false
+      "payedInfo": false,
+      "comment": {
+        "leaderComment": "",
+        "leaderProof": "",
+        "controller": {
+          "miniLeaderController": "",
+          "leaderController": ""
+        }
+      }
     }
   ]
 }

@@ -10,6 +10,10 @@ const StudentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    leaderName:{
+      type: String,
+      required: true,
+    },
     age: {
       type: Number,
       required: true,
@@ -38,16 +42,32 @@ const StudentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    comment: {
+      leaderComment: {
+        type: String,
+        required: true,
+      },
+      leaderProof: {
+        type: String,
+        required: true,
+      },
+      controller: {
+        miniLeaderController: {
+          type: String,
+          required: true,
+        },
+        leaderController: {
+          type: String,
+          required: true,
+        },
+      }
+    },
     fines: {
       githubFine: {
         type: Number,
         required: true,
       },
       miniLeaderFine: {
-        type: Number,
-        required: true,
-      },
-      miniStudentFine: {
         type: Number,
         required: true,
       },
