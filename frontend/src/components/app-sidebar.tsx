@@ -1,15 +1,23 @@
 import * as React from "react"
 import {
   AudioWaveform,
+  BadgePercent,
   BookOpen,
   Bot,
+  ChartNoAxesCombined,
+  CircleEllipsis,
+  ClipboardX,
   Command,
   Frame,
   GalleryVerticalEnd,
+  HeartHandshake,
+  Inbox,
+  KeyboardMusic,
   Map,
   PieChart,
   Settings2,
   SquareTerminal,
+  WalletCardsIcon,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -23,7 +31,9 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { UserProvider, useUser } from "@/utils/user-provider"
+import { Item } from "@radix-ui/react-dropdown-menu"
+import { title } from "process"
+import { SearchForm } from "./search-form"
 
 
 // This is sample data.
@@ -76,99 +86,182 @@ const data = {
       ],
     },
     {
-      title: "Models",
+      title: "leader Info",
       url: "#",
       icon: Bot,
       items: [
         {
-          title: "Genesis",
+          title: "Codwars",
           url: "#",
         },
         {
-          title: "Explorer",
+          title: "LinckedIn",
           url: "#",
         },
         {
-          title: "Quantum",
+          title: "Facebook",
+          url: "#",
+        },
+        {
+          title: "ParentFacebook",
+          url: "#",
+        },
+        {
+          title: "Github",
           url: "#",
         },
       ],
     },
     {
-      title: "Documentation",
+      title: "Inbox",
       url: "#",
-      icon: BookOpen,
+      icon: Inbox,
       items: [
         {
-          title: "Introduction",
+          title: "Leader",
           url: "#",
         },
         {
-          title: "Get Started",
+          title: "Mini Leader",
           url: "#",
         },
         {
-          title: "Tutorials",
+          title: "Mini Member",
           url: "#",
         },
         {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
+          title: "Mentor",
           url: "#",
         },
         {
-          title: "Team",
+          title: "Mentor Assistant",
           url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
+        }
       ],
     },
   ],
+
   projects: [
     {
-      name: "Design & Development",
+      title: "Other",
       url: "#",
-      icon: Frame,
+      icon: CircleEllipsis,
+      items: [
+        {
+          title: "Events",
+          url: "#",
+        },
+        {
+          title: "Cards",
+          url: "#",
+        },
+        {
+          title: "Salary",
+          url: "#",
+        }
+      ]
     },
     {
-      name: " & Marketing",
+      title: "For Control",
       url: "#",
-      icon: PieChart,
+      icon: KeyboardMusic,
+      items: [
+        {
+          title: "Github",
+          url: "#",
+        },
+        {
+          title: "Leader",
+          url: "#",
+        },
+        {
+          title: "Mini Leader",
+          url: "#",
+        },
+        {
+          title: "Mini Member",
+          url: "#",
+        },
+        {
+          title: "Mentor",
+          url: "#",
+        },
+        {
+          title: "Mentor Assistant",
+          url: "#",
+        }
+      ]
     },
-  ],
+    {
+      title: "Data",
+      url: "#",
+      icon: ChartNoAxesCombined,
+      items: [
+        {
+          title: "Leader Checkup",
+          url: "#",
+        },
+        {
+          title: "Leader Rating",
+          url: "#",
+        },
+        {
+          title: "Mini Leader Checkup",
+          url: "#",
+        },
+        {
+          title: "Mini Leader Rating",
+          url: "#",
+        },
+        {
+          title: "Mini Member Checkup",
+          url: "#",
+        },
+        {
+          title: "Mini Member Rating",
+          url: "#",
+        },
+        {
+          title: "Mentor Rating Checkup",
+          url: "#",
+        },
+        {
+          title: "Mentor Rating Rating",
+          url: "#",
+        },
+        {
+          title: "Mentor Checkup",
+          url: "#",
+        },
+        {
+          title: "Mentor Rating",
+          url: "#",
+        },
+        {
+          title: "Mentor Assistant Checkup",
+          url: "#",
+        },
+        {
+          title: "Mentor Assistant Rating",
+          url: "#",
+        }
+      ]
+    }
+  ]
 }
 
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>
+      <SidebarHeader >
         <NavUser user={data.user} />
+        <SearchForm />
       </SidebarHeader>
       <SidebarContent>
-        < NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavMain items={data.navMain} />
+        <NavMain items={data.projects} />
       </SidebarContent>
-      <SidebarFooter>
-        <TeamSwitcher teams={data.teams} />
-      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   )

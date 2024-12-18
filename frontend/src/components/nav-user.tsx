@@ -1,12 +1,16 @@
 "use client"
 
 import {
-  BadgeCheck,
-  Bell,
+  BadgePercent,
+  Bolt,
+  BookUser,
   ChevronsUpDown,
-  CreditCard,
+  ClipboardX,
+  HandHeart,
+  HeartHandshake,
   LogOut,
-  Sparkles,
+  School,
+  UsersRound,
 } from "lucide-react"
 
 import {
@@ -29,6 +33,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import React from "react"
 
 export function NavUser({
   user,
@@ -42,8 +47,8 @@ export function NavUser({
   const { isMobile } = useSidebar()
 
   return (
-    <SidebarMenu>
-      <SidebarMenuItem>
+    <SidebarMenu >
+      <SidebarMenuItem >
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
@@ -62,7 +67,7 @@ export function NavUser({
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+            className="w-[--radix-dropdown-menu-trigger-width] min-w-[330px] rounded-lg"
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}
@@ -80,32 +85,48 @@ export function NavUser({
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
+            <DropdownMenuGroup className="grid grid-cols-2 w-full">
               <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
+                <div className="flex items-center gap-1">
+                  <Bolt size={18} />
+                  Roles <span>8</span>
+                </div>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <div className="flex items-center gap-1">
+                  <ClipboardX size={18} />
+                  Cards <span>5</span>
+                </div>
               </DropdownMenuItem>
             </DropdownMenuGroup>
+            <DropdownMenuGroup className="grid grid-cols-2 w-full">
+            </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
+            <DropdownMenuGroup className="grid grid-cols-2  ">
               <DropdownMenuItem>
-                <BadgeCheck />
-                Account
+                56 <span>Squad Members</span>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <CreditCard />
-                Billing
+                10 <span>Mini Leader</span>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Bell />
-                Notifications
+                4 <span>Groups</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                5 <span>Mini Member</span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <LogOut />
-              Log out
+              <BadgePercent />
+              <span>salary</span>
             </DropdownMenuItem>
+            <DropdownMenuGroup>
+              <DropdownMenuItem>
+                <LogOut />
+                Log out
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
