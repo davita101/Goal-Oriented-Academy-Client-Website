@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 export const connectDB = async () => {
     try {
-        const conn = await mongoose.connect(process.env.MONGODB_URI)
+        const conn = await mongoose.connect(process.env.MONGODB_GROUPS_URI)
         console.log(`MongoDb Connected: ${conn.connection.host}`)
     }
     catch (err) {

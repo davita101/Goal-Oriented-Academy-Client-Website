@@ -56,23 +56,21 @@ export const signup = [signupLimiter, async (req, res) => {
         res.status(400).json({ success: false, message: "An error occurred" })
     }
 }]
-
 // * Login controller
-export const login = async (req, res) => {
+export const login = [signupLimiter, async (req, res) => {
     const { email } = req.body
     try {
         // ? Find user by email
         const user = await UserModel.findOne({ email })
+        // console.log(Date.now()- user.lastLogin.getTime() SIX_HOURS)
         if (!user) {
             return res.status(400).json({ success: false, message: "Invalid email" })
         }
 
         const session = req.cookies?.clientId
         const now = Date.now()
-
         // ? Check if session is valid
         if (!session) {
-            user.isVerified = false
             user.clientId = undefined
             user.verificationToken = generateVerificationToken()
             user.verificationTokenExpiresAt = now + 24 * 60 * 60 * 1000 // 24 საათი
@@ -84,18 +82,19 @@ export const login = async (req, res) => {
 
         // ? Check if last login was more than six hours ago
         if (user.lastLogin && (now - user.lastLogin.getTime() > SIX_HOURS)) {
-            user.isVerified = false
+            // console.log(user)
             user.clientId = undefined
             user.verificationToken = generateVerificationToken()
             user.verificationTokenExpiresAt = now + 24 * 60 * 60 * 1000 // 24 საათი
+            res.clearCookie('token')
+            res.clearCookie('clientId')
+            res.clearCookie('goa_auth_is_verified')
             await user.save()
-            return res.status(400).json({ success: false, message: "Email not verified. Verification token sent to email." })
+            return res.status(400).json({ success: false, message: "User is more than 6 hour failed login" })
         }
-
         // ? Check if user is verified
-        if (!user.isVerified) {
-            user.isVerified = false
-            user.clientId = undefined
+        if (user.isVerified) {
+            // console.log(user)
             user.verificationToken = generateVerificationToken()
             user.verificationTokenExpiresAt = now + 24 * 60 * 60 * 1000 // 24 საათი
             await user.save()
@@ -110,7 +109,7 @@ export const login = async (req, res) => {
         // ? Update last login and set clientId
         user.lastLogin = now
         const clientId = generateVerificationToken() // ან სხვა მეთოდი clientId-ს გენერაციისთვის
-        // user.clientId = clientId
+        user.clientId = clientId
         await user.save()
 
         await sendVerificationEmail({ email, token: user.verificationToken })
@@ -130,8 +129,7 @@ export const login = async (req, res) => {
         console.error("Login error:", error)
         res.status(400).json({ success: false, message: "An error occurred" })
     }
-}
-
+}]
 // * Logout controller
 export const logout = async (req, res) => {
     const token = req.cookies.token
@@ -173,7 +171,7 @@ export const logout = async (req, res) => {
 }
 
 // * Verify email controller
-export const verifyEmail = async (req, res) => {
+export const verifyEmail = [signupLimiter, async (req, res) => {
     const { token } = req.params
     try {
         // ? Find user by verification token
@@ -208,7 +206,7 @@ export const verifyEmail = async (req, res) => {
     } catch (error) {
         res.status(400).json({ success: false, message: "An error occurred" })
     }
-}
+}]
 
 // * Check authentication controller
 export const checkAuth = async (req, res) => {
