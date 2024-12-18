@@ -1,16 +1,20 @@
 import express from 'express';
-import { authMiddleware } from '../middleware/authMiddleware.js';
-import { getStudents } from '../controllers/groups.controller.js';
+import { getStudentById, getStudents, getStudentGroups, createStudent, updateStudent, deleteStudent } from '../controllers/groups.controller.js';
 
 const router = express.Router();
+// ! all groups
+router.get('/', getStudents);
+// ! one group
+router.get('/group/:groupId', getStudentGroups);
+// ! one student
+router.get('/group/:groupId/student/:studentId', getStudentById);
+// ! create student
+router.post('/group/:groupId/students/create-student', createStudent);
+// ! update student
+router.put('/group/:groupId/students/:studentId', updateStudent);
 
-router.get('/students', authMiddleware, getStudents);
-// router.get('/students/:id', authMiddleware, getStudentById);
-// router.post('/students', authMiddleware, createStudent);
-// router.put('/students/:id', authMiddleware, updateStudent);
-// router.delete('/students/:id', authMiddleware, deleteStudent);
-
-// export default router;
+// ! delete student
+router.delete('/group/:groupId/students/:studentId', deleteStudent);
 
 
 export default router

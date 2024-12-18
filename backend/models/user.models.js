@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const StudentSchema = new mongoose.Schema(
   {
-    id: {
+    _id: {
       type: String,
       required: true,
       unique: true
@@ -146,8 +146,5 @@ const GroupSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-export const Group38Model = mongoose.model("group-38", GroupSchema);
-export const Group39Model = mongoose.model("group-39", GroupSchema);
-export const Group40Model = mongoose.model("group-40", GroupSchema);
 export const UserModel = mongoose.model("User", UserSchema);
-export const StudentModel = mongoose.model("Student", StudentSchema);
+export const GroupModel = mongoose.model("Group", GroupSchema);

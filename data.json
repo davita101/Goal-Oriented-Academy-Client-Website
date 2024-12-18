@@ -1,577 +1,580 @@
-[
-  {
-    "id": "b490519c-2b1b-4d82-a9da-026ef84547b8",
-    "name": "John Doe",
-    "age": 20,
-    "studentFbLink": "https://facebook.com/johndoe",
-    "email": "johndoe@example.com",
-    "githubLink": "https://github.com/johndoe",
-    "speed": 5,
-    "group": "47",
-    "parentFbLink": "https://facebook.com/johndoeparent",
-    "fines": {
-      "githubFine": 0,
-      "miniLeaderFine": 0,
-      "miniStudentFine": 0
+{
+  "groupName": "46",
+  "students": [
+    {
+      "_id": "b490519c-2b1b-4d82-a9da-026ef84547b76",
+      "name": "lomi lomadze",
+      "age": 20,
+      "studentFbLink": "https://facebook.com/johndoe",
+      "email": "johndoe@example.com",
+      "githubLink": "https://github.com/johndoe",
+      "speed": 5,
+      "group": "47",
+      "parentFbLink": "https://facebook.com/johndoeparent",
+      "fines": {
+        "githubFine": 0,
+        "miniLeaderFine": 0,
+        "miniStudentFine": 0
+      },
+      "aura": {
+        "points": 10,
+        "classWork": 8,
+        "attendance": 9,
+        "help": 7,
+        "camera": 6,
+        "answers": 5
+      },
+      "payedInfo": false
     },
-    "aura": {
-      "points": 10,
-      "classWork": 8,
-      "attendance": 9,
-      "help": 7,
-      "camera": 6,
-      "answers": 5
+    {
+      "_id": "8f352623-7e89-46e3-830c-ea02252f8daa",
+      "name": "Jane Smith",
+      "age": 22,
+      "studentFbLink": "https://facebook.com/janesmith",
+      "email": "janesmith@example.com",
+      "githubLink": "https://github.com/janesmith",
+      "speed": 6,
+      "group": "47",
+      "parentFbLink": "https://facebook.com/janesmithparent",
+      "fines": {
+        "githubFine": 0,
+        "miniLeaderFine": 0,
+        "miniStudentFine": 0
+      },
+      "aura": {
+        "points": 9,
+        "classWork": 7,
+        "attendance": 8,
+        "help": 6,
+        "camera": 5,
+        "answers": 4
+      },
+      "payedInfo": false
     },
-    "payedInfo": false
-  },
-  {
-    "id": "8f352623-7e89-46e3-830c-ea02252f8daa",
-    "name": "Jane Smith",
-    "age": 22,
-    "studentFbLink": "https://facebook.com/janesmith",
-    "email": "janesmith@example.com",
-    "githubLink": "https://github.com/janesmith",
-    "speed": 6,
-    "group": "47",
-    "parentFbLink": "https://facebook.com/janesmithparent",
-    "fines": {
-      "githubFine": 0,
-      "miniLeaderFine": 0,
-      "miniStudentFine": 0
+    {
+      "_id": "49c6589f-aba8-4d02-bce2-548de0b51d40",
+      "name": "Alice Johnson",
+      "age": 21,
+      "studentFbLink": "https://facebook.com/alicejohnson",
+      "email": "alicejohnson@example.com",
+      "githubLink": "https://github.com/alicejohnson",
+      "speed": 7,
+      "group": "47",
+      "parentFbLink": "https://facebook.com/alicejohnsonparent",
+      "fines": {
+        "githubFine": 0,
+        "miniLeaderFine": 0,
+        "miniStudentFine": 0
+      },
+      "aura": {
+        "points": 8,
+        "classWork": 6,
+        "attendance": 7,
+        "help": 5,
+        "camera": 4,
+        "answers": 3
+      },
+      "payedInfo": false
     },
-    "aura": {
-      "points": 9,
-      "classWork": 7,
-      "attendance": 8,
-      "help": 6,
-      "camera": 5,
-      "answers": 4
+    {
+      "_id": "9a5854c5-7b68-4d56-a7a7-d7dc427aa7f4",
+      "name": "Bob Brown",
+      "age": 23,
+      "studentFbLink": "https://facebook.com/bobbrown",
+      "email": "bobbrown@example.com",
+      "githubLink": "https://github.com/bobbrown",
+      "speed": 8,
+      "group": "47",
+      "parentFbLink": "https://facebook.com/bobbrownparent",
+      "fines": {
+        "githubFine": 0,
+        "miniLeaderFine": 0,
+        "miniStudentFine": 0
+      },
+      "aura": {
+        "points": 7,
+        "classWork": 5,
+        "attendance": 6,
+        "help": 4,
+        "camera": 3,
+        "answers": 2
+      },
+      "payedInfo": false
     },
-    "payedInfo": false
-  },
-  {
-    "id": "49c6589f-aba8-4d02-bce2-548de0b51d40",
-    "name": "Alice Johnson",
-    "age": 21,
-    "studentFbLink": "https://facebook.com/alicejohnson",
-    "email": "alicejohnson@example.com",
-    "githubLink": "https://github.com/alicejohnson",
-    "speed": 7,
-    "group": "47",
-    "parentFbLink": "https://facebook.com/alicejohnsonparent",
-    "fines": {
-      "githubFine": 0,
-      "miniLeaderFine": 0,
-      "miniStudentFine": 0
+    {
+      "_id": "a4e6a7b4-1c43-417b-b642-1ea126715a41",
+      "name": "Charlie Davis",
+      "age": 24,
+      "studentFbLink": "https://facebook.com/charliedavis",
+      "email": "charliedavis@example.com",
+      "githubLink": "https://github.com/charliedavis",
+      "speed": 9,
+      "group": "47",
+      "parentFbLink": "https://facebook.com/charliedavisparent",
+      "fines": {
+        "githubFine": 0,
+        "miniLeaderFine": 0,
+        "miniStudentFine": 0
+      },
+      "aura": {
+        "points": 6,
+        "classWork": 4,
+        "attendance": 5,
+        "help": 3,
+        "camera": 2,
+        "answers": 1
+      },
+      "payedInfo": false
     },
-    "aura": {
-      "points": 8,
-      "classWork": 6,
-      "attendance": 7,
-      "help": 5,
-      "camera": 4,
-      "answers": 3
+    {
+      "_id": "0f0a7be5-c577-4bd9-984b-4e0e5f322efd",
+      "name": "Diana Evans",
+      "age": 25,
+      "studentFbLink": "https://facebook.com/dianaevans",
+      "email": "dianaevans@example.com",
+      "githubLink": "https://github.com/dianaevans",
+      "speed": 10,
+      "group": "47",
+      "parentFbLink": "https://facebook.com/dianaevansparent",
+      "fines": {
+        "githubFine": 0,
+        "miniLeaderFine": 0,
+        "miniStudentFine": 0
+      },
+      "aura": {
+        "points": 5,
+        "classWork": 3,
+        "attendance": 4,
+        "help": 2,
+        "camera": 1,
+        "answers": 0
+      },
+      "payedInfo": false
     },
-    "payedInfo": false
-  },
-  {
-    "id": "9a5854c5-7b68-4d56-a7a7-d7dc427aa7f4",
-    "name": "Bob Brown",
-    "age": 23,
-    "studentFbLink": "https://facebook.com/bobbrown",
-    "email": "bobbrown@example.com",
-    "githubLink": "https://github.com/bobbrown",
-    "speed": 8,
-    "group": "47",
-    "parentFbLink": "https://facebook.com/bobbrownparent",
-    "fines": {
-      "githubFine": 0,
-      "miniLeaderFine": 0,
-      "miniStudentFine": 0
+    {
+      "_id": "6e4b1ab7-d869-4b41-96e7-2b5cafdf5a4c",
+      "name": "Ethan Foster",
+      "age": 26,
+      "studentFbLink": "https://facebook.com/ethanfoster",
+      "email": "ethanfoster@example.com",
+      "githubLink": "https://github.com/ethanfoster",
+      "speed": 11,
+      "group": "47",
+      "parentFbLink": "https://facebook.com/ethanfosterparent",
+      "fines": {
+        "githubFine": 0,
+        "miniLeaderFine": 0,
+        "miniStudentFine": 0
+      },
+      "aura": {
+        "points": 4,
+        "classWork": 2,
+        "attendance": 3,
+        "help": 1,
+        "camera": 0,
+        "answers": 10
+      },
+      "payedInfo": false
     },
-    "aura": {
-      "points": 7,
-      "classWork": 5,
-      "attendance": 6,
-      "help": 4,
-      "camera": 3,
-      "answers": 2
+    {
+      "_id": "a2b315ce-631b-49b1-8623-78b427af4eee",
+      "name": "Fiona Green",
+      "age": 27,
+      "studentFbLink": "https://facebook.com/fionagreen",
+      "email": "fionagreen@example.com",
+      "githubLink": "https://github.com/fionagreen",
+      "speed": 12,
+      "group": "47",
+      "parentFbLink": "https://facebook.com/fionagreenparent",
+      "fines": {
+        "githubFine": 0,
+        "miniLeaderFine": 0,
+        "miniStudentFine": 0
+      },
+      "aura": {
+        "points": 3,
+        "classWork": 1,
+        "attendance": 2,
+        "help": 0,
+        "camera": 10,
+        "answers": 9
+      },
+      "payedInfo": false
     },
-    "payedInfo": false
-  },
-  {
-    "id": "a4e6a7b4-1c43-417b-b642-1ea126715a41",
-    "name": "Charlie Davis",
-    "age": 24,
-    "studentFbLink": "https://facebook.com/charliedavis",
-    "email": "charliedavis@example.com",
-    "githubLink": "https://github.com/charliedavis",
-    "speed": 9,
-    "group": "47",
-    "parentFbLink": "https://facebook.com/charliedavisparent",
-    "fines": {
-      "githubFine": 0,
-      "miniLeaderFine": 0,
-      "miniStudentFine": 0
+    {
+      "_id": "fdb082ec-c328-4b80-b01c-51bb6b5bc9be",
+      "name": "George Harris",
+      "age": 28,
+      "studentFbLink": "https://facebook.com/georgeharris",
+      "email": "georgeharris@example.com",
+      "githubLink": "https://github.com/georgeharris",
+      "speed": 13,
+      "group": "47",
+      "parentFbLink": "https://facebook.com/georgeharrisparent",
+      "fines": {
+        "githubFine": 0,
+        "miniLeaderFine": 0,
+        "miniStudentFine": 0
+      },
+      "aura": {
+        "points": 2,
+        "classWork": 0,
+        "attendance": 1,
+        "help": 10,
+        "camera": 9,
+        "answers": 8
+      },
+      "payedInfo": false
     },
-    "aura": {
-      "points": 6,
-      "classWork": 4,
-      "attendance": 5,
-      "help": 3,
-      "camera": 2,
-      "answers": 1
+    {
+      "_id": "cf8c6095-b95c-4a4e-8ac5-bd86b41ca9fc",
+      "name": "Hannah Johnson",
+      "age": 29,
+      "studentFbLink": "https://facebook.com/hannahjohnson",
+      "email": "hannahjohnson@example.com",
+      "githubLink": "https://github.com/hannahjohnson",
+      "speed": 14,
+      "group": "47",
+      "parentFbLink": "https://facebook.com/hannahjohnsonparent",
+      "fines": {
+        "githubFine": 0,
+        "miniLeaderFine": 0,
+        "miniStudentFine": 0
+      },
+      "aura": {
+        "points": 1,
+        "classWork": 10,
+        "attendance": 0,
+        "help": 9,
+        "camera": 8,
+        "answers": 7
+      },
+      "payedInfo": false
     },
-    "payedInfo": false
-  },
-  {
-    "id": "0f0a7be5-c577-4bd9-984b-4e0e5f322efd",
-    "name": "Diana Evans",
-    "age": 25,
-    "studentFbLink": "https://facebook.com/dianaevans",
-    "email": "dianaevans@example.com",
-    "githubLink": "https://github.com/dianaevans",
-    "speed": 10,
-    "group": "47",
-    "parentFbLink": "https://facebook.com/dianaevansparent",
-    "fines": {
-      "githubFine": 0,
-      "miniLeaderFine": 0,
-      "miniStudentFine": 0
+    {
+      "_id": "6377adc1-d9c2-47f6-b5b4-cd312d8482f8",
+      "name": "Ian King",
+      "age": 30,
+      "studentFbLink": "https://facebook.com/ianking",
+      "email": "ianking@example.com",
+      "githubLink": "https://github.com/ianking",
+      "speed": 15,
+      "group": "47",
+      "parentFbLink": "https://facebook.com/iankingparent",
+      "fines": {
+        "githubFine": 0,
+        "miniLeaderFine": 0,
+        "miniStudentFine": 0
+      },
+      "aura": {
+        "points": 0,
+        "classWork": 9,
+        "attendance": 10,
+        "help": 8,
+        "camera": 7,
+        "answers": 6
+      },
+      "payedInfo": false
     },
-    "aura": {
-      "points": 5,
-      "classWork": 3,
-      "attendance": 4,
-      "help": 2,
-      "camera": 1,
-      "answers": 0
+    {
+      "_id": "6a5459f6-187b-4827-9b0f-12be8b452b83",
+      "name": "Jack Lee",
+      "age": 31,
+      "studentFbLink": "https://facebook.com/jacklee",
+      "email": "jacklee@example.com",
+      "githubLink": "https://github.com/jacklee",
+      "speed": 16,
+      "group": "47",
+      "parentFbLink": "https://facebook.com/jackleeparent",
+      "fines": {
+        "githubFine": 0,
+        "miniLeaderFine": 0,
+        "miniStudentFine": 0
+      },
+      "aura": {
+        "points": 10,
+        "classWork": 8,
+        "attendance": 9,
+        "help": 7,
+        "camera": 6,
+        "answers": 5
+      },
+      "payedInfo": false
     },
-    "payedInfo": false
-  },
-  {
-    "id": "6e4b1ab7-d869-4b41-96e7-2b5cafdf5a4c",
-    "name": "Ethan Foster",
-    "age": 26,
-    "studentFbLink": "https://facebook.com/ethanfoster",
-    "email": "ethanfoster@example.com",
-    "githubLink": "https://github.com/ethanfoster",
-    "speed": 11,
-    "group": "47",
-    "parentFbLink": "https://facebook.com/ethanfosterparent",
-    "fines": {
-      "githubFine": 0,
-      "miniLeaderFine": 0,
-      "miniStudentFine": 0
+    {
+      "_id": "1ee74e4c-4a0e-4795-a9d3-66f5874e6c13",
+      "name": "Karen Miller",
+      "age": 32,
+      "studentFbLink": "https://facebook.com/karenmiller",
+      "email": "karenmiller@example.com",
+      "githubLink": "https://github.com/karenmiller",
+      "speed": 17,
+      "group": "47",
+      "parentFbLink": "https://facebook.com/karenmillerparent",
+      "fines": {
+        "githubFine": 0,
+        "miniLeaderFine": 0,
+        "miniStudentFine": 0
+      },
+      "aura": {
+        "points": 9,
+        "classWork": 7,
+        "attendance": 8,
+        "help": 6,
+        "camera": 5,
+        "answers": 4
+      },
+      "payedInfo": false
     },
-    "aura": {
-      "points": 4,
-      "classWork": 2,
-      "attendance": 3,
-      "help": 1,
-      "camera": 0,
-      "answers": 10
+    {
+      "_id": "5eae7275-5774-4bd1-9530-d6729e9e5efb",
+      "name": "Liam Nelson",
+      "age": 33,
+      "studentFbLink": "https://facebook.com/liamnelson",
+      "email": "liamnelson@example.com",
+      "githubLink": "https://github.com/liamnelson",
+      "speed": 18,
+      "group": "47",
+      "parentFbLink": "https://facebook.com/liamnelsonparent",
+      "fines": {
+        "githubFine": 0,
+        "miniLeaderFine": 0,
+        "miniStudentFine": 0
+      },
+      "aura": {
+        "points": 8,
+        "classWork": 6,
+        "attendance": 7,
+        "help": 5,
+        "camera": 4,
+        "answers": 3
+      },
+      "payedInfo": false
     },
-    "payedInfo": false
-  },
-  {
-    "id": "a2b315ce-631b-49b1-8623-78b427af4eee",
-    "name": "Fiona Green",
-    "age": 27,
-    "studentFbLink": "https://facebook.com/fionagreen",
-    "email": "fionagreen@example.com",
-    "githubLink": "https://github.com/fionagreen",
-    "speed": 12,
-    "group": "47",
-    "parentFbLink": "https://facebook.com/fionagreenparent",
-    "fines": {
-      "githubFine": 0,
-      "miniLeaderFine": 0,
-      "miniStudentFine": 0
+    {
+      "_id": "0e54321c-5525-444e-93e4-502809550856",
+      "name": "Mia Owens",
+      "age": 34,
+      "studentFbLink": "https://facebook.com/miaowens",
+      "email": "miaowens@example.com",
+      "githubLink": "https://github.com/miaowens",
+      "speed": 19,
+      "group": "47",
+      "parentFbLink": "https://facebook.com/miaowensparent",
+      "fines": {
+        "githubFine": 0,
+        "miniLeaderFine": 0,
+        "miniStudentFine": 0
+      },
+      "aura": {
+        "points": 7,
+        "classWork": 5,
+        "attendance": 6,
+        "help": 4,
+        "camera": 3,
+        "answers": 2
+      },
+      "payedInfo": false
     },
-    "aura": {
-      "points": 3,
-      "classWork": 1,
-      "attendance": 2,
-      "help": 0,
-      "camera": 10,
-      "answers": 9
+    {
+      "_id": "25bfb57b-0d51-4b14-9add-3010ec706969",
+      "name": "Noah Parker",
+      "age": 35,
+      "studentFbLink": "https://facebook.com/noahparker",
+      "email": "noahparker@example.com",
+      "githubLink": "https://github.com/noahparker",
+      "speed": 20,
+      "group": "47",
+      "parentFbLink": "https://facebook.com/noahparkerparent",
+      "fines": {
+        "githubFine": 0,
+        "miniLeaderFine": 0,
+        "miniStudentFine": 0
+      },
+      "aura": {
+        "points": 6,
+        "classWork": 4,
+        "attendance": 5,
+        "help": 3,
+        "camera": 2,
+        "answers": 1
+      },
+      "payedInfo": false
     },
-    "payedInfo": false
-  },
-  {
-    "id": "fdb082ec-c328-4b80-b01c-51bb6b5bc9be",
-    "name": "George Harris",
-    "age": 28,
-    "studentFbLink": "https://facebook.com/georgeharris",
-    "email": "georgeharris@example.com",
-    "githubLink": "https://github.com/georgeharris",
-    "speed": 13,
-    "group": "47",
-    "parentFbLink": "https://facebook.com/georgeharrisparent",
-    "fines": {
-      "githubFine": 0,
-      "miniLeaderFine": 0,
-      "miniStudentFine": 0
+    {
+      "_id": "1b186900-f1f1-4364-b3cc-58f03741d24b",
+      "name": "Olivia Quinn",
+      "age": 36,
+      "studentFbLink": "https://facebook.com/oliviaquinn",
+      "email": "oliviaquinn@example.com",
+      "githubLink": "https://github.com/oliviaquinn",
+      "speed": 21,
+      "group": "47",
+      "parentFbLink": "https://facebook.com/oliviaquinnparent",
+      "fines": {
+        "githubFine": 0,
+        "miniLeaderFine": 0,
+        "miniStudentFine": 0
+      },
+      "aura": {
+        "points": 5,
+        "classWork": 3,
+        "attendance": 4,
+        "help": 2,
+        "camera": 1,
+        "answers": 0
+      },
+      "payedInfo": false
     },
-    "aura": {
-      "points": 2,
-      "classWork": 0,
-      "attendance": 1,
-      "help": 10,
-      "camera": 9,
-      "answers": 8
+    {
+      "_id": "5a8e8942-5e01-48f2-9ac4-95c464975676",
+      "name": "Paul Roberts",
+      "age": 37,
+      "studentFbLink": "https://facebook.com/paulroberts",
+      "email": "paulroberts@example.com",
+      "githubLink": "https://github.com/paulroberts",
+      "speed": 22,
+      "group": "47",
+      "parentFbLink": "https://facebook.com/paulrobertsparent",
+      "fines": {
+        "githubFine": 0,
+        "miniLeaderFine": 0,
+        "miniStudentFine": 0
+      },
+      "aura": {
+        "points": 4,
+        "classWork": 2,
+        "attendance": 3,
+        "help": 1,
+        "camera": 0,
+        "answers": 10
+      },
+      "payedInfo": false
     },
-    "payedInfo": false
-  },
-  {
-    "id": "cf8c6095-b95c-4a4e-8ac5-bd86b41ca9fc",
-    "name": "Hannah Johnson",
-    "age": 29,
-    "studentFbLink": "https://facebook.com/hannahjohnson",
-    "email": "hannahjohnson@example.com",
-    "githubLink": "https://github.com/hannahjohnson",
-    "speed": 14,
-    "group": "47",
-    "parentFbLink": "https://facebook.com/hannahjohnsonparent",
-    "fines": {
-      "githubFine": 0,
-      "miniLeaderFine": 0,
-      "miniStudentFine": 0
+    {
+      "_id": "f55a8443-12e4-4c02-a560-5263dd979ea3",
+      "name": "Quinn Stevens",
+      "age": 38,
+      "studentFbLink": "https://facebook.com/quinnstevens",
+      "email": "quinnstevens@example.com",
+      "githubLink": "https://github.com/quinnstevens",
+      "speed": 23,
+      "group": "47",
+      "parentFbLink": "https://facebook.com/quinnstevensparent",
+      "fines": {
+        "githubFine": 0,
+        "miniLeaderFine": 0,
+        "miniStudentFine": 0
+      },
+      "aura": {
+        "points": 3,
+        "classWork": 1,
+        "attendance": 2,
+        "help": 0,
+        "camera": 10,
+        "answers": 9
+      },
+      "payedInfo": false
     },
-    "aura": {
-      "points": 1,
-      "classWork": 10,
-      "attendance": 0,
-      "help": 9,
-      "camera": 8,
-      "answers": 7
+    {
+      "_id": "1aa2c368-9208-43aa-84ad-4085d05ca4e0",
+      "name": "Rachel Turner",
+      "age": 39,
+      "studentFbLink": "https://facebook.com/rachelturner",
+      "email": "rachelturner@example.com",
+      "githubLink": "https://github.com/rachelturner",
+      "speed": 24,
+      "group": "47",
+      "parentFbLink": "https://facebook.com/rachelturnerparent",
+      "fines": {
+        "githubFine": 0,
+        "miniLeaderFine": 0,
+        "miniStudentFine": 0
+      },
+      "aura": {
+        "points": 2,
+        "classWork": 0,
+        "attendance": 1,
+        "help": 10,
+        "camera": 9,
+        "answers": 8
+      },
+      "payedInfo": false
     },
-    "payedInfo": false
-  },
-  {
-    "id": "6377adc1-d9c2-47f6-b5b4-cd312d8482f8",
-    "name": "Ian King",
-    "age": 30,
-    "studentFbLink": "https://facebook.com/ianking",
-    "email": "ianking@example.com",
-    "githubLink": "https://github.com/ianking",
-    "speed": 15,
-    "group": "47",
-    "parentFbLink": "https://facebook.com/iankingparent",
-    "fines": {
-      "githubFine": 0,
-      "miniLeaderFine": 0,
-      "miniStudentFine": 0
+    {
+      "_id": "ad82039e-e4f8-4c08-9507-0d4e79f02c4a",
+      "name": "Sam Underwood",
+      "age": 40,
+      "studentFbLink": "https://facebook.com/samunderwood",
+      "email": "samunderwood@example.com",
+      "githubLink": "https://github.com/samunderwood",
+      "speed": 25,
+      "group": "47",
+      "parentFbLink": "https://facebook.com/samunderwoodparent",
+      "fines": {
+        "githubFine": 0,
+        "miniLeaderFine": 0,
+        "miniStudentFine": 0
+      },
+      "aura": {
+        "points": 1,
+        "classWork": 10,
+        "attendance": 0,
+        "help": 9,
+        "camera": 8,
+        "answers": 7
+      },
+      "payedInfo": false
     },
-    "aura": {
-      "points": 0,
-      "classWork": 9,
-      "attendance": 10,
-      "help": 8,
-      "camera": 7,
-      "answers": 6
+    {
+      "_id": "e8da3a89-b3c6-4ab2-a140-820fcbd6a219",
+      "name": "Tina Vance",
+      "age": 41,
+      "studentFbLink": "https://facebook.com/tinavance",
+      "email": "tinavance@example.com",
+      "githubLink": "https://github.com/tinavance",
+      "speed": 26,
+      "group": "47",
+      "parentFbLink": "https://facebook.com/tinavanceparent",
+      "fines": {
+        "githubFine": 0,
+        "miniLeaderFine": 0,
+        "miniStudentFine": 0
+      },
+      "aura": {
+        "points": 0,
+        "classWork": 9,
+        "attendance": 10,
+        "help": 8,
+        "camera": 7,
+        "answers": 6
+      },
+      "payedInfo": false
     },
-    "payedInfo": false
-  },
-  {
-    "id": "6a5459f6-187b-4827-9b0f-12be8b452b83",
-    "name": "Jack Lee",
-    "age": 31,
-    "studentFbLink": "https://facebook.com/jacklee",
-    "email": "jacklee@example.com",
-    "githubLink": "https://github.com/jacklee",
-    "speed": 16,
-    "group": "47",
-    "parentFbLink": "https://facebook.com/jackleeparent",
-    "fines": {
-      "githubFine": 0,
-      "miniLeaderFine": 0,
-      "miniStudentFine": 0
-    },
-    "aura": {
-      "points": 10,
-      "classWork": 8,
-      "attendance": 9,
-      "help": 7,
-      "camera": 6,
-      "answers": 5
-    },
-    "payedInfo": false
-  },
-  {
-    "id": "1ee74e4c-4a0e-4795-a9d3-66f5874e6c13",
-    "name": "Karen Miller",
-    "age": 32,
-    "studentFbLink": "https://facebook.com/karenmiller",
-    "email": "karenmiller@example.com",
-    "githubLink": "https://github.com/karenmiller",
-    "speed": 17,
-    "group": "47",
-    "parentFbLink": "https://facebook.com/karenmillerparent",
-    "fines": {
-      "githubFine": 0,
-      "miniLeaderFine": 0,
-      "miniStudentFine": 0
-    },
-    "aura": {
-      "points": 9,
-      "classWork": 7,
-      "attendance": 8,
-      "help": 6,
-      "camera": 5,
-      "answers": 4
-    },
-    "payedInfo": false
-  },
-  {
-    "id": "5eae7275-5774-4bd1-9530-d6729e9e5efb",
-    "name": "Liam Nelson",
-    "age": 33,
-    "studentFbLink": "https://facebook.com/liamnelson",
-    "email": "liamnelson@example.com",
-    "githubLink": "https://github.com/liamnelson",
-    "speed": 18,
-    "group": "47",
-    "parentFbLink": "https://facebook.com/liamnelsonparent",
-    "fines": {
-      "githubFine": 0,
-      "miniLeaderFine": 0,
-      "miniStudentFine": 0
-    },
-    "aura": {
-      "points": 8,
-      "classWork": 6,
-      "attendance": 7,
-      "help": 5,
-      "camera": 4,
-      "answers": 3
-    },
-    "payedInfo": false
-  },
-  {
-    "id": "0e54321c-5525-444e-93e4-502809550856",
-    "name": "Mia Owens",
-    "age": 34,
-    "studentFbLink": "https://facebook.com/miaowens",
-    "email": "miaowens@example.com",
-    "githubLink": "https://github.com/miaowens",
-    "speed": 19,
-    "group": "47",
-    "parentFbLink": "https://facebook.com/miaowensparent",
-    "fines": {
-      "githubFine": 0,
-      "miniLeaderFine": 0,
-      "miniStudentFine": 0
-    },
-    "aura": {
-      "points": 7,
-      "classWork": 5,
-      "attendance": 6,
-      "help": 4,
-      "camera": 3,
-      "answers": 2
-    },
-    "payedInfo": false
-  },
-  {
-    "id": "25bfb57b-0d51-4b14-9add-3010ec706969",
-    "name": "Noah Parker",
-    "age": 35,
-    "studentFbLink": "https://facebook.com/noahparker",
-    "email": "noahparker@example.com",
-    "githubLink": "https://github.com/noahparker",
-    "speed": 20,
-    "group": "47",
-    "parentFbLink": "https://facebook.com/noahparkerparent",
-    "fines": {
-      "githubFine": 0,
-      "miniLeaderFine": 0,
-      "miniStudentFine": 0
-    },
-    "aura": {
-      "points": 6,
-      "classWork": 4,
-      "attendance": 5,
-      "help": 3,
-      "camera": 2,
-      "answers": 1
-    },
-    "payedInfo": false
-  },
-  {
-    "id": "1b186900-f1f1-4364-b3cc-58f03741d24b",
-    "name": "Olivia Quinn",
-    "age": 36,
-    "studentFbLink": "https://facebook.com/oliviaquinn",
-    "email": "oliviaquinn@example.com",
-    "githubLink": "https://github.com/oliviaquinn",
-    "speed": 21,
-    "group": "47",
-    "parentFbLink": "https://facebook.com/oliviaquinnparent",
-    "fines": {
-      "githubFine": 0,
-      "miniLeaderFine": 0,
-      "miniStudentFine": 0
-    },
-    "aura": {
-      "points": 5,
-      "classWork": 3,
-      "attendance": 4,
-      "help": 2,
-      "camera": 1,
-      "answers": 0
-    },
-    "payedInfo": false
-  },
-  {
-    "id": "5a8e8942-5e01-48f2-9ac4-95c464975676",
-    "name": "Paul Roberts",
-    "age": 37,
-    "studentFbLink": "https://facebook.com/paulroberts",
-    "email": "paulroberts@example.com",
-    "githubLink": "https://github.com/paulroberts",
-    "speed": 22,
-    "group": "47",
-    "parentFbLink": "https://facebook.com/paulrobertsparent",
-    "fines": {
-      "githubFine": 0,
-      "miniLeaderFine": 0,
-      "miniStudentFine": 0
-    },
-    "aura": {
-      "points": 4,
-      "classWork": 2,
-      "attendance": 3,
-      "help": 1,
-      "camera": 0,
-      "answers": 10
-    },
-    "payedInfo": false
-  },
-  {
-    "id": "f55a8443-12e4-4c02-a560-5263dd979ea3",
-    "name": "Quinn Stevens",
-    "age": 38,
-    "studentFbLink": "https://facebook.com/quinnstevens",
-    "email": "quinnstevens@example.com",
-    "githubLink": "https://github.com/quinnstevens",
-    "speed": 23,
-    "group": "47",
-    "parentFbLink": "https://facebook.com/quinnstevensparent",
-    "fines": {
-      "githubFine": 0,
-      "miniLeaderFine": 0,
-      "miniStudentFine": 0
-    },
-    "aura": {
-      "points": 3,
-      "classWork": 1,
-      "attendance": 2,
-      "help": 0,
-      "camera": 10,
-      "answers": 9
-    },
-    "payedInfo": false
-  },
-  {
-    "id": "1aa2c368-9208-43aa-84ad-4085d05ca4e0",
-    "name": "Rachel Turner",
-    "age": 39,
-    "studentFbLink": "https://facebook.com/rachelturner",
-    "email": "rachelturner@example.com",
-    "githubLink": "https://github.com/rachelturner",
-    "speed": 24,
-    "group": "47",
-    "parentFbLink": "https://facebook.com/rachelturnerparent",
-    "fines": {
-      "githubFine": 0,
-      "miniLeaderFine": 0,
-      "miniStudentFine": 0
-    },
-    "aura": {
-      "points": 2,
-      "classWork": 0,
-      "attendance": 1,
-      "help": 10,
-      "camera": 9,
-      "answers": 8
-    },
-    "payedInfo": false
-  },
-  {
-    "id": "ad82039e-e4f8-4c08-9507-0d4e79f02c4a",
-    "name": "Sam Underwood",
-    "age": 40,
-    "studentFbLink": "https://facebook.com/samunderwood",
-    "email": "samunderwood@example.com",
-    "githubLink": "https://github.com/samunderwood",
-    "speed": 25,
-    "group": "47",
-    "parentFbLink": "https://facebook.com/samunderwoodparent",
-    "fines": {
-      "githubFine": 0,
-      "miniLeaderFine": 0,
-      "miniStudentFine": 0
-    },
-    "aura": {
-      "points": 1,
-      "classWork": 10,
-      "attendance": 0,
-      "help": 9,
-      "camera": 8,
-      "answers": 7
-    },
-    "payedInfo": false
-  },
-  {
-    "id": "e8da3a89-b3c6-4ab2-a140-820fcbd6a219",
-    "name": "Tina Vance",
-    "age": 41,
-    "studentFbLink": "https://facebook.com/tinavance",
-    "email": "tinavance@example.com",
-    "githubLink": "https://github.com/tinavance",
-    "speed": 26,
-    "group": "47",
-    "parentFbLink": "https://facebook.com/tinavanceparent",
-    "fines": {
-      "githubFine": 0,
-      "miniLeaderFine": 0,
-      "miniStudentFine": 0
-    },
-    "aura": {
-      "points": 0,
-      "classWork": 9,
-      "attendance": 10,
-      "help": 8,
-      "camera": 7,
-      "answers": 6
-    },
-    "payedInfo": false
-  },
-  {
-    "id": "2ebc2159-45ca-4284-9fe9-30107d9759a6",
-    "name": "Uma Walker",
-    "age": 42,
-    "studentFbLink": "https://facebook.com/umawalker",
-    "email": "umawalker@example.com",
-    "githubLink": "https://github.com/umawalker",
-    "speed": 27,
-    "group": "47",
-    "parentFbLink": "https://facebook.com/umawalkerparent",
-    "fines": {
-      "githubFine": 0,
-      "miniLeaderFine": 0,
-      "miniStudentFine": 0
-    },
-    "aura": {
-      "points": 10,
-      "classWork": 8,
-      "attendance": 9,
-      "help": 7,
-      "camera": 6,
-      "answers": 5
-    },
-    "payedInfo": false
-  }
-]
+    {
+      "_id": "2ebc2159-45ca-4284-9fe9-30107d9759a6",
+      "name": "Uma Walker",
+      "age": 42,
+      "studentFbLink": "https://facebook.com/umawalker",
+      "email": "umawalker@example.com",
+      "githubLink": "https://github.com/umawalker",
+      "speed": 27,
+      "group": "47",
+      "parentFbLink": "https://facebook.com/umawalkerparent",
+      "fines": {
+        "githubFine": 0,
+        "miniLeaderFine": 0,
+        "miniStudentFine": 0
+      },
+      "aura": {
+        "points": 10,
+        "classWork": 8,
+        "attendance": 9,
+        "help": 7,
+        "camera": 6,
+        "answers": 5
+      },
+      "payedInfo": false
+    }
+  ]
+}

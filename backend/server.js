@@ -6,6 +6,7 @@ import { connectDB } from "./db/connectDB.js";
 
 import authRouters from "./routes/api.route.js";
 import groupRoutes from "./routes/api.groups.js"; // Correct import path
+import { authMiddleware } from "./middleware/authMiddleware.js";
 
 dotenv.config();
 const PORT = process.env.PORT || 5000;
@@ -19,8 +20,7 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use("/api/auth", authRouters);
-app.use("/groups", groupRoutes);
-
+app.use("/groups/", authMiddleware, groupRoutes);
 app.listen(PORT, () => {
   connectDB();
   console.log(`Server is running on http://localhost:${PORT}`);
