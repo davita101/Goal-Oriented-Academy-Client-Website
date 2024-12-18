@@ -12,7 +12,7 @@ const SIX_HOURS = 6 * 60 * 60 * 1000 // 6 საათი მილიწამ�
 // * Define rate limiter for signup
 const signupLimiter = rateLimit({
     windowMs: 60 * 60 * 1000, // 60 წუთი
-    max: 5, // თითოეული IP მისამართიდან 5 მოთხოვნა
+    max: 100, // თითოეული IP მისამართიდან 5 მოთხოვნა
     message: "Too many signup attempts from this IP, please try again later."
 });
 
@@ -84,6 +84,7 @@ export const login = [signupLimiter, async (req, res) => {
         if (user.lastLogin && (now - user.lastLogin.getTime() > SIX_HOURS)) {
             // console.log(user)
             user.clientId = undefined
+            user.isVerified = false
             user.verificationToken = generateVerificationToken()
             user.verificationTokenExpiresAt = now + 24 * 60 * 60 * 1000 // 24 საათი
             res.clearCookie('token')

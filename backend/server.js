@@ -7,6 +7,7 @@ import groupRoutes from './routes/api.groups.js';
 import studentRoutes from './routes/api.students.js';
 import { authMiddleware } from './middleware/authMiddleware.js';
 import { connectDB } from './db/connectDB.js';
+import { groupMiddleware } from './middleware/groupMiddleware.js';
 
 dotenv.config();
 const PORT = process.env.PORT || 5000;
@@ -21,7 +22,7 @@ app.use(cors({
 app.use(express.json());
 app.use("/api/auth", authRouters);
 app.use("/api/groups", authMiddleware, groupRoutes);
-app.use("/api/groups/", authMiddleware, studentRoutes);
+app.use("/api/groups/:groupId/students", authMiddleware, groupMiddleware, studentRoutes);
 
 app.listen(PORT, () => {
   connectDB();

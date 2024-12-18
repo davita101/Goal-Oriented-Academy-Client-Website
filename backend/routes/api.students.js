@@ -4,12 +4,12 @@ import { getStudentById, createStudent, updateStudent, deleteStudent } from '../
 const router = express.Router();
 
 // ! one student
-router.get('/:groupId/student/:studentId', getStudentById);
+router.get('/:studentId', getStudentById);
 // ! create student
-router.post('/:groupId/student/create-student', createStudent);
+router.post('/create-student', createStudent);
 // ! update student
-router.put('/:groupId/student/:studentId', updateStudent);
+router.put('/:studentId', updateStudent);
 // ! delete student
-router.delete('/:groupId/student/:studentId', deleteStudent);
+router.delete('/:studentId', deleteStudent);
 
 export default router;
