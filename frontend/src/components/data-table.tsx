@@ -11,7 +11,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, ChevronDown, Circle, MoreHorizontal } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -19,10 +19,14 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
@@ -42,7 +46,7 @@ import { Badge } from "./ui/badge"
 
 const data: Student[] = [
   {
-    _id: "49c6589f-aba8-4d02-bce2-548de0b51d40",
+    _id: "49c6589f-aba8-4d02-b3ce2-548de0b51d40",
     name: "Alice Johnson",
     age: 21,
     studentFbLink: "https://facebook.com/alicejohnson",
@@ -53,6 +57,8 @@ const data: Student[] = [
     role: "miniLeader",
     leaderName: "675dee40a1bb4008aab7ce43",
     parentFbLink: "https://facebook.com/alicejohnsonparent",
+    githubToken: "123124145666424564564345345",
+    githubLastUpdate: "2021-09-02",
     fines: {
       githubFine: 1,
       miniLeaderFine: 2,
@@ -77,7 +83,7 @@ const data: Student[] = [
     }
   },
   {
-    _id: "49c6589f-aba8-4d02-bce2-548de0b51d40",
+    _id: "49c6589f-a1ba8-4d02-bce2-548de03b51d40",
     name: "gio lomi",
     age: 21,
     studentFbLink: "https://facebook.com/alicejohnson",
@@ -88,6 +94,8 @@ const data: Student[] = [
     group: "45",
     leaderName: "675dee40a1bb4008aab7ce43",
     parentFbLink: "https://facebook.com/alicejohnsonparent",
+    githubToken: "45347565343454736464564564345345",
+    githubLastUpdate: "2021-09-04",
     fines: {
       githubFine: 1,
       miniLeaderFine: 2,
@@ -112,7 +120,7 @@ const data: Student[] = [
     }
   },
   {
-    _id: "49c6589f-aba8-4d02-bce2-548de0b51d40",
+    _id: "49c6589f-aba81-4d02-bce2-54568de0b51d40",
     name: "davit lomim",
     age: 21,
     studentFbLink: "https://facebook.com/alicejohnson",
@@ -123,6 +131,8 @@ const data: Student[] = [
     group: "46",
     leaderName: "675dee40a1bb4008aab7ce43",
     parentFbLink: "https://facebook.com/alicejohnsonparent",
+    githubToken: "4534534345436464564564345345",
+    githubLastUpdate: "2021-09-05",
     fines: {
       githubFine: 1,
       miniLeaderFine: 1,
@@ -146,9 +156,8 @@ const data: Student[] = [
       }
     }
   },
-
   {
-    _id: "49c6589f-aba8-4d02-bce2-548de0b51d40",
+    _id: "49c6589f-aba8-4d0212-bce2-548de0b51d40",
     name: "nameless",
     age: 21,
     studentFbLink: "https://facebook.com/alicejohnson",
@@ -159,6 +168,8 @@ const data: Student[] = [
     group: "46",
     leaderName: "675dee40a1bb4008aab7ce43",
     parentFbLink: "https://facebook.com/alicejohnsonparent",
+    githubToken: "12345624412423423242342342414",
+    githubLastUpdate: "2021-09-06",
     fines: {
       githubFine: 1,
       miniLeaderFine: 1,
@@ -196,6 +207,8 @@ export type Student = {
   leaderName: string
   role: string
   parentFbLink: string
+  githubToken: string
+  githubLastUpdate: string
   fines: {
     githubFine: number
     miniLeaderFine: number
@@ -226,6 +239,7 @@ export type Payment = {
   status: "pending" | "processing" | "success" | "failed"
   email: string
 }
+
 const LeaderComment = ({ row }) => {
   const [comment, setComment] = React.useState(row.getValue("comment"));
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
@@ -247,7 +261,6 @@ const LeaderComment = ({ row }) => {
     // Save the comment here (e.g., send it to the server)
     setIsDialogOpen(false); // Close the dialog
   };
-
 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -298,8 +311,8 @@ const LeaderComment = ({ row }) => {
 };
 
 export default LeaderComment;
-export const columns: ColumnDef<Payment>[] = [
 
+export const columns: ColumnDef<Payment>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -376,14 +389,31 @@ export const columns: ColumnDef<Payment>[] = [
     accessorKey: "studentFbLink",
     header: "studentFbLink",
     cell: ({ row }) => (
-      <div className="capitalize text-center"><Link to={row.getValue("studentFbLink")}><Button variant="link">Facebook</Button></Link></div>
+      <div className="capitalize text-center"><Link target="_blank" to={row.getValue("studentFbLink")}><Button variant="link">Facebook</Button></Link></div>
+    ),
+  },
+  {
+    accessorKey: "githubLastUpdate",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          LastUpdate
+          <ArrowUpDown />
+        </Button>
+      )
+    },
+    cell: ({ row }) => (
+      <div className="capitalize text-center">{row.getValue("githubLastUpdate")}</div>
     ),
   },
   {
     accessorKey: "githubLink",
     header: "githubLink",
     cell: ({ row }) => (
-      <div className="capitalize text-center"><Link to={row.getValue("githubLink")}><Button variant="link">githubLink</Button></Link></div>
+      <div className="capitalize text-center"><Link target="_blank" to={row.getValue("githubLink")}><Button variant="link">githubLink</Button></Link></div>
     ),
   },
   {
@@ -400,7 +430,7 @@ export const columns: ColumnDef<Payment>[] = [
       )
     },
     cell: ({ row }) => (
-      <div className="capitalize text-center "><Link to={row.getValue("speed")}><Badge variant="outline">{row.getValue("speed")}</Badge></Link></div>
+      <div className="capitalize text-center "><Badge variant="outline">{row.getValue("speed")}</Badge></div>
     ),
   },
   {
@@ -417,21 +447,21 @@ export const columns: ColumnDef<Payment>[] = [
       )
     },
     cell: ({ row }) => (
-      <div className="capitalize text-center"><Link to={row.getValue("group")}><Badge variant="outline">{row.getValue("group")}</Badge></Link></div>
+      <div className="capitalize text-center"><Badge variant="outline">{row.getValue("group")}</Badge></div>
     ),
   },
   {
     accessorKey: "leaderName",
     header: "leaderName",
     cell: ({ row }) => (
-      <div className="capitalize text-center"><Link to={row.getValue("leaderName")}><Button variant="link">leaderID</Button></Link></div>
+      <div className="capitalize text-center"><Link target="_blank" to={row.getValue("leaderName")}><Button variant="link">leaderID</Button></Link></div>
     ),
   },
   {
     accessorKey: "parentFbLink",
     header: "parentFbLink",
     cell: ({ row }) => (
-      <div className="capitalize text-center"><Link to={row.getValue("parentFbLink")}><Button variant="link">parenLink</Button></Link></div>
+      <div className="capitalize text-center"><Link target="_blank" to={row.getValue("parentFbLink")}><Button variant="link">parenLink</Button></Link></div>
     ),
   },
   {
@@ -440,8 +470,6 @@ export const columns: ColumnDef<Payment>[] = [
       return (
         <Button
           variant="destructive"
-        // ! soon i will be back to fix this
-        // onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           fines
           <ArrowUpDown />
@@ -473,8 +501,6 @@ export const columns: ColumnDef<Payment>[] = [
       return (
         <Button
           variant="destructive"
-        // ! soon i will be back to fix this
-        // onClick={() => column.toggleSorting(table.getColumn("aura").getIsSorted() === "asc")}
         >
           aura
           <ArrowUpDown />
@@ -526,7 +552,21 @@ export const columns: ColumnDef<Payment>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original
+      const payment = row.original;
+      const [rowColor, setRowColor] = React.useState(() => {
+        const savedColors = JSON.parse(localStorage.getItem('rowColors') || '{}');
+        return savedColors[payment._id] || '';
+      });
+
+      React.useEffect(() => {
+        const savedColors = JSON.parse(localStorage.getItem('rowColors') || '{}');
+        savedColors[payment._id] = rowColor;
+        localStorage.setItem('rowColors', JSON.stringify(savedColors));
+      }, [rowColor, payment._id]);
+
+      const handleColorChange = (color) => {
+        setRowColor(color);
+      };
 
       return (
         <DropdownMenu>
@@ -544,26 +584,66 @@ export const columns: ColumnDef<Payment>[] = [
               Copy payment ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuGroup>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>colors</DropdownMenuSubTrigger>
+                <DropdownMenuPortal>
+                  <DropdownMenuSubContent>
+                    <DropdownMenuItem onClick={() => handleColorChange('inherit')}>none</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleColorChange('var(action-color-white)')}><Circle color="var(--action-color-white)" />white</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleColorChange('var(--action-color-red)')}><Circle color="var(--action-color-red)" />red</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleColorChange('var(--action-color-green)')}><Circle color="var(--action-color-green)" />green</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleColorChange('var(--action-color-yellow)')}><Circle color="var(--action-color-yellow)" />yellow</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleColorChange('var(--action-color-purple)')}><Circle color="var(--action-color-purple)" />purple</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleColorChange('var(--action-color-orange)')}><Circle color="var(--action-color-orange)" />orange</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleColorChange('var(--action-color-pink)')}><Circle color="var(--action-color-pink)" />pink</DropdownMenuItem>
+                  </DropdownMenuSubContent>
+                </DropdownMenuPortal>
+              </DropdownMenuSub>
+            </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
-      )
+      );
     },
   },
 ]
 
 export function DataTable() {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
+  const [sorting, setSorting] = React.useState<SortingState>(() => {
+    const savedSorting = localStorage.getItem('sorting');
+    return savedSorting ? JSON.parse(savedSorting) : [];
+  });
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(() => {
+    const savedFilters = localStorage.getItem('columnFilters');
+    return savedFilters ? JSON.parse(savedFilters) : [];
+  });
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>(() => {
+    const savedVisibility = localStorage.getItem('columnVisibility');
+    return savedVisibility ? JSON.parse(savedVisibility) : {};
+  });
   const [rowSelection, setRowSelection] = React.useState(() => {
     const savedSelection = localStorage.getItem('rowSelection');
     return savedSelection ? JSON.parse(savedSelection) : {};
   });
 
+  React.useEffect(() => {
+    localStorage.setItem('sorting', JSON.stringify(sorting));
+  }, [sorting]);
+
+  React.useEffect(() => {
+    localStorage.setItem('columnFilters', JSON.stringify(columnFilters));
+  }, [columnFilters]);
+
+  React.useEffect(() => {
+    localStorage.setItem('columnVisibility', JSON.stringify(columnVisibility));
+  }, [columnVisibility]);
+
+  React.useEffect(() => {
+    localStorage.setItem('rowSelection', JSON.stringify(rowSelection));
+  }, [rowSelection]);
+
   const table = useReactTable({
-    data,
+    data: data.sort((a, b) => a.group < b.group ? 1 : -1),
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -580,10 +660,6 @@ export function DataTable() {
       rowSelection,
     },
   });
-
-  React.useEffect(() => {
-    localStorage.setItem('rowSelection', JSON.stringify(rowSelection));
-  }, [rowSelection]);
 
   return (
     <div className="grid auto-rows-min gap-4 grid-cols-1">
@@ -649,6 +725,7 @@ export function DataTable() {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  style={{ backgroundColor: JSON.parse(localStorage.getItem('rowColors') || '{}')[row.original._id] || '' }}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -698,5 +775,5 @@ export function DataTable() {
         </div>
       </div>
     </div>
-  );
+  )
 }

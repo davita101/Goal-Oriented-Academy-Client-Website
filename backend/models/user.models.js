@@ -153,18 +153,6 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
-const GroupSchema = new mongoose.Schema(
-  {
-    groupName: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    students: [StudentSchema], // Embed the Student schema as an array
-  },
-  {
-    timestamps: true,
-  }
-);
+
 export const UserModel = mongoose.model("User", UserSchema);
-export const GroupModel = mongoose.model("Group", GroupSchema);
+export const GroupModel = mongoose.model("Student", StudentSchema);
