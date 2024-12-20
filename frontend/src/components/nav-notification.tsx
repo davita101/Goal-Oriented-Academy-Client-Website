@@ -56,7 +56,7 @@ export function NavigationMenuNotification() {
         <NavigationMenuItem className="ml-[10.5rem]">
           <NavigationMenuTrigger>Notification</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-[300px] gap-3 p-4 md:w-[300px] md:grid-cols-1 lg:w-[300px] ">
+            <ul className="grid w-[300px] gap-3 p-4 md:w-[300px] md:grid-cols-1 lg:w-[300px] z-[999] ">
               {components.map((component) => (
                 <ListItem
                   key={component.title}

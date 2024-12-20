@@ -254,7 +254,7 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader >
+      <SidebarHeader className="sticky top-0 z-[2]">
         <NavUser user={data.user} />
         <SearchForm />
       </SidebarHeader>
