@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
+import { StudentModel } from '../models/student.models.js';
 
 export const getStudentById = async (req, res) => {
   try {
-    const student = req.group.students.id(req.params.studentId);
+    const student = await StudentModel.findById(req.params.studentId);
     if (!student) {
       return res.status(404).json({ error: 'Student not found' });
     }
@@ -11,21 +12,20 @@ export const getStudentById = async (req, res) => {
     res.status(500).json({ error: 'Error fetching student' });
   }
 };
-
 export const createStudent = async (req, res) => {
   try {
-    const existingStudent = req.group.students.find(student => student.email === req.body.email);
-    if (existingStudent) {
+    const student = await StudentModel.findOne({ email: req.body.email });
+
+    if (student) {
       return res.status(400).json({ error: 'Student with this email already exists' });
     }
 
-    const newStudent = {
+    const newStudent = new StudentModel({
       _id: new mongoose.Types.ObjectId().toString(),
       ...req.body
-    };
+    });
 
-    req.group.students.push(newStudent);
-    await req.group.save();
+    await newStudent.save();
 
     res.status(201).json(newStudent);
   } catch (error) {
@@ -36,7 +36,7 @@ export const createStudent = async (req, res) => {
 
 export const updateStudent = async (req, res) => {
   try {
-    const student = req.group.students.id(req.params.studentId);
+    const student = await StudentModel.findById(req.params.studentId);
     if (!student) {
       return res.status(404).json({ error: 'Student not found' });
     }
@@ -45,7 +45,7 @@ export const updateStudent = async (req, res) => {
       student[key] = req.body[key];
     });
 
-    await req.group.save();
+    await student.save();
 
     res.status(200).json(student);
   } catch (error) {
@@ -55,20 +55,21 @@ export const updateStudent = async (req, res) => {
 };
 
 export const deleteStudent = async (req, res) => {
-    try {
-        const student = req.group.students.id(req.params.studentId);
-        if (!student) {
-            return res.status(404).json({ error: 'Student not found' })
-        }
+  try {
+    const student = await StudentModel.findById(req.params.studentId);
 
-        // Remove the student from the students array
-        req.group.students.pull({ _id: req.params.studentId });
-
-        await req.group.save();
-
-        res.status(200).json({ message: 'Student deleted successfully' })
-    } catch (error) {
-        console.error('Error deleting student:', error)
-        res.status(500).json({ error: 'Error deleting student' })
+    if (!student) {
+      return res.status(404).json({ error: 'Student not found' })
     }
+
+    // Remove the student from the students array
+    student.deleteOne({ _id: req.params.studentId });
+
+    await student.save();
+
+    res.status(200).json({ message: 'Student deleted successfully' })
+  } catch (error) {
+    console.error('Error deleting student:', error)
+    res.status(500).json({ error: 'Error deleting student' })
+  }
 }

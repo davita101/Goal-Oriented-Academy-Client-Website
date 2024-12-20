@@ -1,113 +1,4 @@
 import mongoose from "mongoose";
-const StudentSchema = new mongoose.Schema(
-  {
-    _id: {
-      type: String,
-      required: true,
-      unique: true
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-    leaderName:{
-      type: String,
-      required: true,
-    },
-    age: {
-      type: Number,
-      required: true,
-    },
-    studentFbLink: {
-      type: String,
-      required: true,
-    },
-    email: {
-      type: String,
-      required: true,
-    },
-    githubLink: {
-      type: String,
-      required: true,
-    },
-    speed: {
-      type: Number,
-      required: true,
-    },
-    group: {
-      type: String,
-      required: true,
-    },
-    parentFbLink: {
-      type: String,
-      required: true,
-    },
-    comment: {
-      leaderComment: {
-        type: String,
-        required: true,
-      },
-      leaderProof: {
-        type: String,
-        required: true,
-      },
-      controller: {
-        miniLeaderController: {
-          type: String,
-          required: true,
-        },
-        leaderController: {
-          type: String,
-          required: true,
-        },
-      }
-    },
-    fines: {
-      githubFine: {
-        type: Number,
-        required: true,
-      },
-      miniLeaderFine: {
-        type: Number,
-        required: true,
-      },
-    },
-    aura: {
-      points: {
-        type: Number,
-        required: true,
-      },
-      classWork: {
-        type: Number,
-        required: true,
-
-      },
-      attendance: {
-        type: Number,
-        required: true,
-      },
-      help: {
-        type: Number,
-        required: true,
-      },
-      camera: {
-        type: Number,
-        require: true,
-      },
-      answers: {
-        type: Number,
-        required: true,
-      }
-    },
-    payedInfo: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  {
-    timestamps: true,
-  }
-)
 
 const UserSchema = new mongoose.Schema(
   {
@@ -120,12 +11,8 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    studentsArr: {
-      type: String,
-      required: true,
-    },
     role: {
-      type: String,
+      type: [String],
       required: true,
     },
     lastLogin: {
@@ -140,8 +27,40 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: undefined
     },
-    studentsArr: [StudentSchema],
-
+    github: {
+      type: String,
+      default: undefined
+    },
+    fbUrl: {
+      type: String,
+      default: undefined
+    },
+    codewarsUrl: {
+      type: String,
+      default: undefined
+    },
+    leaderLevel: {
+      type: Number,
+      default: 0
+    },
+    parentFb: {
+      type: String,
+      default: undefined
+    },
+    cards: {
+      green: {
+        type: Number,
+        default: 0
+      },
+      yellow: {
+        type: Number,
+        default: 0
+      },
+      black: {
+        type: Number,
+        default: 0
+      }
+    },
     restEmailToken: String,
     restEmailExpiredAt: Date,
     verificationToken: String,
@@ -153,6 +72,4 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
-
 export const UserModel = mongoose.model("User", UserSchema);
-export const GroupModel = mongoose.model("Student", StudentSchema);

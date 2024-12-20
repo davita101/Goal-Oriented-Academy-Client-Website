@@ -55,7 +55,7 @@ const data: Student[] = [
     speed: 4,
     group: "44",
     role: "miniLeader",
-    leaderName: "675dee40a1bb4008aab7ce43",
+    leaderId: "675dee40a1bb4008aab7ce43",
     parentFbLink: "https://facebook.com/alicejohnsonparent",
     githubToken: "123124145666424564564345345",
     githubLastUpdate: "2021-09-02",
@@ -92,7 +92,7 @@ const data: Student[] = [
     speed: 6,
     role: "member",
     group: "45",
-    leaderName: "675dee40a1bb4008aab7ce43",
+    leaderId: "675dee40a1bb4008aab7ce43",
     parentFbLink: "https://facebook.com/alicejohnsonparent",
     githubToken: "45347565343454736464564564345345",
     githubLastUpdate: "2021-09-04",
@@ -129,7 +129,7 @@ const data: Student[] = [
     speed: 99,
     role: "member",
     group: "46",
-    leaderName: "675dee40a1bb4008aab7ce43",
+    leaderId: "675dee40a1bb4008aab7ce43",
     parentFbLink: "https://facebook.com/alicejohnsonparent",
     githubToken: "4534534345436464564564345345",
     githubLastUpdate: "2021-09-05",
@@ -157,39 +157,39 @@ const data: Student[] = [
     }
   },
   {
-    _id: "49c6589f-aba8-4d0212-bce2-548de0b51d40",
-    name: "nameless",
-    age: 21,
-    studentFbLink: "https://facebook.com/alicejohnson",
-    email: "alicejohnson@example.com",
-    githubLink: "https://github.com/alicejohnson",
-    speed: 5,
-    role: "member",
-    group: "46",
-    leaderName: "675dee40a1bb4008aab7ce43",
-    parentFbLink: "https://facebook.com/alicejohnsonparent",
-    githubToken: "12345624412423423242342342414",
-    githubLastUpdate: "2021-09-06",
-    fines: {
-      githubFine: 1,
-      miniLeaderFine: 1,
-      miniStudentFine: 1
+    "_id": "49c6589f-aba8-4d0212-bce2-548de0b51d40",
+    "name": "nameless",
+    "age": 21,
+    "studentFbLink": "https://facebook.com/alicejohnson",
+    "email": "alicejohnson@example.com",
+    "speed": 5,
+    "role": "member",
+    "group": "46",
+    "leaderId": "675dee40a1bb4008aab7ce43",
+    "parentFbLink": "https://facebook.com/alicejohnsonparent",
+    "githubLink": "https://github.com/alicejohnson",
+    "githubToken": "12345624412423423242342342414",
+    "githubLastUpdate": "2021-09-06",
+    "fines": {
+      "githubFine": 1,
+      "miniLeaderFine": 1,
+      "miniStudentFine": 1
     },
-    aura: {
-      points: 1,
-      classWork: 1,
-      attendance: 1,
-      help: 1,
-      camera: 1,
-      answers: 1
+    "aura": {
+      "points": 1,
+      "classWork": 1,
+      "attendance": 1,
+      "help": 1,
+      "camera": 1,
+      "answers": 1
     },
-    payedInfo: true,
-    comment: {
-      leaderComment: "123",
-      leaderProof: "123",
-      controller: {
-        miniLeaderController: "123",
-        leaderController: "123"
+    "payedInfo": true,
+    "comment": {
+      "leaderComment": "123",
+      "leaderProof": "123",
+      "controller": {
+        "miniLeaderController": "123",
+        "leaderController": "123"
       }
     }
   },
@@ -204,7 +204,7 @@ export type Student = {
   githubLink: string
   speed: number
   group: string
-  leaderName: string
+  leaderId: string
   role: string
   parentFbLink: string
   githubToken: string
@@ -451,10 +451,10 @@ export const columns: ColumnDef<Payment>[] = [
     ),
   },
   {
-    accessorKey: "leaderName",
-    header: "leaderName",
+    accessorKey: "leaderId",
+    header: "leaderId",
     cell: ({ row }) => (
-      <div className="capitalize text-center"><Link target="_blank" to={row.getValue("leaderName")}><Button variant="link">leaderID</Button></Link></div>
+      <div className="capitalize text-center"><Link target="_blank" to={row.getValue("leaderId")}><Button variant="link">leaderID</Button></Link></div>
     ),
   },
   {

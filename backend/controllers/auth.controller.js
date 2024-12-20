@@ -18,44 +18,51 @@ const signupLimiter = rateLimit({
 
 // * Signup controller
 export const signup = [signupLimiter, async (req, res) => {
-    const { email, name } = req.body
+    const { email, name, role, github, fbLink, codwarsLink, leaderLevel, parentFb, cards } = req.body;
 
     try {
         // ? Check if all fields are provided
-        if (!name || !email) {
-            throw new Error("All fields are required")
+        if (!name || !email || !role) {
+            throw new Error("Name, email, and role are required");
         }
 
         // ? Check if user already exists
-        const userAlreadyExist = await UserModel.findOne({ email })
+        const userAlreadyExist = await UserModel.findOne({ email });
         if (userAlreadyExist) {
-            return res.status(400).json({ success: false, message: "User already exists" })
+            return res.status(400).json({ success: false, message: "User already exists" });
         }
 
         // ? Create new user with verification token
-        const verificationToken = generateVerificationToken()
+        const verificationToken = generateVerificationToken();
         const user = new UserModel({
             name,
             email,
+            role,
+            github,
+            fbLink,
+            codwarsLink,
+            leaderLevel,
+            parentFb,
+            cards,
             verificationToken,
-            verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000, // 24 საათი
-        })
-        await user.save()
-        await sendVerificationEmail({ email, token: verificationToken })
+            verificationTokenExpiresAt: Date.now() + 1 * 60 * 60 * 1000, // 1 hour
+        });
+        await user.save();
+        await sendVerificationEmail({ email, token: verificationToken });
 
         // ? Generate token and set cookie
-        generateTokenAndSetCookie(res, user._id)
+        generateTokenAndSetCookie(res, user._id);
         res.status(201).json({
             success: true,
             message: "User created successfully. Please check your email for verification.",
             user: {
                 ...user._doc,
             }
-        })
+        });
     } catch (error) {
-        res.status(400).json({ success: false, message: "An error occurred" })
+        res.status(400).json({ success: false, message: "An error occurred" });
     }
-}]
+}];
 // * Login controller
 export const login = [signupLimiter, async (req, res) => {
     const { email } = req.body
@@ -67,43 +74,53 @@ export const login = [signupLimiter, async (req, res) => {
             return res.status(400).json({ success: false, message: "Invalid email" })
         }
 
-        const session = req.cookies?.clientId
         const now = Date.now()
-        // ? Check if session is valid
-        if (!session) {
-            user.clientId = undefined
-            user.verificationToken = generateVerificationToken()
-            user.verificationTokenExpiresAt = now + 24 * 60 * 60 * 1000 // 24 საათი
-            await user.save()
-            await sendVerificationEmail({ email, token: user.verificationToken })
-
-            return res.status(400).json({ success: false, message: "Invalid session" })
-        }
-
         // ? Check if last login was more than six hours ago
         if (user.lastLogin && (now - user.lastLogin.getTime() > SIX_HOURS)) {
             // console.log(user)
             user.clientId = undefined
             user.isVerified = false
             user.verificationToken = generateVerificationToken()
-            user.verificationTokenExpiresAt = now + 24 * 60 * 60 * 1000 // 24 საათი
+            user.verificationTokenExpiresAt = now + 1 * 60 * 60 * 1000 // 24 საათი
             res.clearCookie('token')
             res.clearCookie('clientId')
             res.clearCookie('goa_auth_is_verified')
             await user.save()
             return res.status(400).json({ success: false, message: "User is more than 6 hour failed login" })
         }
+        // ? Check if verification token is expired
+        if (user.verificationToken && user.verificationTokenExpiresAt < now) {
+            user.verificationToken = generateVerificationToken();
+            user.verificationTokenExpiresAt = now + 1 * 60 * 60 * 1000; // 1 hour
+            await sendVerificationEmail({ email, token: user.verificationToken })
+            await user.save();
+            return res.status(400).json({ success: false, message: "Verification token expired. New token sent to email." });
+        }
         // ? Check if user is verified
-        if (user.isVerified) {
+        if (!user.isVerified) {
             // console.log(user)
+            if (user.verificationToken) {
+                await sendVerificationEmail({ email, token: user.verificationToken })
+
+                return res.status(400).json({ success: false, message: "Already send Verification token to email." })
+            }
+            await sendVerificationEmail({ email, token: user.verificationToken })
             user.verificationToken = generateVerificationToken()
-            user.verificationTokenExpiresAt = now + 24 * 60 * 60 * 1000 // 24 საათი
+            user.verificationTokenExpiresAt = now + 1 * 60 * 60 * 1000 // 24 საათი
             await user.save()
             return res.status(400).json({ success: false, message: "Email not verified. Verification token sent to email." })
         }
 
         // ? Check if user is already logged in from another device
         if (user.clientId) {
+            if (user.verificationToken) {
+                await sendVerificationEmail({ email, token: user.verificationToken })
+                return res.status(400).json({ success: false, message: "Already send Verification token to email." })
+            }
+            await sendVerificationEmail({ email, token: user.verificationToken })
+            user.verificationToken = generateVerificationToken()
+            user.verificationTokenExpiresAt = now + 1 * 60 * 60 * 1000 // 24 საათი
+            await user.save()
             return res.status(400).json({ success: false, message: "User already logged in from another device" })
         }
 
@@ -198,10 +215,10 @@ export const verifyEmail = [signupLimiter, async (req, res) => {
 
         // ? Set cookies and respond with success
         const verificationTime = new Date().toISOString()
-        res.cookie('clientId', clientIdMain, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }) // 24 საათი
+        res.cookie('clientId', clientIdMain, { httpOnly: true, maxAge: 6 * 60 * 60 * 1000 }) // 24 საათი
         await generateTokenAndSetCookie(res, user._id)
-        res.cookie('goa_auth_is_verified', true, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }) // 24 საათი
-        res.cookie('verificationTime', verificationTime, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }) // 24 საათი
+        res.cookie('goa_auth_is_verified', true, { httpOnly: true, maxAge: 6 * 60 * 60 * 1000 }) // 24 საათი
+        res.cookie('verificationTime', verificationTime, { httpOnly: true, maxAge: 6 * 60 * 60 * 1000 }) // 24 საათი
 
         res.status(200).json({ success: true, message: "Email verified successfully" })
     } catch (error) {

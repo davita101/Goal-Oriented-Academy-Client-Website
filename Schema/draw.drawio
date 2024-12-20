@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="HEYRBrr34Ea68B-RaoFX" name="Page-1">
-        <mxGraphModel dx="5260" dy="7840" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="1434" dy="2614" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -889,12 +889,6 @@
                 </mxCell>
                 <mxCell id="370" value="mentor Assistents" style="whiteSpace=wrap;html=1;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" parent="1" vertex="1">
                     <mxGeometry x="3060" y="80" width="120" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="373" value="&lt;font style=&quot;font-size: 72px;&quot;&gt;leaderID not leaderName&lt;/font&gt;" style="whiteSpace=wrap;html=1;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" parent="1" vertex="1">
-                    <mxGeometry x="-940" y="-2090" width="2270" height="460" as="geometry"/>
-                </mxCell>
-                <mxCell id="374" value="&lt;span style=&quot;font-size: 72px;&quot;&gt;ROLES of students Minileader | Member&lt;/span&gt;" style="whiteSpace=wrap;html=1;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" parent="1" vertex="1">
-                    <mxGeometry x="-960" y="-1600" width="2270" height="460" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
