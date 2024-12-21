@@ -25,7 +25,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<></>} />
         <Route path="/login" element={<Login currentUsers={currentUsers} setCurrentUsers={setCurrentUsers} />} />
-        <Route path="/dashboard/:id" element={<Page />} />
+        <Route path="/user/:id/*" element={<Page />} />
       </Routes>
     </div>
   )

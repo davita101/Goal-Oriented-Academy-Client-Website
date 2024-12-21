@@ -1,39 +1,25 @@
 import * as React from "react"
 import {
   AudioWaveform,
-  BadgePercent,
-  BookOpen,
   Bot,
   ChartNoAxesCombined,
-  CircleEllipsis,
-  ClipboardX,
   Command,
-  Frame,
   GalleryVerticalEnd,
-  HeartHandshake,
   Inbox,
   KeyboardMusic,
-  Map,
-  PieChart,
-  Settings2,
   SquareTerminal,
-  WalletCardsIcon,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { Item } from "@radix-ui/react-dropdown-menu"
-import { title } from "process"
 import { SearchForm } from "./search-form"
+import { ScrollArea } from "./ui/scroll-area"
 
 
 // This is sample data.
@@ -72,15 +58,7 @@ const data = {
           url: "#",
         },
         {
-          title: "Mini Leaders",
-          url: "lomi",
-        },
-        {
-          title: "Mini Members",
-          url: "#",
-        },
-        {
-          title: "Members",
+          title: "More...",
           url: "#",
         },
       ],
@@ -91,23 +69,19 @@ const data = {
       icon: Bot,
       items: [
         {
-          title: "Codwars",
+          title: "Account",
           url: "#",
         },
         {
-          title: "LinckedIn",
+          title: "Events",
           url: "#",
         },
         {
-          title: "Facebook",
+          title: "Salary",
           url: "#",
         },
         {
-          title: "ParentFacebook",
-          url: "#",
-        },
-        {
-          title: "Github",
+          title: "Cards",
           url: "#",
         },
       ],
@@ -142,25 +116,6 @@ const data = {
   ],
 
   projects: [
-    {
-      title: "Other",
-      url: "#",
-      icon: CircleEllipsis,
-      items: [
-        {
-          title: "Events",
-          url: "#",
-        },
-        {
-          title: "Cards",
-          url: "#",
-        },
-        {
-          title: "Salary",
-          url: "#",
-        }
-      ]
-    },
     {
       title: "For Control",
       url: "#",
@@ -250,19 +205,19 @@ const data = {
   ]
 }
 
-
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader className="sticky top-0 z-[2]">
-        <NavUser user={data.user} />
-        <SearchForm />
-      </SidebarHeader>
-      <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavMain items={data.projects} />
-      </SidebarContent>
-      <SidebarRail />
+      <ScrollArea>
+        <SidebarHeader className="sticky top-0 z-[2]">
+          <NavUser user={data.user} />
+        </SidebarHeader>
+        <SidebarContent>
+          <NavMain items={data.navMain} />
+          <NavMain items={data.projects} />
+        </SidebarContent>
+        <SidebarRail />
+      </ScrollArea>
     </Sidebar>
-  )
+  );
 }

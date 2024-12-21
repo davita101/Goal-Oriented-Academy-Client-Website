@@ -1,3 +1,4 @@
+import React from 'react'
 import { AppSidebar } from "@/components/app-sidebar"
 import { DataTable } from "@/components/data-table"
 import { NavigationMenuNotification } from "@/components/nav-notification"
@@ -18,7 +19,10 @@ import {
 } from "@/components/ui/sidebar"
 import ToggleDarkMode from "@/components/ui/togle-dark-mode"
 
+import { Route, Routes } from "react-router-dom"
+
 export default function Page() {
+  
   return (
     <>
       <SidebarProvider
@@ -64,7 +68,10 @@ export default function Page() {
             </Breadcrumb>
           </header>
           <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-            <DataTable />
+            <Routes>
+              <Route path="/" element={<DataTable />} />
+              <Route path="/lomi" element={<h1>davit</h1>} />
+            </Routes>
           </div>
         </SidebarInset>
       </SidebarProvider>

@@ -10,6 +10,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
+import { ScrollArea } from "./ui/scroll-area"
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -56,17 +57,19 @@ export function NavigationMenuNotification() {
         <NavigationMenuItem className="ml-[10.5rem]">
           <NavigationMenuTrigger>Notification</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-[300px] gap-3 p-4 md:w-[300px] md:grid-cols-1 lg:w-[300px] z-[999] ">
-              {components.map((component) => (
-                <ListItem
-                  key={component.title}
-                  title={component.title}
-                  href={component.href}
-                >
-                  {component.description}
-                </ListItem>
-              ))}
-            </ul>
+            <ScrollArea className="h-72 rounded-md border">
+              <ul className="grid w-[300px] gap-3 p-4 md:w-[300px] md:grid-cols-1 lg:w-[300px] z-[999] ">
+                {components.map((component) => (
+                  <ListItem
+                    key={component.title}
+                    title={component.title}
+                    href={component.href}
+                  >
+                    {component.description}
+                  </ListItem>
+                ))}
+              </ul>
+            </ScrollArea>
           </NavigationMenuContent>
         </NavigationMenuItem>
       </NavigationMenuList>

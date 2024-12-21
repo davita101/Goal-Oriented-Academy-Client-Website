@@ -3,14 +3,9 @@
 import {
   BadgePercent,
   Bolt,
-  BookUser,
   ChevronsUpDown,
   ClipboardX,
-  HandHeart,
-  HeartHandshake,
   LogOut,
-  School,
-  UsersRound,
 } from "lucide-react"
 
 import {
@@ -53,7 +48,7 @@ export function NavUser({
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              className=" bg-gray-100 data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={user.avatar} alt={user.name} />
