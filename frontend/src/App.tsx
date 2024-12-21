@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Login from "./page/Login";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import Dashboard from "./page/Dashboard"
-import Page from "./page/page";
+import User from "./page/page";
+import { Toaster } from "./components/ui/sonner";
 export default function App() {
   const [currentUsers, setCurrentUsers] = useState('')
   const navigate = useNavigate();
@@ -25,8 +25,9 @@ export default function App() {
       <Routes>
         <Route path="/" element={<></>} />
         <Route path="/login" element={<Login currentUsers={currentUsers} setCurrentUsers={setCurrentUsers} />} />
-        <Route path="/user/:id/*" element={<Page />} />
+        <Route path="/user/:userId/*" element={<User />} />
       </Routes>
+      <Toaster />
     </div>
   )
 }

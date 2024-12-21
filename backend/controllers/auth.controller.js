@@ -8,6 +8,7 @@ import jwt from 'jsonwebtoken'
 
 // * Define constants
 const SIX_HOURS = 6 * 60 * 60 * 1000 // 6 საათი მილიწამებში
+const ONE_HOUR = 60 * 60 * 1000; // 1 hour in milliseconds
 
 // * Define rate limiter for signup
 const signupLimiter = rateLimit({
@@ -64,90 +65,81 @@ export const signup = [signupLimiter, async (req, res) => {
     }
 }];
 // * Login controller
-export const login = [signupLimiter, async (req, res) => {
-    const { email } = req.body
-    try {
-        // ? Find user by email
-        const user = await UserModel.findOne({ email })
-        // console.log(Date.now()- user.lastLogin.getTime() SIX_HOURS)
-        if (!user) {
-            return res.status(400).json({ success: false, message: "Invalid email" })
-        }
 
-        const now = Date.now()
-        // ? Check if last login was more than six hours ago
-        if (user.lastLogin && (now - user.lastLogin.getTime() > SIX_HOURS)) {
-            // console.log(user)
-            user.clientId = undefined
-            user.isVerified = false
-            user.verificationToken = generateVerificationToken()
-            user.verificationTokenExpiresAt = now + 1 * 60 * 60 * 1000 // 24 საათი
-            res.clearCookie('token')
-            res.clearCookie('clientId')
-            res.clearCookie('goa_auth_is_verified')
-            await user.save()
-            return res.status(400).json({ success: false, message: "User is more than 6 hour failed login" })
-        }
-        // ? Check if verification token is expired
-        if (user.verificationToken && user.verificationTokenExpiresAt < now) {
-            user.verificationToken = generateVerificationToken();
-            user.verificationTokenExpiresAt = now + 1 * 60 * 60 * 1000; // 1 hour
-            await sendVerificationEmail({ email, token: user.verificationToken })
+export const login = [
+    signupLimiter,
+    async (req, res) => {
+        const { email } = req.body;
+
+        try {
+            // Helper function for sending verification email and updating the user
+            const handleVerification = async (user, message) => {
+                user.verificationToken = generateVerificationToken();
+                user.verificationTokenExpiresAt = Date.now() + ONE_HOUR;
+                await user.save();
+                await sendVerificationEmail({ email, token: user.verificationToken });
+                res.status(400).json({ success: false, message });
+            };
+
+            // Find user by email
+            const user = await UserModel.findOne({ email });
+            if (!user) {
+                return res.status(400).json({ success: false, message: "Invalid email" });
+            }
+
+            const now = Date.now();
+
+            // Check if last login was more than six hours ago
+            if (user.lastLogin && now - user.lastLogin.getTime() > SIX_HOURS) {
+                user.lastLogin = undefined;
+                user.clientId = undefined;
+                user.isVerified = false;
+                await handleVerification(user, "User has been inactive for more than 6 hours. Verification token sent.");
+                return;
+            }
+
+            // Check if verification token is expired
+            if (user.verificationToken && user.verificationTokenExpiresAt < now) {
+                await handleVerification(user, "Verification token expired. New token sent.");
+                return;
+            }
+
+            // Check if email is not verified
+            if (!user.isVerified) {
+                await handleVerification(user, "Email not verified. Verification token sent.");
+                return;
+            }
+
+            // Check if user is already logged in from another device
+            if (user.clientId) {
+                await handleVerification(user, "User already logged in from another device. Verification token sent.");
+                return;
+            }
+
+            // Update last login and generate a new clientId
+            user.lastLogin = now;
+            const clientId = generateVerificationToken(); // Replace with a better clientId generation method if needed
+            user.clientId = clientId;
             await user.save();
-            return res.status(400).json({ success: false, message: "Verification token expired. New token sent to email." });
+
+            // Set cookies and respond with success
+            res.cookie('clientId', clientId, { httpOnly: true, maxAge: ONE_HOUR });
+            generateTokenAndSetCookie(res, user._id);
+            res.cookie('goa_auth_is_verified', user.isVerified, { httpOnly: true, maxAge: ONE_HOUR });
+            res.status(200).json({
+                success: true,
+                message: "Login successful",
+                user: {
+                    ...user._doc,
+                },
+            });
+        } catch (error) {
+            console.error("Login error:", error);
+            res.status(500).json({ success: false, message: "An error occurred during login" });
         }
-        // ? Check if user is verified
-        if (!user.isVerified) {
-            // console.log(user)
-            if (user.verificationToken) {
-                await sendVerificationEmail({ email, token: user.verificationToken })
+    },
+];
 
-                return res.status(400).json({ success: false, message: "Already send Verification token to email." })
-            }
-            await sendVerificationEmail({ email, token: user.verificationToken })
-            user.verificationToken = generateVerificationToken()
-            user.verificationTokenExpiresAt = now + 1 * 60 * 60 * 1000 // 24 საათი
-            await user.save()
-            return res.status(400).json({ success: false, message: "Email not verified. Verification token sent to email." })
-        }
-
-        // ? Check if user is already logged in from another device
-        if (user.clientId) {
-            if (user.verificationToken) {
-                await sendVerificationEmail({ email, token: user.verificationToken })
-                return res.status(400).json({ success: false, message: "Already send Verification token to email." })
-            }
-            await sendVerificationEmail({ email, token: user.verificationToken })
-            user.verificationToken = generateVerificationToken()
-            user.verificationTokenExpiresAt = now + 1 * 60 * 60 * 1000 // 24 საათი
-            await user.save()
-            return res.status(400).json({ success: false, message: "User already logged in from another device" })
-        }
-
-        // ? Update last login and set clientId
-        user.lastLogin = now
-        const clientId = generateVerificationToken() // ან სხვა მეთოდი clientId-ს გენერაციისთვის
-        user.clientId = clientId
-        await user.save()
-
-        await sendVerificationEmail({ email, token: user.verificationToken })
-
-        // ? Set cookies and respond with success
-        res.cookie('clientId', clientId, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }) // 24 საათი
-        generateTokenAndSetCookie(res, user._id)
-        res.cookie('goa_auth_is_verified', user.isVerified, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }) // 24 საათი
-        res.status(200).json({
-            success: true,
-            message: "Login successful",
-            user: {
-                ...user._doc,
-            }
-        })
-    } catch (error) {
-        console.error("Login error:", error)
-        res.status(400).json({ success: false, message: "An error occurred" })
-    }
-}]
 // * Logout controller
 export const logout = async (req, res) => {
     const token = req.cookies.token

@@ -2,7 +2,7 @@ import nodemailer from "nodemailer"
 
 export const sendVerificationEmail = async ({ email, token }) => {
         // http://localhost:5000/api/auth/verify-email/459906 //! token example
-
+        console.log("email send!")
         // const html = `
         // <h1>Please verify your GOA account</h1>
         // <p>Click the link below to verify your account:</p>

@@ -19,10 +19,15 @@ import {
 } from "@/components/ui/sidebar"
 import ToggleDarkMode from "@/components/ui/togle-dark-mode"
 
-import { Route, Routes } from "react-router-dom"
+import { Route, Routes, useLocation } from "react-router-dom"
+import Dashboard from './Dashboard'
+import Account from './Account'
+import { Toaster } from '@/components/ui/sonner'
 
-export default function Page() {
-  
+export default function User() {
+  const location = useLocation();
+  const path = location.pathname;
+  const userId = path.split('/')[2]
   return (
     <>
       <SidebarProvider
@@ -38,23 +43,52 @@ export default function Page() {
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
             <Breadcrumb className="flex-1 flex justify-between items-center">
-              <div>
+              <div >
                 <BreadcrumbList>
                   <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbLink href="#">All Squad Members</BreadcrumbLink>
+                    <BreadcrumbLink href={`/user/${userId}/`}>home</BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className="hidden md:block" />
-                  <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbLink href="#">All Leader info</BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator className="hidden md:block" />
-                  <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbLink href="#">All Inboxes</BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator className="hidden md:block" />
-                  <BreadcrumbItem>
-                    <BreadcrumbPage>Inbox</BreadcrumbPage>
-                  </BreadcrumbItem>
+                  {path.includes(`/user/${userId}/`) && (
+                    <>
+                      <BreadcrumbItem className="hidden md:block">
+                        <BreadcrumbLink href={`/user/${userId}/`}>dashboard</BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator className="hidden md:block" />
+                    </>
+                  )}
+                  {path === `/user/${userId}/all-squad-member` && (
+                    <>
+                      <BreadcrumbItem className="hidden md:block">
+                        <BreadcrumbLink href="#">All Squad Members</BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator className="hidden md:block" />
+                    </>
+                  )}
+                  {path === `/user/${userId}/all-leader-info` && (
+                    <>
+                      <BreadcrumbItem className="hidden md:block">
+                        <BreadcrumbLink href="#">All Leader info</BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator className="hidden md:block" />
+                    </>
+                  )}
+                  {path === `/user/${userId}/all-inboxes` && (
+                    <>
+                      <BreadcrumbItem className="hidden md:block">
+                        <BreadcrumbLink href="#">All Inboxes</BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator className="hidden md:block" />
+                    </>
+                  )}
+                  {path === `/user/${userId}/account` && (
+                    <>
+                      <BreadcrumbItem className="hidden md:block">
+                        <BreadcrumbLink href="#">account</BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator className="hidden md:block" />
+                    </>
+                  )}
                 </BreadcrumbList>
               </div>
               <div className="flex gap-2">
@@ -69,13 +103,15 @@ export default function Page() {
           </header>
           <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
             <Routes>
-              <Route path="/" element={<DataTable />} />
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/account" element={<Account />} />
+              <Route path="/all-squad-member" element={<DataTable />} />
               <Route path="/lomi" element={<h1>davit</h1>} />
             </Routes>
+       
           </div>
         </SidebarInset>
       </SidebarProvider>
-
     </>
   )
 }
