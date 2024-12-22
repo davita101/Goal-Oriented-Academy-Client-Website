@@ -2,15 +2,20 @@ import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema(
   {
+    name: {
+      type: String,
+      required: true,
+    },
+    avatar: {
+      type: String,
+      default: undefined
+    },
     email: {
       type: String,
       required: true,
       unique: true
     },
-    name: {
-      type: String,
-      required: true,
-    },
+    
     role: {
       type: [String],
       required: true,
@@ -40,75 +45,71 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
-    avatar: {
+
+    leaderGithubUrl: {
       type: String,
-      default: undefined
+      default: ""
     },
-    github: {
+    leaderCodewarsUrl: {
       type: String,
-      default: undefined
+      default: ""
     },
     fbUrl: {
       type: String,
       default: undefined
     },
-    codewarsUrl: {
-      type: String,
-      default: undefined
-    },
-    leaderLevel: {
-      type: Number,
-      default: 0
-    },
-    cards: {
-      green: {
+    rating: {
+      cards: {
+        green: {
+          type: Number,
+          default: 0
+        },
+        yellow: {
+          type: Number,
+          default: 0
+        },
+        black: {
+          type: Number,
+          default: 0
+        }
+      },
+      githubCheck: {
+        firstCheck: {
+          type: Number,
+          default: 0
+        },
+        secondCheck: {
+          type: Number,
+          default: 0
+        },
+      },
+      parentRating: {
         type: Number,
         default: 0
       },
-      yellow: {
+      examResults: {
+        firstCheck: {
+          type: Number,
+          default: 0
+        },
+        secondCheck: {
+          type: Number,
+          default: 0
+        },
+      },
+      leaderGithubCheck: {
         type: Number,
         default: 0
       },
-      black: {
-        type: Number,
-        default: 0
-      }
-    },
-    githubCheck: {
-      firstCheck: {
+
+      codewarsResult: {
         type: Number,
         default: 0
       },
-      secondCheck: {
-        type: Number,
-        default: 0
+      projectResults: {
+        type: [Number],
+        default: []
       },
-    },
-    parentRating: {
-      type: Number,
-      default: 0
-    },
-    examResults: {
-      firstCheck: {
-        type: Number,
-        default: 0
-      },
-      secondCheck: {
-        type: Number,
-        default: 0
-      },
-    },
-    leaderGithubCheck: {
-      type: Number,
-      default: 0
-    },
-    codewarsResult: {
-      type: Number,
-      default: 0
-    },
-    projectResults: {
-      type: [Number],
-      default: []
     },
     restEmailToken: String,
     restEmailExpiredAt: Date,
