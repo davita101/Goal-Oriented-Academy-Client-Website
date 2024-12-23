@@ -6,21 +6,19 @@ function canViewLeader(user, leaderId) {
         user.id === (leaderId)
     )
 }
-
-function canViewStudent(user) {
+function canDelete(user) {
     return (
-        user.role.includes("admin") ||
-        user.role.includes("moderator") ||
-        user.role.includes("leaderController") 
+        user.role.includes("admin")
     )
 }
 function canLeaderEdit(user, leaderId) {
     return (
         user.role.includes("admin") ||
         user.role.includes("moderator") ||
-        user.role.includes("leaderController")||
+        user.role.includes("leaderController") ||
         user.id === (leaderId)
     )
 }
 
-export{canViewLeader, canLeaderEdit}
+
+export { canViewLeader, canLeaderEdit, canDelete}

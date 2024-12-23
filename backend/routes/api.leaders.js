@@ -1,43 +1,32 @@
 import express from 'express';
 import {
   getAllLeaders,
-  leaderStudents,
   deleteLeaderById,
-  leaderOneStudent,
   getLeaderById,
   updateLeaderById,
-  updateLeaderStudent, // New controller for updating a student
-  deleteLeaderStudent
 } from '../controllers/leaders.controller.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
+import studentRoutes from "../routes/api.students.js"; // Correct import path
+import { canDelete, canLeaderEditMiddleware,  canViewLeaderMiddleware } from '../middleware/leaderMiddleware.js';
+import { canViewLeaderStudentsMiddleware } from '../middleware/studentMiddleware.js';
+import { getAllStudent } from '../controllers/students.controller.js';
 const router = express.Router();
 // Apply authentication middleware to all routes
 router.use(authMiddleware);
 
+// ! studnets
+router.use("/:leaderId/students", canViewLeaderStudentsMiddleware, studentRoutes);
+
+// ! All students
+router.get("/all-students", canViewLeaderStudentsMiddleware, getAllStudent);
+
 // ! All leaders
-router.get('/', getAllLeaders);
-
+router.get('/', canViewLeaderMiddleware, getAllLeaders);
 // ! Get leader by ID
-router.get('/:leaderId', getLeaderById);
-
+router.get('/:leaderId', canViewLeaderMiddleware, getLeaderById);
 // ! Update leader by ID
-router.put('/:leaderId', updateLeaderById);
-
+router.put('/:leaderId', canLeaderEditMiddleware, updateLeaderById);
 // ! Delete leader by ID
-router.delete('/:leaderId', deleteLeaderById);
-
-// ! Leader's all students
-router.get('/:leaderId/students', leaderStudents);
-
-// ! One student
-router.get('/:leaderId/students/:studentId', leaderOneStudent);
-
-// ! Update student
-router.put('/:leaderId/students/:studentId', updateLeaderStudent);
-
-// ! Delete student
-router.delete('/:leaderId/students/:studentId', deleteLeaderStudent);
-
-
+router.delete('/:leaderId', canDelete, deleteLeaderById);
 
 export default router;

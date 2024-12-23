@@ -182,42 +182,46 @@ export const logout = async (req, res) => {
 
 // * Verify email controller
 export const verifyEmail = [signupLimiter, async (req, res) => {
-    const { token } = req.params
+    const { token } = req.params;
     try {
-        // ? Find user by verification token
-        const user = await UserModel.findOne({ verificationToken: token })
+        console.log('Received token:', token);
 
+        // ? Find user by verification token
+        const user = await UserModel.findOne({ verificationToken: token });
         if (!user) {
-            return res.status(400).json({ success: false, message: "Invalid token" })
+            console.log('User not found with token:', token);
+            return res.status(400).json({ success: false, message: "Invalid token" });
         }
 
         // ? Check if token is expired
         if (user.verificationTokenExpiresAt < Date.now()) {
-            return res.status(400).json({ success: false, message: "Token expired" })
+            console.log('Token expired for user:', user._id);
+            return res.status(400).json({ success: false, message: "Token expired" });
         }
 
         // ? Verify user and clear verification token
-        user.isVerified = true
-        user.verificationToken = undefined
-        const clientIdMain = generateVerificationToken() // ან სხვა მეთოდი clientId-ს გენერაციისთვის
-        user.clientId = clientIdMain
+        user.isVerified = true;
+        user.verificationToken = undefined;
+        const clientIdMain = generateVerificationToken(); // ან სხვა მეთოდი clientId-ს გენერაციისთვის
+        user.clientId = clientIdMain;
 
-        user.verificationTokenExpiresAt = undefined
-        await user.save()
+        user.verificationTokenExpiresAt = undefined;
+        await user.save();
 
         // ? Set cookies and respond with success
-        const verificationTime = new Date().toISOString()
-        res.cookie('clientId', clientIdMain, { httpOnly: true, maxAge: 6 * 60 * 60 * 1000 }) // 24 საათი
-        await generateTokenAndSetCookie(res, user._id)
-        res.cookie('goa_auth_is_verified', true, { httpOnly: true, maxAge: 6 * 60 * 60 * 1000 }) // 24 საათი
-        res.cookie('verificationTime', verificationTime, { httpOnly: true, maxAge: 6 * 60 * 60 * 1000 }) // 24 საათი
+        const verificationTime = new Date().toISOString();
+        res.cookie('clientId', clientIdMain, { httpOnly: true, maxAge: 6 * 60 * 60 * 1000 }); // 24 საათი
+        await generateTokenAndSetCookie(res, user._id);
+        res.cookie('goa_auth_is_verified', true, { httpOnly: true, maxAge: 6 * 60 * 60 * 1000 }); // 24 საათი
+        res.cookie('verificationTime', verificationTime, { httpOnly: true, maxAge: 6 * 60 * 60 * 1000 }); // 24 საათი
 
-        res.status(200).json({ success: true, message: "Email verified successfully" })
+        console.log('Email verified successfully for user:', user._id);
+        res.status(200).json({ success: true, message: "Email verified successfully" });
     } catch (error) {
-        res.status(400).json({ success: false, message: "An error occurred" })
+        console.error('Error during email verification:', error);
+        res.status(400).json({ success: false, message: "An error occurred" });
     }
-}]
-
+}];
 // * Check authentication controller
 export const checkAuth = async (req, res) => {
     const { user } = req

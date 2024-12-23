@@ -2,10 +2,6 @@ import mongoose from "mongoose";
 
 const StudentSchema = new mongoose.Schema(
   {
-    _id: {
-      type: String,
-      required: true,
-    },
     name: {
       type: String,
       required: true,
@@ -101,20 +97,16 @@ const StudentSchema = new mongoose.Schema(
     comment: {
       leaderComment: {
         type: String,
-        required: true,
       },
       leaderProof: {
         type: String,
-        required: true,
       },
       controller: {
         miniLeaderController: {
           type: String,
-          required: true,
         },
         leaderController: {
           type: String,
-          required: true,
         },
       },
     },
