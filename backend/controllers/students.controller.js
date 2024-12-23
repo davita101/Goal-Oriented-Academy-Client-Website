@@ -23,15 +23,10 @@ export const getLeaderAllStudentById = async (req, res) => {
     res.status(500).json({ error: 'Error fetching student' });
   }
 };
-
-
 export const getStudentById = async (req, res) => {
   try {
-    const studentId = req.params.studentId 
-    console.log('Searching for student with ID:', studentId);
-
+    const studentId = req.params.studentId
     const student = await StudentModel.findById(studentId);
-    console.log('Found student:', student);
 
     if (!student) {
       return res.status(404).json({ error: 'Student not found' });
@@ -46,7 +41,6 @@ export const getStudentById = async (req, res) => {
 export const createStudent = async (req, res) => {
   try {
     const student = await StudentModel.findOne({ email: req.body.email });
-
     if (student) {
       return res.status(400).json({ error: 'Student with this email already exists' });
     }
@@ -55,21 +49,25 @@ export const createStudent = async (req, res) => {
       _id: new mongoose.Types.ObjectId().toString(),
       ...req.body
     });
-
     await newStudent.save();
+    console.log('Student saved successfully');
 
     res.status(201).json(newStudent);
   } catch (error) {
     console.error('Error creating student:', error);
-    res.status(500).json({ error: 'Error creating student' });
+    return res.status(500).json({ error: 'Error creating student' });
   }
 };
-
 export const updateStudent = async (req, res) => {
   try {
     const student = await StudentModel.findById(req.params.studentId);
     if (!student) {
       return res.status(404).json({ error: 'Student not found' });
+    }
+    if (req.body.comment.leaderComment || req.body.comment.leaderProof ) {
+      if ((student.leaderId !== req.user.id) && !req.user.role.includes('admin') ) {
+        return res.status(401).json({ error: 'You are not allowed to update this student you ar not current user' });
+      }
     }
 
     Object.keys(req.body).forEach(key => {

@@ -23,6 +23,7 @@ app.use(express.json());
 app.use("/api/auth", authRouters);
 app.use("/api/groups", authMiddleware, groupRoutes);
 app.use("/api/leaders", authMiddleware, leadersRoutes);
+app.use("/api/students", authMiddleware, studentRoutes);
 
 app.listen(PORT, () => {
   connectDB();

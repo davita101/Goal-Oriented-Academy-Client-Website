@@ -1,18 +1,27 @@
 import express from 'express';
-import { getStudentById, getLeaderAllStudentById, createStudent, updateStudent, deleteStudent } from '../controllers/students.controller.js';
-import { canLeaderEditStudentMiddleware } from '../middleware/studentMiddleware.js';
+import { getStudentById, getLeaderAllStudentById, updateStudent } from '../controllers/students.controller.js';
+import { canLeaderDeleteStudentMiddleware, canLeaderEditStudentMiddleware, canViewLeaderStudentsMiddleware } from '../middleware/studentMiddleware.js';
+import { createStudent, deleteStudent, getAllStudent } from '../controllers/students.controller.js';
+
 const router = express.Router();
 // ! all student
+
 router.get('/', getLeaderAllStudentById);
 // ! one student
-router.get('/:studentId', getStudentById);
+
+router.get('/:leaderId/:studentId',canViewLeaderStudentsMiddleware, getStudentById);
 // ! update student
-router.put('/:studentId', canLeaderEditStudentMiddleware, updateStudent);
+
+router.put('/:leaderId/:studentId', canLeaderEditStudentMiddleware, updateStudent)
+// ! studnets for github Controller
 
 // ! create student
-router.post('/create-student', createStudent);
+router.post('/create-student', canLeaderDeleteStudentMiddleware, createStudent);
 
 // ! delete student
-router.delete('/:studentId', deleteStudent);
+router.delete('/delete-student/:studentId', canLeaderDeleteStudentMiddleware, deleteStudent);
+
+// ! All students
+router.get("/all-students", canViewLeaderStudentsMiddleware, getAllStudent);
 
 export default router;

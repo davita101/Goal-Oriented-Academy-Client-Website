@@ -6,6 +6,16 @@ function canStudentEdit(user, leaderId) {
         user.id === (leaderId)
     )
 }
+function canDelete(user) {
+    return (
+        user.role.includes("admin")
+    )
+}
+function onlyLeader(user, leaderId) {
+    return (
+        user.id === (leaderId)
+    )
+}
 
 
-export { canStudentEdit }
+export { canStudentEdit, canDelete, onlyLeader }
