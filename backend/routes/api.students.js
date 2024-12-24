@@ -4,16 +4,14 @@ import { canLeaderDeleteStudentMiddleware, canLeaderEditStudentMiddleware, canVi
 import { createStudent, deleteStudent, getAllStudent } from '../controllers/students.controller.js';
 
 const router = express.Router();
-// ! all student
+// ! all leader student
+router.get('/all-students/:leaderId',canViewLeaderStudentsMiddleware, getLeaderAllStudentById);
 
-router.get('/', getLeaderAllStudentById);
 // ! one student
-
 router.get('/:leaderId/:studentId',canViewLeaderStudentsMiddleware, getStudentById);
-// ! update student
 
+// ! studnets for github Controller minleaderContrtoller
 router.put('/:leaderId/:studentId', canLeaderEditStudentMiddleware, updateStudent)
-// ! studnets for github Controller
 
 // ! create student
 router.post('/create-student', canLeaderDeleteStudentMiddleware, createStudent);

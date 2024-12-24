@@ -3,6 +3,9 @@ function canStudentEdit(user, leaderId) {
         user.role.includes("admin") ||
         user.role.includes("moderator") ||
         user.role.includes("githubController") ||
+        user.role.includes("miniLeaderController") ||
+        user.role.includes("leaderController") ||
+        user.role.includes("mentor") ||
         user.id === (leaderId)
     )
 }

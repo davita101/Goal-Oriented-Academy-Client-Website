@@ -184,18 +184,15 @@ export const logout = async (req, res) => {
 export const verifyEmail = [signupLimiter, async (req, res) => {
     const { token } = req.params;
     try {
-        console.log('Received token:', token);
 
         // ? Find user by verification token
         const user = await UserModel.findOne({ verificationToken: token });
         if (!user) {
-            console.log('User not found with token:', token);
             return res.status(400).json({ success: false, message: "Invalid token" });
         }
 
         // ? Check if token is expired
         if (user.verificationTokenExpiresAt < Date.now()) {
-            console.log('Token expired for user:', user._id);
             return res.status(400).json({ success: false, message: "Token expired" });
         }
 
@@ -206,6 +203,7 @@ export const verifyEmail = [signupLimiter, async (req, res) => {
         user.clientId = clientIdMain;
 
         user.verificationTokenExpiresAt = undefined;
+
         await user.save();
 
         // ? Set cookies and respond with success
@@ -232,7 +230,30 @@ export const checkAuth = async (req, res) => {
 
         return res.status(401).json({ success: false, message: "Unauthorized" })
     }
+    const sumSalary = (
+        (user.salary?.mentorSalary || 0) +
+        (user.salary?.mentorAssistantSalary || 0) +
+        (user.salary?.mentorAssistantController || 0) +
+        (user.salary?.mentorController || 0) +
+        (user.salary?.githubController || 0) +
+        (user.salary?.leaderController || 0) +
+        (user.salary?.miniLeaderController || 0) +
+        (user.salary?.miniLeader || 0) +
+        (user.salary?.miniMentor || 0) +
+        (user.salary?.miniMentorController || 0)
+    )
+    console.log(sumSalary)
 
+    user.salary.leaderSalary =
+        sumSalary +
+        (user.rating?.cards.green * (sumSalary * .10)) +
+        // ! CARD RATING
+        (
+            (user.rating?.cards.black * (sumSalary * .50)) - //? black
+            (user.rating?.cards.yellow * (sumSalary * .30)) - //? yellow
+            (user.rating?.cards.purple * (sumSalary) * .20) //? purple
+        )
+    await user.save()
     // ? Check if user is verified
     if (!user.isVerified) {
         return res.status(403).json({ success: false, message: "Email not verified" })

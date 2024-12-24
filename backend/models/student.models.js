@@ -48,46 +48,36 @@ const StudentSchema = new mongoose.Schema(
     },
     githubLastUpdate: {
       type: String,
-      required: true,
     },
     fines: {
       githubFine: {
         type: Number,
-        required: true,
       },
       miniLeaderFine: {
         type: Number,
-        required: true,
       },
       miniStudentFine: {
         type: Number,
-        required: true,
       },
     },
     aura: {
       points: {
         type: Number,
-        required: true,
       },
       classWork: {
         type: Number,
-        required: true,
       },
       attendance: {
         type: Number,
-        required: true,
       },
       help: {
         type: Number,
-        required: true,
       },
       camera: {
         type: Number,
-        required: true,
       },
       answers: {
         type: Number,
-        required: true,
       },
     },
     payedInfo: {
@@ -105,7 +95,7 @@ const StudentSchema = new mongoose.Schema(
         miniLeaderController: {
           type: String,
         },
-        leaderController: {
+        githubController: {
           type: String,
         },
       },

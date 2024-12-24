@@ -9,6 +9,7 @@ export const authMiddleware = async (req, res, next) => {
         if (clientIdMain) {
             await UserModel.updateOne({ clientId: clientIdMain }, { $set: { isVerified: false, clientId: undefined } });
         }
+       
     };
 
     if (!token) {
