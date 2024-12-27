@@ -31,7 +31,8 @@ export const updateLeaderById = async (req, res) => {
           "cards": {
             "black": req.body?.rating?.cards?.black,
             "green": req.body?.rating?.cards?.green,
-            "yellow": req.body?.rating?.cards?.yellow
+            "yellow": req.body?.rating?.cards?.yellow,
+            "purple": req.body?.rating?.cards?.purple
           },
           "examResults": {
             "firstCheck": req.body?.rating?.examResults?.firstCheck,

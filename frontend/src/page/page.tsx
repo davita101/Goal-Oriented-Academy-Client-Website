@@ -46,18 +46,18 @@ export default function User() {
               <div >
                 <BreadcrumbList>
                   <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbLink href={`/user/${userId}/`}>home</BreadcrumbLink>
+                    <BreadcrumbLink href={`/dashboard/${userId}/`}>home</BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className="hidden md:block" />
-                  {path.includes(`/user/${userId}/`) && (
+                  {path.includes(`/dashboard/${userId}/`) && (
                     <>
                       <BreadcrumbItem className="hidden md:block">
-                        <BreadcrumbLink href={`/user/${userId}/`}>dashboard</BreadcrumbLink>
+                        <BreadcrumbLink href={`/dashboard/${userId}/`}>dashboard</BreadcrumbLink>
                       </BreadcrumbItem>
                       <BreadcrumbSeparator className="hidden md:block" />
                     </>
                   )}
-                  {path === `/user/${userId}/all-squad-member` && (
+                  {path === `/dashboard/${userId}/all-squad-member` && (
                     <>
                       <BreadcrumbItem className="hidden md:block">
                         <BreadcrumbLink href="#">All Squad Members</BreadcrumbLink>
@@ -65,7 +65,7 @@ export default function User() {
                       <BreadcrumbSeparator className="hidden md:block" />
                     </>
                   )}
-                  {path === `/user/${userId}/all-leader-info` && (
+                  {path === `/dashboard/${userId}/all-leader-info` && (
                     <>
                       <BreadcrumbItem className="hidden md:block">
                         <BreadcrumbLink href="#">All Leader info</BreadcrumbLink>
@@ -73,7 +73,7 @@ export default function User() {
                       <BreadcrumbSeparator className="hidden md:block" />
                     </>
                   )}
-                  {path === `/user/${userId}/all-inboxes` && (
+                  {path === `/dashboard/${userId}/all-inboxes` && (
                     <>
                       <BreadcrumbItem className="hidden md:block">
                         <BreadcrumbLink href="#">All Inboxes</BreadcrumbLink>
@@ -81,7 +81,7 @@ export default function User() {
                       <BreadcrumbSeparator className="hidden md:block" />
                     </>
                   )}
-                  {path === `/user/${userId}/account` && (
+                  {path === `/dashboard/${userId}/account` && (
                     <>
                       <BreadcrumbItem className="hidden md:block">
                         <BreadcrumbLink href="#">account</BreadcrumbLink>
@@ -103,10 +103,10 @@ export default function User() {
           </header>
           <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
             <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/account" element={<Account />} />
-              <Route path="/all-squad-member" element={<DataTable />} />
-              <Route path="/lomi" element={<h1>davit</h1>} />
+              {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+              {/* <Route path="/account" element={<Account />} /> */}
+              {/* <Route path="/all-squad-member" element={<DataTable />} /> */}
+              {/* <Route path="/lomi" element={<h1>davit</h1>} /> */}
             </Routes>
        
           </div>

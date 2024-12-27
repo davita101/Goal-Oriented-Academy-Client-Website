@@ -1,25 +1,28 @@
 import * as React from "react"
 import {
-  AudioWaveform,
-  Bot,
-  ChartNoAxesCombined,
-  Command,
-  GalleryVerticalEnd,
+  CalendarDays,
+  ChartBarIncreasing,
+  ChartColumnStacked,
+  ComputerIcon,
+  FileText,
   Inbox,
-  KeyboardMusic,
   SquareTerminal,
+  UserRoundPen,
 } from "lucide-react"
 
-import { NavMain } from "@/components/nav-main"
+import { AsideDashboard } from "@/components/aside-dashboard"
 import { NavUser } from "@/components/nav-user"
 import {
   Sidebar,
   SidebarContent,
   SidebarHeader,
+  SidebarMenu,
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { ScrollArea } from "./ui/scroll-area"
 import { useParams } from "react-router-dom"
+import { NavProjects } from "./nav-projects"
+import Tree from "./ui/sidebar-tree"
 
 
 
@@ -32,33 +35,20 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       email: "m@example.com",
       avatar: "/avatars/shadcn.jpg",
     },
-    teams: [
-      {
-        name: "Acme Inc",
-        logo: GalleryVerticalEnd,
-        plan: "Enterprise",
-      },
-      {
-        name: "Acme Corp.",
-        logo: AudioWaveform,
-        plan: "Startup",
-      },
-      {
-        name: "Evil Corp.",
-        logo: Command,
-        plan: "Free",
-      },
-    ],
     navMain: [
       {
-        title: "Squad",
+        title: "Dashboard",
         url: "#",
         icon: SquareTerminal,
         isActive: true,
         items: [
           {
-            title: "All Squad Members",
-            url: `/user/${userId}/all-squad-member`,
+            title: "Default",
+            url: "/dashboard/default",
+          },
+          {
+            title: "Analytics",
+            url: "/dashboard/analytics",
           },
           {
             title: "More...",
@@ -66,146 +56,140 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           },
         ],
       },
+    ],
+
+    widgets:
+      [
+        {
+          name: "Statistics",
+          url: "/widgets/statistics",
+          icon: ChartBarIncreasing,
+
+        },
+        {
+          name: "Data",
+          url: "/widgets/data",
+          icon: FileText,
+        },
+        {
+          name: "Charts",
+          url: "/widgets/charts",
+          icon: ChartColumnStacked,
+        },
+      ],
+    applications: [
       {
-        title: "leader Info",
-        url: "#",
-        icon: Bot,
-        items: [
-          {
-            title: "Account",
-            url: `/user/${userId}/account`,
-          },
-          {
-            title: "Events",
-            url: "#",
-          },
-          {
-            title: "Salary",
-            url: "#",
-          },
-          {
-            title: "Cards",
-            url: "#",
-          },
-        ],
+        name: "Inbox",
+        url: "/applications/inbox",
+        icon: Inbox,
       },
       {
-        title: "Inbox",
-        url: "#",
-        icon: Inbox,
+        name: "Calendar",
+        url: "/applications/calendar",
+        icon: CalendarDays,
+      },
+      {
+        name: "Profile",
+        url: "/applications/profile",
+        icon: UserRoundPen,
+      },
+    ],
+    controllers: [
+      {
+        title: "Mentor",
+        url: "/mentor",
+        icon: ComputerIcon,
+        isActive: true,
         items: [
           {
-            title: "Leader",
-            url: "#",
+            title: "Rating",
+            url: "/controller/mentor/rating",
+            items: [
+              {
+                title: "Cards",
+                url: "/controller/mentor/cards",
+              },
+              {
+                title: "GithubCheck",
+                url: "/controller/squad-member",
+              },
+            ],
           },
           {
-            title: "Mini Leader",
+            title: "More...",
             url: "#",
           },
-          {
-            title: "Mini Member",
-            url: "#",
-          },
-          {
-            title: "Mentor",
-            url: "#",
-          },
-          {
-            title: "Mentor Assistant",
-            url: "#",
-          }
         ],
       },
     ],
+    tree: [
+      [
+        "Mentor",
+        [
+          "Rating",
+          "Github-Check",
+        ],
+        ["Exams", "Exam-one", "Exam-two"],
+        "Data",
+        "Cards",
+        "Rating",
+        "Charts",
+      ],
+      [
+        "Mentor-Assistant",
+        [
+          "Rating",
+          "Github-Check",
+        ],
+        ["Exams", "Exam-one", "Exam-two"],
+        "Data",
+        "Cards",
+        "Rating",
+        "Charts"
+      ],
+      [
+        "Leaders",
+        [
+          "Rating",
+          "Github-Check",
+          "Leader-Codewars",
+          "Leader-Github",
+          "Parent-Rating",
+        ],
+        ["Exams", "Exam-one", "Exam-two"],
+        ["Github-Check",
+          "First-Check", "Second-Check",
+        ],
+        "Cards",
+        "Rating",
+        "Charts"
+      ],
+      [
+        "Mini-Leaders",
+        [
+          "Rating",
+          "Github-Check",
+        ],
+        ["Github-Check",
+          "First-Check", "Second-Check",
+        ],
+        "Cards",
+        "Rating",
+        "Charts"
+      ],
+      [
+        "Mini-Mentor",
+        [
+          "Rating",
+          "Github-Check",
+        ],
+        ["Exams", "Exam-one", "Exam-two"],
+        "Cards",
+        "Rating",
+        "Charts"
+      ],
+    ],
 
-    projects: [
-      {
-        title: "For Control",
-        url: "#",
-        icon: KeyboardMusic,
-        items: [
-          {
-            title: "Github",
-            url: "#",
-          },
-          {
-            title: "Leader",
-            url: "#",
-          },
-          {
-            title: "Mini Leader",
-            url: "#",
-          },
-          {
-            title: "Mini Member",
-            url: "#",
-          },
-          {
-            title: "Mentor",
-            url: "#",
-          },
-          {
-            title: "Mentor Assistant",
-            url: "#",
-          }
-        ]
-      },
-      {
-        title: "Data",
-        url: "#",
-        icon: ChartNoAxesCombined,
-        items: [
-          {
-            title: "Leader Checkup",
-            url: "#",
-          },
-          {
-            title: "Leader Rating",
-            url: "#",
-          },
-          {
-            title: "Mini Leader Checkup",
-            url: "#",
-          },
-          {
-            title: "Mini Leader Rating",
-            url: "#",
-          },
-          {
-            title: "Mini Member Checkup",
-            url: "#",
-          },
-          {
-            title: "Mini Member Rating",
-            url: "#",
-          },
-          {
-            title: "Mentor Rating Checkup",
-            url: "#",
-          },
-          {
-            title: "Mentor Rating Rating",
-            url: "#",
-          },
-          {
-            title: "Mentor Checkup",
-            url: "#",
-          },
-          {
-            title: "Mentor Rating",
-            url: "#",
-          },
-          {
-            title: "Mentor Assistant Checkup",
-            url: "#",
-          },
-          {
-            title: "Mentor Assistant Rating",
-            url: "#",
-          }
-        ]
-      }
-    ]
   }
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -214,8 +198,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <NavUser user={data.user} />
         </SidebarHeader>
         <SidebarContent>
-          <NavMain items={data.navMain} />
-          <NavMain items={data.projects} />
+          <AsideDashboard items={data.navMain} title="Dashboard" />
+          <NavProjects items={data.widgets} title="Widgets" />
+          <NavProjects items={data.applications} title="Applications" />
+          <SidebarMenu>
+            <SidebarHeader>Controllers</SidebarHeader>
+            {data.tree.map((item, index) => (
+              <Tree key={index} item={item} />
+            ))}
+          </SidebarMenu>
+          <SidebarMenu>
+            <SidebarHeader>Admin</SidebarHeader>
+            <b>{"COMING SOON..."}</b>
+          </SidebarMenu>
         </SidebarContent>
         <SidebarRail />
       </ScrollArea>

@@ -25,7 +25,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<></>} />
         <Route path="/login" element={<Login currentUsers={currentUsers} setCurrentUsers={setCurrentUsers} />} />
-        <Route path="/user/:userId/*" element={<User />} />
+        <Route path="/*" element={<User />} />
       </Routes>
       <Toaster />
     </div>
