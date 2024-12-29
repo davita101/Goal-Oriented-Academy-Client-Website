@@ -17,7 +17,8 @@ import {
 } from "@/components/ui/sidebar"
 import ToggleDarkMode from "@/components/ui/togle-dark-mode"
 
-import { Routes, useLocation } from "react-router-dom"
+import { Route, Routes, useLocation } from "react-router-dom"
+import Dashboard from "./Dashboard";
 
 export default function User() {
   const location = useLocation();
@@ -32,6 +33,7 @@ export default function User() {
         }
       >
         <AppSidebar />
+        
         <SidebarInset>
           <header className="sticky top-0 left-0 flex shrink-0 items-center gap-2 border-b bg-background p-4 z-[2]">
             <SidebarTrigger className="-ml-1" />
@@ -119,9 +121,9 @@ export default function User() {
               </div>
             </Breadcrumb>
           </header>
-          <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+          <div >
             <Routes>
-              {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+              <Route path="/dashboard" element={<Dashboard />} />
               {/* <Route path="/account" element={<Account />} /> */}
               {/* <Route path="/all-squad-member" element={<DataTable />} /> */}
               {/* <Route path="/lomi" element={<h1>davit</h1>} /> */}

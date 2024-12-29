@@ -1,4 +1,16 @@
 import * as React from "react"
+import { Button } from "@/components/ui/button"
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -13,7 +25,6 @@ import {
 } from "@tanstack/react-table"
 import { ArrowUpDown, ChevronDown, Circle, MoreHorizontal } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
@@ -44,6 +55,12 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Label } from "./ui/label"
 import { Badge } from "./ui/badge"
 import { ScrollArea, ScrollBar } from "./ui/scroll-area"
+import { Separator } from "./ui/separator"
+import { AlertDialog } from "@radix-ui/react-alert-dialog"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./ui/select"
+import { set, useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { userSchema } from "@/schema/user"
 
 const data: Student[] = [
   {
@@ -67,7 +84,7 @@ const data: Student[] = [
     },
     aura: {
       points: 9999,
-      classWork: 9999,
+      classwork: 9999,
       attendance: 9999,
       help: 9999,
       camera: 9999,
@@ -84,6 +101,43 @@ const data: Student[] = [
     }
   },
   {
+    _id: "49c6589f-aba8-4d02-b4ce2-548de0b51d41",
+    name: "sophia🌸",
+    age: 16,
+    studentFbLink: "https://facebook.com/sofia",
+    email: "sofia@example.com",
+    githubLink: "https://github.com/SopiaGorgadze",
+    speed: 99,
+    group: "50",
+    role: "miniLeader",
+    leaderId: "67657c35cc61cbd1844fb7d3",
+    parentFbLink: "https://facebook.com/alicejohnsonparent",
+    githubToken: "%",
+    githubLastUpdate: "2024-12-25",
+    fines: {
+      githubFine: 0,
+      miniLeaderFine: 0,
+      miniStudentFine: 0
+    },
+    aura: {
+      points: 0,
+      classwork: 1,
+      attendance: 1,
+      help: 1,
+      camera: 1,
+      answers: 1,
+    },
+    payedInfo: undefined,
+    comment: {
+      leaderComment: "ეშხიანი გოგნა ვარ!🌸",
+      leaderProof: "ფრუფი რად უნდა!😊💔",
+      controller: {
+        miniLeaderController: "მინი ლიდერების დედოფალი🌸",
+        leaderController: "ლიდერების დედოფალი🌸"
+      }
+    }
+  },
+  {
     _id: "49c6589f-a1ba8-4d02-bce2-548de03b51d40",
     name: "gio lomi",
     age: 21,
@@ -91,7 +145,7 @@ const data: Student[] = [
     email: "alicejohnson@example.com",
     githubLink: "https://github.com/alicejohnson",
     speed: 6,
-    role: "member",
+    role: "student",
     group: "45",
     leaderId: "675dee40a1bb4008aab7ce43",
     parentFbLink: "https://facebook.com/alicejohnsonparent",
@@ -104,7 +158,7 @@ const data: Student[] = [
     },
     aura: {
       points: 88,
-      classWork: 88,
+      classwork: 88,
       attendance: 88,
       help: 88,
       camera: 88,
@@ -128,7 +182,7 @@ const data: Student[] = [
     email: "alicejohnson@example.com",
     githubLink: "https://github.com/alicejohnson",
     speed: 99,
-    role: "member",
+    role: "student",
     group: "46",
     leaderId: "675dee40a1bb4008aab7ce43",
     parentFbLink: "https://facebook.com/alicejohnsonparent",
@@ -141,7 +195,7 @@ const data: Student[] = [
     },
     aura: {
       points: 9999999,
-      classWork: 999999,
+      classwork: 999999,
       attendance: 999999,
       help: 999999,
       camera: 999999,
@@ -164,7 +218,7 @@ const data: Student[] = [
     "studentFbLink": "https://facebook.com/alicejohnson",
     "email": "alicejohnson@example.com",
     "speed": 5,
-    "role": "member",
+    "role": "student",
     "group": "46",
     "leaderId": "675dee40a1bb4008aab7ce43",
     "parentFbLink": "https://facebook.com/alicejohnsonparent",
@@ -178,7 +232,7 @@ const data: Student[] = [
     },
     "aura": {
       "points": 1,
-      "classWork": 1,
+      "classwork": 1,
       "attendance": 1,
       "help": 1,
       "camera": 1,
@@ -217,7 +271,7 @@ export type Student = {
   }
   aura: {
     points: number
-    classWork: number
+    classwork: number
     attendance: number
     help: number
     camera: number
@@ -241,86 +295,15 @@ export type Payment = {
   email: string
 }
 
-const LeaderComment = ({ row }) => {
-  const [comment, setComment] = React.useState(row.getValue("comment"));
-  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
 
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setComment((prev) => {
-      const newComment = { ...prev };
-      if (id in newComment) {
-        newComment[id] = value;
-      } else if (id in newComment.controller) {
-        newComment.controller[id] = value;
-      }
-      return newComment;
-    })
-  }
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Save the comment here (e.g., send it to the server)
-    setIsDialogOpen(false); // Close the dialog
-  };
-
-  return (
-    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline" onClick={() => setIsDialogOpen(true)}>Edit Comment</Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Edit Comment</DialogTitle>
-          <DialogDescription>
-            Make changes to the comment here. Click save when you're done.
-          </DialogDescription>
-        </DialogHeader>
-        <form onSubmit={handleSubmit}>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="leaderComment" className="text-right">
-                Leader Comment
-              </Label>
-              <Input id="leaderComment" value={comment.leaderComment} onChange={handleChange} className="col-span-3" />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="leaderProof" className="text-right">
-                Leader Proof
-              </Label>
-              <Input id="leaderProof" value={comment.leaderProof} onChange={handleChange} className="col-span-3" />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="miniLeaderController" className="text-right">
-                Mini Leader Controller
-              </Label>
-              <Input id="miniLeaderController" value={comment.controller.miniLeaderController} onChange={handleChange} className="col-span-3" />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="leaderController" className="text-right">
-                Leader Controller
-              </Label>
-              <Input id="leaderController" value={comment.controller.leaderController} onChange={handleChange} className="col-span-3" />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button type="submit">Save changes</Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
-  );
-};
-
-export default LeaderComment;
-
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Student>[] = [
   {
     id: "select",
     header: ({ table }) => (
       <Checkbox
         checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
+          table.getIsAllPageRowsSelected() ? true :
+            table.getIsSomePageRowsSelected() ? "indeterminate" : false
         }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
@@ -350,7 +333,7 @@ export const columns: ColumnDef<Payment>[] = [
       )
     },
     cell: ({ row }) => (
-      <div className="capitalize text-center">
+      <div className="capitalize">
         {<Badge>{row.getValue("role")}</Badge>}
       </div>
     ),
@@ -369,7 +352,7 @@ export const columns: ColumnDef<Payment>[] = [
       )
     },
     cell: ({ row }) => (
-      <div className="capitalize text-center">
+      <div className="capitalize">
         {row.getValue("name")}
       </div>
     ),
@@ -378,7 +361,7 @@ export const columns: ColumnDef<Payment>[] = [
     accessorKey: "age",
     header: "age",
     cell: ({ row }) => (
-      <div className="capitalize text-center"><Badge variant="outline">{row.getValue("age")}</Badge></div>
+      <div className="capitalize"><Badge variant="outline">{row.getValue("age")}</Badge></div>
     ),
   },
   {
@@ -390,7 +373,7 @@ export const columns: ColumnDef<Payment>[] = [
     accessorKey: "studentFbLink",
     header: "studentFbLink",
     cell: ({ row }) => (
-      <div className="capitalize text-center"><Link target="_blank" to={row.getValue("studentFbLink")}><Button variant="link">Facebook</Button></Link></div>
+      <div className="capitalize"><Link target="_blank" to={row.getValue("studentFbLink")}><Button variant="link">Facebook</Button></Link></div>
     ),
   },
   {
@@ -407,14 +390,14 @@ export const columns: ColumnDef<Payment>[] = [
       )
     },
     cell: ({ row }) => (
-      <div className="capitalize text-center">{row.getValue("githubLastUpdate")}</div>
+      <div className="capitalize">{row.getValue("githubLastUpdate")}</div>
     ),
   },
   {
     accessorKey: "githubLink",
     header: "githubLink",
     cell: ({ row }) => (
-      <div className="capitalize text-center"><Link target="_blank" to={row.getValue("githubLink")}><Button variant="link">githubLink</Button></Link></div>
+      <div className="capitalize"><Link target="_blank" to={row.getValue("githubLink")}><Button variant="link">githubLink</Button></Link></div>
     ),
   },
   {
@@ -431,7 +414,7 @@ export const columns: ColumnDef<Payment>[] = [
       )
     },
     cell: ({ row }) => (
-      <div className="capitalize text-center "><Badge variant="outline">{row.getValue("speed")}</Badge></div>
+      <div className="capitalize "><Badge variant="outline">{row.getValue("speed")}</Badge></div>
     ),
   },
   {
@@ -448,21 +431,21 @@ export const columns: ColumnDef<Payment>[] = [
       )
     },
     cell: ({ row }) => (
-      <div className="capitalize text-center"><Badge variant="outline">{row.getValue("group")}</Badge></div>
+      <div className="capitalize"><Badge variant="outline">{row.getValue("group")}</Badge></div>
     ),
   },
   {
     accessorKey: "leaderId",
     header: "leaderId",
     cell: ({ row }) => (
-      <div className="capitalize text-center"><Link target="_blank" to={row.getValue("leaderId")}><Button variant="link">leaderID</Button></Link></div>
+      <div className="capitalize"><Link target="_blank" to={row.getValue("leaderId")}><Button variant="link">leaderID</Button></Link></div>
     ),
   },
   {
     accessorKey: "parentFbLink",
     header: "parentFbLink",
     cell: ({ row }) => (
-      <div className="capitalize text-center"><Link target="_blank" to={row.getValue("parentFbLink")}><Button variant="link">parenLink</Button></Link></div>
+      <div className="capitalize"><Link target="_blank" to={row.getValue("parentFbLink")}><Button variant="link">parenLink</Button></Link></div>
     ),
   },
   {
@@ -518,7 +501,7 @@ export const columns: ColumnDef<Payment>[] = [
             <span>points</span><span>{row.getValue("aura")["points"]}</span>
           </div>
           <div className="flex justify-between">
-            <span>classWork</span><span>{row.getValue("aura")["classWork"]}</span>
+            <span>classwork</span><span>{row.getValue("aura")["classwork"]}</span>
           </div>
           <div className="flex justify-between">
             <span>attendance</span><span>{row.getValue("aura")["attendance"]}</span>
@@ -541,14 +524,10 @@ export const columns: ColumnDef<Payment>[] = [
     accessorKey: "payedInfo",
     header: "payedInfo",
     cell: ({ row }) => (
-      <div className="capitalize text-center">{row.getValue("payedInfo") ? "True" : "False"}</div>
+      <div className="capitalize">{row.getValue("payedInfo") ? "True" : "False"}</div>
     ),
   },
-  {
-    accessorKey: "comment",
-    header: "comment",
-    cell: ({ row }) => <LeaderComment row={row} />,
-  },
+
   {
     id: "actions",
     enableHiding: false,
@@ -610,6 +589,13 @@ export const columns: ColumnDef<Payment>[] = [
 ]
 
 export function DataTable() {
+  const form = useForm({
+    resolver: zodResolver(userSchema),
+    defaultValues: {
+      email: "",
+    },
+  })
+
   const [sorting, setSorting] = React.useState<SortingState>(() => {
     const savedSorting = localStorage.getItem('sorting');
     return savedSorting ? JSON.parse(savedSorting) : [];
@@ -661,102 +647,376 @@ export function DataTable() {
       rowSelection,
     },
   });
+  const handleInputChange = (row, field, value) => {
+    row.original[field] = value;
+    // Trigger a re-render if necessary
+    setRowSelection({ ...rowSelection });
+  };
+  const handleSave = (row) => {
+    setRowSelection((prev) => ({ ...prev, [row.id]: row.original }))
+    console.log(table.getRowModel().rows)
+  };
+  React.useEffect(() => {
+  }, [rowSelection]);
 
   return (
-    <div className="grid auto-rows-min overflow-hidden gap-4 grid-cols-1">
-
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter name..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize text-center"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-      <ScrollArea >
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                    style={{ backgroundColor: JSON.parse(localStorage.getItem('rowColors') || '{}')[row.original._id] || '' }}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    No results.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+    <>
+      <div
+        className={`bg-[var(--background)] grid auto-rows-min overflow-hidden gap-4 grid-cols-1 px-2`}>
+        <div className="flex items-center py-4">
+          <Input
+            placeholder="Filter name..."
+            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+            onChange={(event) =>
+              table.getColumn("name")?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm"
+          />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="ml-auto">
+                Columns <ChevronDown />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize text-center"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
+        <ScrollArea >
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => {
+                      return (
+                        <TableHead key={header.id}>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                        </TableHead>
+                      );
+                    })}
+                  </TableRow>
+                ))}
+              </TableHeader>
+              <TableBody >
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <Sheet key={row.id}>
+                      <SheetTrigger asChild>
+                        <TableRow
+                          data-state={row.getIsSelected() && "selected"}
+                          style={{ backgroundColor: JSON.parse(localStorage.getItem('rowColors') || '{}')[row.original._id] || '' }}
+                        >
+                          {row.getVisibleCells().map((cell) => (
+                            <TableCell key={cell.id}>
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext()
+                              )}
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      </SheetTrigger>
+                      <AlertDialog>
+                        <SheetContent>
+                          <SheetHeader className="shadow-sm pb-2">
+                            <SheetTitle>Edit student</SheetTitle>
+                            <SheetDescription>
+                              Make changes to your profile here. Click save when you're done.
+                            </SheetDescription>
+                          </SheetHeader>
+                          <ScrollArea className="h-full p-4 pb-16">
+                            <div className="grid gap-4 py-4">
+                              <p className="font-bold leading-[5px] text-slate-400">leader edit</p>
+                              <div className="grid grid-cols-4  items-center justify-start gap-4">
+                                <Label htmlFor="leaderId" className="text-left font-th">
+                                  Leader ID
+                                </Label>
+                                <Input id="leaderId" value={row.original.leaderId} className="col-span-3" onChange={(e) => handleInputChange(row, 'leaderId', e.target.value)} />
+                              </div>
+                              <div className="grid grid-cols-4  items-center w-full justify-start gap-4">
+                                <Label htmlFor="name" className="text-left font-th">
+                                  Name
+                                </Label>
+                                <Input id="name" value={row.original.name} className="col-span-3" onChange={(e) => handleInputChange(row, 'name', e.target.value)} />
+                              </div>
+                              <div className="grid grid-cols-4  items-center justify-start gap-4">
+                                <Label htmlFor="age" className="text-left font-th">
+                                  Age
+                                </Label>
+                                <Input
+                                  type="number"
+                                  id="age"
+                                  value={row.original.age} className="col-span-3" onChange={(e) => handleInputChange(row, 'age', e.target.value)} />
+                              </div>
+                              <div className="grid grid-cols-4  items-center justify-start gap-4">
+                                <Label htmlFor="studentFbLink" className="text-left font-th">
+                                  Student Facebook Link
+                                </Label>
+                                <Input id="studentFbLink" value={row.original.studentFbLink} className="col-span-3" onChange={(e) => handleInputChange(row, 'studentFbLink', e.target.value)} />
+                              </div>
+                              <div className="grid grid-cols-4  items-center justify-start gap-4">
+                                <Label htmlFor="email" className="text-left font-th">
+                                  Email
+                                </Label>
+                                <Input id="email" value={row.original.email} className="col-span-3" onChange={(e) => handleInputChange(row, 'email', e.target.value)} />
+                              </div>
+                              <div className="grid grid-cols-4  items-center justify-start gap-4">
+                                <Label htmlFor="githubLink" className="text-left font-th">
+                                  GitHub Link
+                                </Label>
+                                <Input id="githubLink" value={row.original.githubLink} className="col-span-3" onChange={(e) => handleInputChange(row, 'githubLink', e.target.value)} />
+                              </div>
+                              <div className="grid grid-cols-4  items-center justify-start gap-4">
+                                <Label htmlFor="speed" className="text-left font-th">
+                                  Speed
+                                </Label>
+                                <Input
+                                  type="number"
+                                  id="speed"
+                                  value={row.original.speed} className="col-span-3" onChange={(e) => handleInputChange(row, 'speed', e.target.value)} />
+                              </div>
+                              <div className="grid grid-cols-4  items-center justify-start gap-4">
+                                <Label htmlFor="role" className="text-left font-th">
+                                  Role
+                                </Label>
+                                <Select onValueChange={(value) => handleInputChange(row, 'role', value)}>
+                                  <SelectTrigger className="col-span-3">
+                                    <SelectValue placeholder={`${row.original.role}`} />
+                                  </SelectTrigger>
+                                  <SelectContent >
+                                    <SelectGroup>
+                                      <SelectLabel>Fruits</SelectLabel>
+                                      <SelectItem value="mini-leader">mini leader</SelectItem>
+                                      <SelectItem value="student">student</SelectItem>
+                                    </SelectGroup>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                              <div className="grid grid-cols-4  items-center justify-start gap-4">
+                                <Label htmlFor="parentFbLink" className="text-left font-th">
+                                  Parent Facebook Link
+                                </Label>
+                                <Input id="parentFbLink" value={row.original.parentFbLink} className="col-span-3" onChange={(e) => handleInputChange(row, 'parentFbLink', e.target.value)} />
+                              </div>
+                              <div className="grid grid-cols-4  items-center justify-start gap-4">
+                                <Label htmlFor="githubToken" className="text-left font-th">
+                                  GitHub Token
+                                </Label>
+                                <Input id="githubToken" value={row.original.githubToken} className="col-span-3" onChange={(e) => handleInputChange(row, 'githubToken', e.target.value)} />
+                              </div>
+                              <div className="grid grid-cols-4  items-center justify-start gap-4">
+                                <Label htmlFor="githubLastUpdate" className="text-left font-th">
+                                  GitHub Last Update
+                                </Label>
+                                <Input id="githubLastUpdate" value={row.original.githubLastUpdate} className="col-span-3" onChange={(e) => handleInputChange(row, 'githubLastUpdate', e.target.value)} />
+                              </div>
+                              <p className="font-bold leading-[5px] text-slate-400">github control</p>
+                              <Separator />
+                              <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="githubFine">
+                                  GitHub Fine
+                                </Label>
+                                <Input
+                                  type="number"
+                                  id="githubFine"
+                                  value={row.original.fines.githubFine}
+                                  className="col-span-3"
+                                  onChange={(e) => handleInputChange(row, 'fines', { ...row.original.fines, githubFine: parseInt(e.target.value) })}
+                                />
+                              </div>
+                              <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="miniLeaderFine">
+                                  Mini Leader Fine
+                                </Label>
+                                <Input
+                                  type="number"
+                                  id="miniLeaderFine"
+                                  value={row.original.fines.miniLeaderFine}
+                                  className="col-span-3"
+                                  onChange={(e) => handleInputChange(row, 'fines', { ...row.original.fines, miniLeaderFine: parseInt(e.target.value) })}
+                                />
+                              </div>
+                              <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="miniStudentFine">
+                                  Mini Student Fine
+                                </Label>
+                                <Input
+                                  type="number"
+                                  id="miniStudentFine"
+                                  value={row.original.fines.miniStudentFine}
+                                  className="col-span-3"
+                                  onChange={(e) => handleInputChange(row, 'fines', { ...row.original.fines, miniStudentFine: parseInt(e.target.value) })}
+                                />
+                              </div>
+                              <p className="font-bold leading-[5px] text-slate-400">mentor</p>
+                              <Separator />
+                              <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="aura-points" >
+                                  Points
+                                </Label>
+                                <span className="font-bold" >{row.original.aura.classwork + row.original.aura.attendance + row.original.aura.help + row.original.aura.camera + row.original.aura.answers + row.original.aura.camera}</span>
+                              </div>
+                              <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="aura-classwork" >
+                                  Classwork
+                                </Label>
+                                <Input
+                                  type="number"
+                                  id="aura-classwork"
+                                  value={row.original.aura.classwork}
+                                  className="col-span-3"
+                                  
+                                  onChange={(e) => handleInputChange(row, 'aura', { ...row.original.aura, classwork: parseInt(e.target.value) })}
+                                />
+                              </div>
+                              <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="aura-attendance" >
+                                  Attendance
+                                </Label>
+                                <Input
+                                  type="number"
+                                  id="aura-attendance"
+                                  value={row.original.aura.attendance}
+                                  className="col-span-3"
+                                  onChange={(e) => handleInputChange(row, 'aura', { ...row.original.aura, attendance: parseInt(e.target.value) })}
+                                />
+                              </div>
+                              <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="aura-help" >
+                                  Help
+                                </Label>
+                                <Input
+                                  type="number"
+                                  id="aura-help"
+                                  value={row.original.aura.help}
+                                  className="col-span-3"
+                                  onChange={(e) => handleInputChange(row, 'aura', { ...row.original.aura, help: parseInt(e.target.value) })}
+                                />
+                              </div>
+                              <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="aura-camera" >
+                                  Camera
+                                </Label>
+                                <Input
+                                  type="number"
+                                  id="aura-camera"
+                                  value={row.original.aura.camera}
+                                  className="col-span-3"
+                                  onChange={(e) => handleInputChange(row, 'aura', { ...row.original.aura, camera: parseInt(e.target.value) })}
+                                />
+                              </div>
+                              <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="aura-answers" >
+                                  Answers
+                                </Label>
+                                <Input
+                                  type="number"
+                                  id="aura-answers"
+                                  value={row.original.aura.answers}
+                                  className="col-span-3"
+                                  onChange={(e) => handleInputChange(row, 'aura', { ...row.original.aura, answers: parseInt(e.target.value) })}
+                                />
+                              </div>
 
-        <ScrollBar orientation="horizontal" />
-      </ScrollArea>
-      <div className="flex items-center justify-end space-x-2 py-4">
+                              <p className="font-bold leading-[5px] text-slate-400">github control</p>
+                              <Separator />
+                              {/* // ! payed info */}
+                              <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="leaderComment" className="text-right">
+                                  Leader Comment
+                                </Label>
+                                <Input
+                                  id="leaderComment"
+                                  value={row.original.comment.leaderComment}
+                                  className="col-span-3"
+                                  onChange={(e) => handleInputChange(row, 'comment', { ...row.original.comment, leaderComment: e.target.value })}
+                                />
+                              </div>
+                              <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="leaderProof" className="text-right">
+                                  Leader Proof
+                                </Label>
+                                <Input
+                                  id="leaderProof"
+                                  value={row.original.comment.leaderProof}
+                                  className="col-span-3"
+                                  onChange={(e) => handleInputChange(row, 'comment', { ...row.original.comment, leaderProof: e.target.value })}
+                                />
+                              </div>
+                              <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="miniLeaderController" className="text-right">
+                                  Mini Leader Controller
+                                </Label>
+                                <Input
+                                  id="miniLeaderController"
+                                  value={row.original.comment.controller.miniLeaderController}
+                                  className="col-span-3"
+                                  onChange={(e) => handleInputChange(row, 'comment', { ...row.original.comment, controller: { ...row.original.comment.controller, miniLeaderController: e.target.value } })}
+                                />
+                              </div>
+                              <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="leaderController" className="text-right">
+                                  Leader Controller
+                                </Label>
+                                <Input
+                                  id="leaderController"
+                                  value={row.original.comment.controller.leaderController}
+                                  className="col-span-3"
+                                  onChange={(e) => handleInputChange(row, 'comment', { ...row.original.comment, controller: { ...row.original.comment.controller, leaderController: e.target.value } })}
+                                />
+                              </div>
+                              <Separator />
+                            </div>
+                            <SheetFooter>
+                              <SheetClose asChild>
+                                <Button type="submit" onClick={() => handleSave(row)}>Save changes</Button>
+                              </SheetClose>
+                            </SheetFooter>
+                          </ScrollArea>
+                        </SheetContent>
+                      </AlertDialog>
+                    </Sheet>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length}
+                      className="h-24 text-center"
+                    >
+                      No results.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea >
+        <div className=" flex items-center justify-end space-x-2 py-4">
           <div className="flex-1 text-sm text-muted-foreground">
             {table.getFilteredSelectedRowModel().rows.length} of{" "}
             {table.getFilteredRowModel().rows.length} row(s) selected.
@@ -780,6 +1040,7 @@ export function DataTable() {
             </Button>
           </div>
         </div>
-    </div>
-  )
+      </div >
+    </>
+  );
 }

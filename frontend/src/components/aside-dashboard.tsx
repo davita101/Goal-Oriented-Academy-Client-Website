@@ -1,4 +1,4 @@
-"use client"
+import * as React from "react"
 
 import { ChevronRight, type LucideIcon } from "lucide-react"
 
@@ -17,7 +17,6 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
-
 export function AsideDashboard({
   items, title
 }: {
@@ -60,15 +59,6 @@ export function AsideDashboard({
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <SidebarMenuSub>
-                   {item.items?.items?.map((subItem) => (
-                    <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton asChild>
-                        <a href={subItem.url}>
-                          <span>{subItem.title}</span>
-                        </a>
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                  ))}
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton asChild>

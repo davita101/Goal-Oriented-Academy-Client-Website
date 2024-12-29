@@ -51,7 +51,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         items: [
           {
             title: "Default",
-            url: "/dashboard/dashboard",
+            url: "/dashboard",
           },
           {
             title: "Analytics",
