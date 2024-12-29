@@ -1,13 +1,11 @@
-import React from 'react'
+import * as React from "react";
 import { AppSidebar } from "@/components/app-sidebar"
-import { DataTable } from "@/components/data-table"
 import { NavigationMenuNotification } from "@/components/nav-notification"
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Input } from "@/components/ui/input"
@@ -19,15 +17,11 @@ import {
 } from "@/components/ui/sidebar"
 import ToggleDarkMode from "@/components/ui/togle-dark-mode"
 
-import { Route, Routes, useLocation } from "react-router-dom"
-import Dashboard from './Dashboard'
-import Account from './Account'
-import { Toaster } from '@/components/ui/sonner'
+import { Routes, useLocation } from "react-router-dom"
 
 export default function User() {
   const location = useLocation();
   const path = location.pathname;
-  const userId = path.split('/')[2]
   return (
     <>
       <SidebarProvider
@@ -46,47 +40,71 @@ export default function User() {
               <div >
                 <BreadcrumbList>
                   <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbLink href={`/dashboard/${userId}/`}>home</BreadcrumbLink>
+                    <BreadcrumbLink href={`/dashboard`}>home</BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className="hidden md:block" />
-                  {path.includes(`/dashboard/${userId}/`) && (
+                  {path.includes(`/dashboard`) && (
                     <>
                       <BreadcrumbItem className="hidden md:block">
-                        <BreadcrumbLink href={`/dashboard/${userId}/`}>dashboard</BreadcrumbLink>
+                        <BreadcrumbLink href={`/dashboard`}>dashboard</BreadcrumbLink>
                       </BreadcrumbItem>
                       <BreadcrumbSeparator className="hidden md:block" />
+                      {!path.includes(`/dashboard/dashboard`) && (
+                        <>
+                          <BreadcrumbItem className="hidden md:block">
+                            <BreadcrumbLink href={`${path}`}>{path.replace("dashboard", "").replace(/\/+/g, "")}</BreadcrumbLink>
+                          </BreadcrumbItem>
+                        </>
+                      )}
+
                     </>
                   )}
-                  {path === `/dashboard/${userId}/all-squad-member` && (
+                   {path.includes(`/widgets`) && (
                     <>
                       <BreadcrumbItem className="hidden md:block">
-                        <BreadcrumbLink href="#">All Squad Members</BreadcrumbLink>
+                        <BreadcrumbLink href={`/widgets`}>widgets</BreadcrumbLink>
                       </BreadcrumbItem>
                       <BreadcrumbSeparator className="hidden md:block" />
+                      {!path.includes(`/widgets/widgets`) && (
+                        <>
+                          <BreadcrumbItem className="hidden md:block">
+                            <BreadcrumbLink href={`${path}`}>{path.replace("widgets", "").replace(/\/+/g, "")}</BreadcrumbLink>
+                          </BreadcrumbItem>
+                        </>
+                      )}
+
                     </>
                   )}
-                  {path === `/dashboard/${userId}/all-leader-info` && (
+                   {path.includes(`/applications`) && (
                     <>
                       <BreadcrumbItem className="hidden md:block">
-                        <BreadcrumbLink href="#">All Leader info</BreadcrumbLink>
+                        <BreadcrumbLink href={`/applications`}>applications</BreadcrumbLink>
                       </BreadcrumbItem>
                       <BreadcrumbSeparator className="hidden md:block" />
+                      {!path.includes(`/applications/applications`) && (
+                        <>
+                          <BreadcrumbItem className="hidden md:block">
+                            <BreadcrumbLink href={`${path}`}>{path.replace("applications", "").replace(/\/+/g, "")}</BreadcrumbLink>
+                          </BreadcrumbItem>
+                        </>
+                      )}
+
                     </>
                   )}
-                  {path === `/dashboard/${userId}/all-inboxes` && (
+                   {path.includes(`/controls`) && (
                     <>
                       <BreadcrumbItem className="hidden md:block">
-                        <BreadcrumbLink href="#">All Inboxes</BreadcrumbLink>
+                        <BreadcrumbLink href={`/controls`}>controls</BreadcrumbLink>
                       </BreadcrumbItem>
                       <BreadcrumbSeparator className="hidden md:block" />
-                    </>
-                  )}
-                  {path === `/dashboard/${userId}/account` && (
-                    <>
-                      <BreadcrumbItem className="hidden md:block">
-                        <BreadcrumbLink href="#">account</BreadcrumbLink>
-                      </BreadcrumbItem>
-                      <BreadcrumbSeparator className="hidden md:block" />
+                      {!path.includes(`/controls/controls`) && (
+                        <>
+                          <BreadcrumbItem className="hidden md:block">
+                            <BreadcrumbLink href={`${path}`}>{path.replace("controls", "").replace(/\/+/g, "")}</BreadcrumbLink>
+                          </BreadcrumbItem>
+                        </>
+                      )}
+
                     </>
                   )}
                 </BreadcrumbList>
@@ -108,7 +126,7 @@ export default function User() {
               {/* <Route path="/all-squad-member" element={<DataTable />} /> */}
               {/* <Route path="/lomi" element={<h1>davit</h1>} /> */}
             </Routes>
-       
+
           </div>
         </SidebarInset>
       </SidebarProvider>

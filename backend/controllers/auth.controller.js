@@ -13,7 +13,7 @@ const ONE_HOUR = 60 * 60 * 1000; // 1 hour in milliseconds
 // * Define rate limiter for signup
 const signupLimiter = rateLimit({
     windowMs: 60 * 60 * 1000, // 60 წუთი
-    max: 100, // თითოეული IP მისამართიდან 5 მოთხოვნა
+    max: 100, // თითოეული IP მისამართიდან 100 მოთხოვნა
     message: "Too many signup attempts from this IP, please try again later."
 });
 

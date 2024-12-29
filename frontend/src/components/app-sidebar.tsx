@@ -1,11 +1,19 @@
 import * as React from "react"
 import {
+  Book,
+  BookA,
+  BookAudio,
+  BookCopy,
+  BookMarked,
   CalendarDays,
   ChartBarIncreasing,
   ChartColumnStacked,
   ComputerIcon,
   FileText,
+  GalleryVertical,
   Inbox,
+  MonitorCog,
+  Presentation,
   SquareTerminal,
   UserRoundPen,
 } from "lucide-react"
@@ -40,11 +48,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         title: "Dashboard",
         url: "#",
         icon: SquareTerminal,
-        isActive: true,
         items: [
           {
             title: "Default",
-            url: "/dashboard/default",
+            url: "/dashboard/dashboard",
           },
           {
             title: "Analytics",
@@ -60,6 +67,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
     widgets:
       [
+        {
+          name: "all",
+          url: "/widgets",
+          icon: GalleryVertical ,
+        },
         {
           name: "Statistics",
           url: "/widgets/statistics",
@@ -79,6 +91,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       ],
     applications: [
       {
+        name: "all",
+        url: "/applications",
+        icon: GalleryVertical ,
+      },
+      {
         name: "Inbox",
         url: "/applications/inbox",
         icon: Inbox,
@@ -94,101 +111,47 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         icon: UserRoundPen,
       },
     ],
-    controllers: [
-      {
-        title: "Mentor",
-        url: "/mentor",
-        icon: ComputerIcon,
-        isActive: true,
-        items: [
-          {
-            title: "Rating",
-            url: "/controller/mentor/rating",
-            items: [
-              {
-                title: "Cards",
-                url: "/controller/mentor/cards",
-              },
-              {
-                title: "GithubCheck",
-                url: "/controller/squad-member",
-              },
-            ],
-          },
-          {
-            title: "More...",
-            url: "#",
-          },
-        ],
-      },
-    ],
-    tree: [
+    controls:
       [
-        "Mentor",
-        [
-          "Rating",
-          "Github-Check",
-        ],
-        ["Exams", "Exam-one", "Exam-two"],
-        "Data",
-        "Cards",
-        "Rating",
-        "Charts",
+        {
+          name: "all",
+          url: "/controls",
+          icon: GalleryVertical ,
+        },
+        ,
+        {
+          name: "Students",
+          url: "/controls/students",
+          icon: Book ,
+        },
+        {
+          name: "Leader",
+          url: "/controls/leader",
+          icon: BookCopy,
+
+        },
+        {
+          name: "Mini Leader",
+          url: "/controls/mini-leader",
+          icon: BookA,
+        },
+        {
+          name: "Mini students",
+          url: "/controls/mini-students",
+          icon: BookMarked,
+        },
+        {
+          name: "Mentor",
+          url: "/controls/mentor",
+          icon: Presentation,
+        },
+        {
+          name: "Mentor Assistant",
+          url: "/controls/mentor-assistant",
+          icon: MonitorCog,
+        },
       ],
-      [
-        "Mentor-Assistant",
-        [
-          "Rating",
-          "Github-Check",
-        ],
-        ["Exams", "Exam-one", "Exam-two"],
-        "Data",
-        "Cards",
-        "Rating",
-        "Charts"
-      ],
-      [
-        "Leaders",
-        [
-          "Rating",
-          "Github-Check",
-          "Leader-Codewars",
-          "Leader-Github",
-          "Parent-Rating",
-        ],
-        ["Exams", "Exam-one", "Exam-two"],
-        ["Github-Check",
-          "First-Check", "Second-Check",
-        ],
-        "Cards",
-        "Rating",
-        "Charts"
-      ],
-      [
-        "Mini-Leaders",
-        [
-          "Rating",
-          "Github-Check",
-        ],
-        ["Github-Check",
-          "First-Check", "Second-Check",
-        ],
-        "Cards",
-        "Rating",
-        "Charts"
-      ],
-      [
-        "Mini-Mentor",
-        [
-          "Rating",
-          "Github-Check",
-        ],
-        ["Exams", "Exam-one", "Exam-two"],
-        "Cards",
-        "Rating",
-        "Charts"
-      ],
-    ],
+
 
   }
   return (
@@ -201,16 +164,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <AsideDashboard items={data.navMain} title="Dashboard" />
           <NavProjects items={data.widgets} title="Widgets" />
           <NavProjects items={data.applications} title="Applications" />
-          <SidebarMenu>
-            <SidebarHeader>Controllers</SidebarHeader>
-            {data.tree.map((item, index) => (
-              <Tree key={index} item={item} />
-            ))}
-          </SidebarMenu>
-          <SidebarMenu>
-            <SidebarHeader>Admin</SidebarHeader>
-            <b>{"COMING SOON..."}</b>
-          </SidebarMenu>
+          <NavProjects items={data.controls} title="Controls" />
         </SidebarContent>
         <SidebarRail />
       </ScrollArea>

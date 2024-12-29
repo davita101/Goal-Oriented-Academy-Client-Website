@@ -42,7 +42,7 @@ export function AsideDashboard({
   return (
     <SidebarGroup>
       <SidebarGroupLabel>{title}</SidebarGroupLabel>
-      <SidebarMenu>
+      <SidebarMenu >
         {items.map((item) => (
           <Collapsible
             key={item.title}
