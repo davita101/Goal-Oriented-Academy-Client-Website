@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react"
+import * as React from "react"
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
 import {
   Form,
   FormControl,
@@ -11,17 +10,14 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { formSchemaEmail } from "@/schema/login"
+import { formSchemaEmail } from "@/schema/form"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import axios from "axios"
 import { Check, MoveLeft } from "lucide-react"
-import { useLocation, useNavigate } from "react-router-dom"
 
 export default function Login() {
-  const [emailValue, setEmailValue] = useState("")
-  const [sendInfo, setSendInfo] = useState(false)
-  const [message, setMessage] = useState('');
+  const [emailValue, setEmailValue] = React.useState("")
+  const [sendInfo, setSendInfo] = React.useState(false)
 
   const form = useForm({
     resolver: zodResolver(formSchemaEmail),
@@ -31,22 +27,15 @@ export default function Login() {
   })
 
   // ! this is important if i want change values and update it instant
-  const handleEmailChange = (e) => {
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setEmailValue(e.target.value)
   }
   // ! this is important if i want change values and update it instant
   const emailValidationResult = formSchemaEmail.safeParse(form.getValues())
   // * client email 
-  const clientEmail = formSchemaEmail.safeParse(form.getValues()).success && emailValidationResult.data.email
-  const handleEmailSubmit = async (e) => {
-    e.preventDefault()
-    if (clientEmail) {
-
-      axios
-        .post("http://localhost:5000/api/auth/login", { email: clientEmail })
-        .catch((error) => console.error("Error fetching users:", error))
-      setSendInfo(true)
-    }
+  const clientEmail = ""
+  const handleEmailSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    
   }
 
 

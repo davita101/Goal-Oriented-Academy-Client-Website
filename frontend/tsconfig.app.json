@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "jsx": "react",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
     // ...
     "baseUrl": ".",
     "paths": {

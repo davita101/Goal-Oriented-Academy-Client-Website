@@ -11,6 +11,9 @@ module.exports = {
   		}
   	},
   	extend: {
+		transitionDuration: {
+			'5000': '5000ms',
+		  },
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',

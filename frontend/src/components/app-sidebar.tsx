@@ -2,13 +2,11 @@ import * as React from "react"
 import {
   Book,
   BookA,
-  BookAudio,
   BookCopy,
   BookMarked,
   CalendarDays,
   ChartBarIncreasing,
   ChartColumnStacked,
-  ComputerIcon,
   FileText,
   GalleryVertical,
   Inbox,
@@ -24,15 +22,12 @@ import {
   Sidebar,
   SidebarContent,
   SidebarHeader,
-  SidebarMenu,
+  SidebarProvider,
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { ScrollArea } from "./ui/scroll-area"
 import { useParams } from "react-router-dom"
 import { NavProjects } from "./nav-projects"
-import Tree from "./ui/sidebar-tree"
-
-
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { userId } = useParams<{ userId: string }>();
@@ -70,7 +65,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {
           name: "all",
           url: "/widgets",
-          icon: GalleryVertical ,
+          icon: GalleryVertical,
         },
         {
           name: "Statistics",
@@ -93,7 +88,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       {
         name: "all",
         url: "/applications",
-        icon: GalleryVertical ,
+        icon: GalleryVertical,
       },
       {
         name: "Inbox",
@@ -116,13 +111,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {
           name: "all",
           url: "/controls",
-          icon: GalleryVertical ,
+          icon: GalleryVertical,
         },
-        ,
         {
           name: "Students",
           url: "/controls/students",
-          icon: Book ,
+          icon: Book,
         },
         {
           name: "Leader",
@@ -155,7 +149,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   }
   return (
-    <Sidebar collapsible="icon" {...props}>
+
+    <Sidebar collapsible="icon" {...props} className="data-[state=open]">
       <ScrollArea>
         <SidebarHeader className="sticky top-0 z-[2]">
           <NavUser user={data.user} />
@@ -169,5 +164,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarRail />
       </ScrollArea>
     </Sidebar>
+
   );
 }

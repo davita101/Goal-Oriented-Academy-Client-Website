@@ -1,10 +1,10 @@
 import { Sun, Moon } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
+import * as  React from 'react';
 
 const ToggleDarkMode = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const storedTheme = localStorage.getItem('theme');
     const isDark = storedTheme === 'dark' || (!storedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
     if (isDark) {

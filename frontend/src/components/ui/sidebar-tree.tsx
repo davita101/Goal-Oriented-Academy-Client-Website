@@ -1,6 +1,7 @@
 import { ChevronRight, File, Folder } from "lucide-react"
 import { SidebarMenuButton, SidebarMenuItem, SidebarMenuSub } from "./sidebar"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible"
+import * as React from "react"
 
 export default function Tree({ item }: { item: string | any[] }) {
   const [name, ...items] = Array.isArray(item) ? item : [item]

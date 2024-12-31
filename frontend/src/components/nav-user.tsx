@@ -1,5 +1,3 @@
-"use client"
-
 import {
   BadgePercent,
   Bolt,
@@ -28,7 +26,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import React from "react"
+import * as React from "react"
 
 export function NavUser({
   user,

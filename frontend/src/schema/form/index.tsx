@@ -1,6 +1,5 @@
 import { z } from "zod";
-// ! log in 
-
+// ! form
 export const formSchemaEmail = z.object({
-  email: z.string().email({ message: "" })
+  leaderId: z.string().email({ message: "" })
 })
