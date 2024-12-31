@@ -888,7 +888,7 @@ export function DataTable() {
                                   id="aura-classwork"
                                   value={row.original.aura.classwork}
                                   className="col-span-3"
-                                  
+
                                   onChange={(e) => handleInputChange(row, 'aura', { ...row.original.aura, classwork: parseInt(e.target.value) })}
                                 />
                               </div>
