@@ -60,194 +60,8 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { userSchema } from "../schema/user"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
-
-const data: Student[] = [
-  {
-    _id: "49c6589f-aba8-4d02-b3ce2-548de0b51d40",
-    name: "Alice Johnson",
-    age: 21,
-    studentFbLink: "https://facebook.com/alicejohnson",
-    email: "alicejohnson@example.com",
-    githubLink: "https://github.com/alicejohnson",
-    speed: 4,
-    group: "44",
-    role: "miniLeader",
-    leaderId: "675dee40a1bb4008aab7ce43",
-    parentFbLink: "https://facebook.com/alicejohnsonparent",
-    githubToken: "123124145666424564564345345",
-    githubLastUpdate: "2021-09-02",
-    fines: {
-      githubFine: 1,
-      miniLeaderFine: 2,
-      miniStudentFine: 3
-    },
-    aura: {
-      points: 9999,
-      classwork: 9999,
-      attendance: 9999,
-      help: 9999,
-      camera: 9999,
-      answers: 99993
-    },
-    payedInfo: false,
-    comment: {
-      leaderComment: "123",
-      leaderProof: "123",
-      controller: {
-        miniLeaderController: "miniLeaderController",
-        leaderController: "leaderController"
-      }
-    }
-  },
-  {
-    _id: "49c6589f-aba8-4d02-b4ce2-548de0b51d41",
-    name: "sophia🌸",
-    age: 16,
-    studentFbLink: "https://facebook.com/sofia",
-    email: "sofia@example.com",
-    githubLink: "https://github.com/SopiaGorgadze",
-    speed: 4,
-    group: "50",
-    role: "miniLeader",
-    leaderId: "🐧🐧🐧🐧🐧🐧🐧🐧🐧🐧🐧🐧",
-    parentFbLink: "https://facebook.com/alicejohnsonparent",
-    githubToken: "%3333",
-    githubLastUpdate: "2024-12-25",
-    fines: {
-      githubFine: 0,
-      miniLeaderFine: 0,
-      miniStudentFine: 0
-    },
-    aura: {
-      points: 0,
-      classwork: 1,
-      attendance: 1,
-      help: 1,
-      camera: 1,
-      answers: 1,
-    },
-    payedInfo: false,
-    comment: {
-      leaderComment: "ეშხიანი გოგნა ვარ!🌸",
-      leaderProof: "ფრუფი რად უნდა!😊💔",
-      controller: {
-        miniLeaderController: "მინი ლიდერების დედოფალი🌸",
-        leaderController: "ლიდერების დედოფალი🌸"
-      }
-    }
-  },
-  {
-    _id: "49c6589f-a1ba8-4d02-bce2-548de03b51d40",
-    name: "gio lomi",
-    age: 21,
-    studentFbLink: "https://facebook.com/alicejohnson",
-    email: "alicejohnson@example.com",
-    githubLink: "https://github.com/alicejohnson",
-    speed: 4,
-    role: "student",
-    group: "45",
-    leaderId: "675dee40a1bb4008aab7ce43",
-    parentFbLink: "https://facebook.com/alicejohnsonparent",
-    githubToken: "45347565343454736464564564345345",
-    githubLastUpdate: "2021-09-04",
-    fines: {
-      githubFine: 1,
-      miniLeaderFine: 2,
-      miniStudentFine: 3
-    },
-    aura: {
-      points: 88,
-      classwork: 88,
-      attendance: 88,
-      help: 88,
-      camera: 88,
-      answers: 883
-    },
-    payedInfo: false,
-    comment: {
-      leaderComment: "123",
-      leaderProof: "123",
-      controller: {
-        miniLeaderController: "miniLeaderController",
-        leaderController: "leaderController"
-      }
-    }
-  },
-  {
-    _id: "49c6589f-aba81-4d02-bce2-54568de0b51d40",
-    name: "davit lomim",
-    age: 21,
-    studentFbLink: "https://facebook.com/alicejohnson",
-    email: "alicejohnson@example.com",
-    githubLink: "https://github.com/alicejohnson",
-    speed: 4,
-    role: "student",
-    group: "46",
-    leaderId: "datvi1",
-    parentFbLink: "https://facebook.com/alicejohnsonparent",
-    githubToken: "4534534345436464564564345345",
-    githubLastUpdate: "2021-09-05",
-    fines: {
-      githubFine: 1,
-      miniLeaderFine: 1,
-      miniStudentFine: 1
-    },
-    aura: {
-      points: 9999999,
-      classwork: 999999,
-      attendance: 999999,
-      help: 999999,
-      camera: 999999,
-      answers: 9993999
-    },
-    payedInfo: true,
-    comment: {
-      leaderComment: "123",
-      leaderProof: "123",
-      controller: {
-        miniLeaderController: "123",
-        leaderController: "123"
-      }
-    }
-  },
-  {
-    "_id": "49c6589f-aba8-4d0212-bce2-548de0b51d40",
-    "name": "nameless",
-    "age": 21,
-    "studentFbLink": "https://facebook.com/alicejohnson",
-    "email": "alicejohnson@example.com",
-    "speed": 4,
-    "role": "student",
-    "group": "46",
-    "leaderId": "datvi2",
-    "parentFbLink": "https://facebook.com/alicejohnsonparent",
-    "githubLink": "https://github.com/alicejohnson",
-    "githubToken": "12345624412423423242342342414",
-    "githubLastUpdate": "2021-09-06",
-    "fines": {
-      "githubFine": 1,
-      "miniLeaderFine": 1,
-      "miniStudentFine": 1
-    },
-    "aura": {
-      "points": 1,
-      "classwork": 1,
-      "attendance": 1,
-      "help": 1,
-      "camera": 1,
-      "answers": 1
-    },
-    "payedInfo": true,
-    "comment": {
-      "leaderComment": "123",
-      "leaderProof": "123",
-      "controller": {
-        "miniLeaderController": "123",
-        "leaderController": "123"
-      }
-    }
-  },
-]
+import { useAuthStore } from "../store/authStore"
+import Loading from "./loading"
 
 export type Student = {
   _id: string
@@ -597,7 +411,7 @@ export function DataTable() {
   });
   const [oneRowSelection, setOneRowSelection] = React.useState(() => {
     const savedSelection = localStorage.getItem('oneRowSelection');
-    return savedSelection ? JSON.parse(savedSelection) : {};
+    return savedSelection ? JSON.parse(savedSelection) : null;
   });
 
   React.useEffect(() => {
@@ -612,15 +426,20 @@ export function DataTable() {
     localStorage.setItem('columnVisibility', JSON.stringify(columnVisibility));
   }, [columnVisibility]);
 
-  React.useEffect(() => {
-    localStorage.setItem('rowSelection', JSON.stringify(rowSelection));
-  }, [rowSelection]);
-  React.useEffect(() => {
-    localStorage.setItem('oneRowSelection', JSON.stringify(oneRowSelection));
-  }, [oneRowSelection]);
+  const { user, oneLeaderStudent, oneLeaderStudentArr, oneStudentDefine, oneStudent, isLoading } = useAuthStore()
 
+  React.useEffect(() => {
+    oneLeaderStudent(user.user._id)
+  }, [user.user._id, oneLeaderStudent])
+
+
+  React.useEffect(() => {
+    if (oneRowSelection) {
+      oneStudentDefine(oneRowSelection.leaderId, oneRowSelection._id)
+    }
+  }, [oneRowSelection])
   const table = useReactTable({
-    data: data.sort((a, b) => a.group < b.group ? 1 : -1),
+    data: oneLeaderStudentArr.sort((a, b) => a.group < b.group ? 1 : -1),
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -637,30 +456,50 @@ export function DataTable() {
       rowSelection,
     },
   });
-
-
   const form = useForm<Student>({
     resolver: zodResolver(userSchema),
     defaultValues: {
-      _id: oneRowSelection?._id || '',
-      group: oneRowSelection?.group || '',
-      leaderId: oneRowSelection?.leaderId || '', // Initialize with oneRowSelection.leaderId if available
-      name: oneRowSelection?.name || '', // Initialize with oneRowSelection.name if available
-      studentFbLink: oneRowSelection?.studentFbLink || '', // Initialize with oneRowSelection.studentFbLink if available
-      age: oneRowSelection?.age || 0, // Initialize with oneRowSelection.age if available
-      email: oneRowSelection?.email || '', // Initialize with oneRowSelection.email if available
-      githubLink: oneRowSelection?.githubLink || '', // Initialize with oneRowSelection.githubLink if available
-      speed: oneRowSelection?.speed || 0, // Initialize with oneRowSelection.speed if available
-      role: oneRowSelection?.role || '', // Initialize with oneRowSelection.role if available
-      parentFbLink: oneRowSelection?.parentFbLink || '', // Initialize with oneRowSelection.parentFbLink if available
-      githubToken: oneRowSelection?.githubToken || '', // Initialize with oneRowSelection.githubToken if available
-      githubLastUpdate: oneRowSelection?.githubLastUpdate || '', // Initialize with oneRowSelection.githubLastUpdate if available
-      fines: oneRowSelection?.fines || { githubFine: 0, miniLeaderFine: 0, miniStudentFine: 0 }, // Initialize with oneRowSelection.fines if available
-      aura: oneRowSelection?.aura || { points: 0, classwork: 0, attendance: 0, help: 0, camera: 0, answers: 0 }, // Initialize with oneRowSelection.aura if available
-      payedInfo: oneRowSelection?.payedInfo || false, // Initialize with oneRowSelection.payedInfo if available
-      comment: oneRowSelection?.comment || { leaderComment: '', leaderProof: '', controller: { miniLeaderController: '', leaderController: '' } }, // Initialize with oneRowSelection.comment if available
+      _id: '',
+      group: '',
+      leaderId: '',
+      name: '',
+      studentFbLink: '',
+      age: 0,
+      email: '',
+      githubLink: '',
+      speed: 0,
+      role: '',
+      parentFbLink: '',
+      githubToken: '',
+      githubLastUpdate: '',
+      fines: { githubFine: 0, miniLeaderFine: 0, miniStudentFine: 0 },
+      aura: { points: 0, classwork: 0, attendance: 0, help: 0, camera: 0, answers: 0 },
+      payedInfo: false,
+      comment: { leaderComment: '', leaderProof: '', controller: { miniLeaderController: '', leaderController: '' } },
     },
   });
+
+  React.useEffect(() => {
+    form.reset({
+      _id: oneStudent?._id || '',
+      group: oneStudent?.group || '',
+      leaderId: oneStudent?.leaderId || '',
+      name: oneStudent?.name || '',
+      studentFbLink: oneStudent?.studentFbLink || '',
+      age: oneStudent?.age || 0,
+      email: oneStudent?.email || '',
+      githubLink: oneStudent?.githubLink || '',
+      speed: oneStudent?.speed || 0,
+      role: oneStudent?.role || '',
+      parentFbLink: oneStudent?.parentFbLink || '',
+      githubToken: oneStudent?.githubToken || '',
+      githubLastUpdate: oneStudent?.githubLastUpdate || '',
+      fines: oneStudent?.fines || { githubFine: 0, miniLeaderFine: 0, miniStudentFine: 0 },
+      aura: oneStudent?.aura || { points: 0, classwork: 0, attendance: 0, help: 0, camera: 0, answers: 0 },
+      payedInfo: oneStudent?.payedInfo || false,
+      comment: oneStudent?.comment || { leaderComment: '', leaderProof: '', controller: { miniLeaderController: '', leaderController: '' } },
+    });
+  }, [oneStudent, form]);
   const formRender = (typeMain: string, minNum: number, maxNum: number, id: string, label: string, roles: string[], row: string) => {
     if (typeMain === 'number') {
       return (
@@ -752,9 +591,8 @@ export function DataTable() {
       row.original[field] = value;
       setRowSelection({ ...rowSelection });
     }
-  };
+  }
   const onSubmit: SubmitHandler<Student> = (data) => {
-    console.log('Form data:', data);
     setOneRowSelection((prev: Student) => ({ ...prev, leaderId: data.leaderId }));
     form.reset({ leaderId: data.leaderId });
   };
@@ -822,7 +660,8 @@ export function DataTable() {
               <TableBody >
                 {table.getRowModel().rows?.length ? (
                   table.getRowModel().rows.map((row) => (
-                    <Sheet key={row.id}>
+
+                    <Sheet key={row.id} >
                       <SheetTrigger asChild onClick={() => setOneRowSelection(row.original)}>
                         <TableRow
                           data-state={row.getIsSelected() && "selected"}
@@ -846,7 +685,7 @@ export function DataTable() {
                               Make changes to your profile here. Click save when you're done.
                             </SheetDescription>
                           </SheetHeader>
-                          <ScrollArea className="h-full p-4 pb-16">
+                          {isLoading ? <Loading /> : (<ScrollArea className="h-full p-4 pb-16">
                             <Form {...form}>
                               <form onSubmit={form.handleSubmit(onSubmit)}>
                                 <div className="grid gap-4 py-4">
@@ -866,7 +705,12 @@ export function DataTable() {
                                   {/* // ? speed */}
                                   {formRender('number', 0, 4, 'speed', 'Speed', [], '')}
                                   {/* // ? role */}
-                                  {formRender('role', 0, 0, 'role', 'Role', ['leader', 'mini leader'], oneRowSelection)}
+
+                                  {!user.user.role.includes("miniLeader") && (
+                                    <>
+                                      {formRender('role', 0, 0, 'role', 'Role', ['student', 'miniLeader'], oneRowSelection)}
+                                    </>
+                                  )}
                                   {/* // ? parent facebook link */}
                                   {formRender('string', 0, 0, 'parentFbLink', 'Parent Facebook Link', [], '')}
                                   {/* // ? github token */}
@@ -876,44 +720,74 @@ export function DataTable() {
                                   <Separator />
                                   <Label className="capitalize font-bold leading-[5px] text-slate-400">Fines</Label>
                                   {/* // ? github fine */}
-                                  {formRender('number', 0, 99, 'fines.githubFine', 'Github Fine', [], '')}
-                                  {/* // ? mini leader fine */}
-                                  {formRender('number', 0, 99, 'fines.miniLeaderFine', 'Mini Leader Fine', [], '')}
-                                  {/* // ? mini student fine */}
-                                  {formRender('number', 0, 99, 'fines.miniStudentFine', 'Mini Student Fine', [], '')}
+                                  {(user.user.role.includes("githubController") ||
+                                    (user.user.role.includes("miniLeaderController")) ||
+                                    (user.user.role.includes("miniMentorController")) ||
+                                    (user.user.role.includes("admin"))) && (
+                                      <>
+                                        {formRender('number', 0, 99, 'fines.githubFine', 'Github Fine', [], '')}
+                                        {/* // ? mini leader fine */}
+                                        {formRender('number', 0, 99, 'fines.miniLeaderFine', 'Mini Leader Fine', [], '')}
+                                        {/* // ? mini student fine */}
+                                        {formRender('number', 0, 99, 'fines.miniStudentFine', 'Mini Student Fine', [], '')}
+                                      </>
+                                    )}
                                   <Separator />
                                   <Label className="capitalize font-bold leading-[5px] text-slate-400">Mentor Section</Label>
-                                  {/* // ? aura points */}
-                                  {formRender('number', 0, 999999, 'aura.points', 'Points', [], '')}
-                                  {/* // ? aura classwork */}
-                                  {formRender('number', 0, 999999, 'aura.classwork', 'Classwork', [], '')}
-                                  {/* // ? aura attendance */}
-                                  {formRender('number', 0, 999999, 'aura.attendance', 'Attendance', [], '')}
-                                  {/* // ? aura help */}
-                                  {formRender('number', 0, 999999, 'aura.help', 'Help', [], '')}
-                                  {/* // ? aura camera */}
-                                  {formRender('number', 0, 999999, 'aura.camera', 'Camera', [], '')}
-                                  {/* // ? aura answers */}
-                                  {formRender('number', 0, 999999, 'aura.answers', 'Answers', [], '')}
-                                  {/* // ? payed info */}
-                                  {formRender('boolean', 0, 0, 'payedInfo', 'Payed Info', [], '')}
-                                  {/* // ? leader comment */}
+                                  {(
+                                    user.user.role.includes("admin") ||
+                                    user.user.role.includes("mentor")) && (
+                                      <>
+                                        {/* // ? aura points */}
+                                        {formRender('number', 0, 999999, 'aura.points', 'Points', [], '')}
+                                        {/* // ? aura classwork */}
+                                        {formRender('number', 0, 999999, 'aura.classwork', 'Classwork', [], '')}
+                                        {/* // ? aura attendance */}
+                                        {formRender('number', 0, 999999, 'aura.attendance', 'Attendance', [], '')}
+                                        {/* // ? aura help */}
+                                        {formRender('number', 0, 999999, 'aura.help', 'Help', [], '')}
+                                        {/* // ? aura camera */}
+                                        {formRender('number', 0, 999999, 'aura.camera', 'Camera', [], '')}
+                                        {/* // ? aura answers */}
+                                        {formRender('number', 0, 999999, 'aura.answers', 'Answers', [], '')}
+                                        {/* // ? payed info */}
+                                        {formRender('boolean', 0, 0, 'payedInfo', 'Payed Info', [], '')}
+                                        {/* // ? leader comment */}
+                                      </>)}
                                   <Separator />
                                   <Label className="capitalize font-bold leading-[5px] text-slate-400">Leader Comment</Label>
-                                  {formRender('string', 0, 0, 'comment.leaderComment', 'Leader Comment', [], '')}
-                                  {/* // ? leader proof */}
-                                  {formRender('string', 0, 0, 'comment.leaderProof', 'Leader Proof', [], '')}
-                                  {/* // ? mini leader controller */}
+                                  {(user.user.role.includes("admin") ||
+                                    (user.user.role.includes("leader") && (oneStudent.leaderId == user.user._id)) ||
+                                    user.user.role.includes("admin")
+                                  ) && (
+                                      <>
+                                        {formRender('string', 0, 0, 'comment.leaderComment', 'Leader Comment', [], '')}
+                                        {/* // ? leader proof */}
+                                        {formRender('string', 0, 0, 'comment.leaderProof', 'Leader Proof', [], '')}
+                                        {/* // ? mini leader controller */}
+                                      </>
+                                    )}
                                   <Separator />
                                   <Label className="capitalize font-bold leading-[5px] text-slate-400">Control comment</Label>
-                                  {formRender('string', 0, 0, 'comment.controller.miniLeaderController', 'Mini Leader Controller', [], '')}
-                                  {/* // ? leader controller */}
-                                  {formRender('string', 0, 0, 'comment.controller.leaderController', 'Leader Controller', [], '')}
+                                  {(
+                                    user.user.role.includes("miniLeaderController") ||
+                                    user.user.role.includes("githubController") ||
+                                    user.user.role.includes("admin")
+                                  ) &&
+                                    (
+                                      <>
+                                        {formRender('string', 0, 0, 'comment.controller.miniLeaderController', 'Mini Leader Controller', [], '')}
+                                        {/* // ? leader controller */}
+                                        {formRender('string', 0, 0, 'comment.controller.leaderController', 'Leader Controller', [], '')}
+                                      </>
+                                    )
+                                  }
                                   <Button type="submit">Save changes</Button>
                                 </div>
                               </form>
                             </Form>
                           </ScrollArea>
+                          )}
                         </SheetContent>
                       </AlertDialog>
                     </Sheet>
@@ -924,6 +798,7 @@ export function DataTable() {
                       colSpan={columns.length}
                       className="h-24 text-center"
                     >
+                      <Loading />
                       No results.
                     </TableCell>
                   </TableRow>

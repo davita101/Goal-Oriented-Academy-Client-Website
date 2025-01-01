@@ -40,7 +40,7 @@ export default function Login() {
   return (
     <div className="max-w-[400px] mx-auto h-screen w-full flex flex-col items-center justify-center">
       <p className="text-center text-[35px] pb-4 font-bold text-green-500">Goal Oriented Academy</p>
-      {isLoading ? (
+      {!sendInfo ? (
         <div className="p-2 w-full mx-2">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(handleEmailSubmit)} className="space-y-8">
