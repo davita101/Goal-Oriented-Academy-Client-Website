@@ -72,7 +72,9 @@ export const login = [
         const { email } = req.body;
 
         try {
-            console.log(email)
+            if(!email) {
+                return res.status(400).json({ success: false, message: "Email is required" });
+            }
             // Helper function for sending verification email and updating the user
             const handleVerification = async (user, message) => {
                 user.verificationToken = generateVerificationToken();

@@ -7,16 +7,16 @@ import { connectDB } from "./db/connectDB.js";
 import authRouters from "./routes/api.auth.js";
 import groupRoutes from "./routes/api.groups.js"; // Correct import path
 import studentRoutes from "./routes/api.students.js"; // Correct import path
-import leadersRoutes from "./routes/api.leaders.js"; // Correct import path
+import leadersRoutes from "./routes/api.leaders.js"; // Correct import pathn
 import { authMiddleware } from "./middleware/authMiddleware.js";
 dotenv.config();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 1000;
 const app = express();
 
 app.use(cookieParser());
 // Enable CORS middleware
 app.use(cors({
-  origin: `${process.env.FRONT_URL}`, // Adjust the origin as needed
+  origin: "http://localhost:5173", // Adjust the origin as needed
   credentials: true
 }));
 app.use(express.json());
