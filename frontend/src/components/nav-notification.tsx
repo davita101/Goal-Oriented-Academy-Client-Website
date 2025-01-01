@@ -1,5 +1,4 @@
 import * as React from "react"
-import { cn } from "@/lib/utils"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -7,8 +6,9 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu"
+} from "./ui/navigation-menu"
 import { ScrollArea } from "./ui/scroll-area"
+import { cn } from "../lib/utils";
 
 const components: { title: string; href: string; description: string }[] = [
   {

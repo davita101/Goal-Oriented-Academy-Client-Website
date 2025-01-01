@@ -72,6 +72,7 @@ export const login = [
         const { email } = req.body;
 
         try {
+            console.log(email)
             // Helper function for sending verification email and updating the user
             const handleVerification = async (user, message) => {
                 user.verificationToken = generateVerificationToken();

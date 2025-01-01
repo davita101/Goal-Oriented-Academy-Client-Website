@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Button } from "@/components/ui/button"
+import { Button } from "../components/ui/button"
 import {
   Form,
   FormControl,
@@ -8,17 +8,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { formSchemaEmail } from "@/schema/form"
+} from "../components/ui/form"
+import { Input } from "../components/ui/input"
+import { formSchemaEmail } from "../schema/form"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Check, MoveLeft } from "lucide-react"
+import { useAuthStore } from "../store/authStore"
 
 export default function Login() {
   const [emailValue, setEmailValue] = React.useState("")
   const [sendInfo, setSendInfo] = React.useState(false)
-
+  const { login } = useAuthStore()
   const form = useForm({
     resolver: zodResolver(formSchemaEmail),
     defaultValues: {
@@ -35,7 +36,8 @@ export default function Login() {
   // * client email 
   const clientEmail = ""
   const handleEmailSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    
+    e.preventDefault()
+    login(emailValue)
   }
 
 
@@ -44,7 +46,7 @@ export default function Login() {
       <p className="text-center text-[35px] pb-4 font-bold text-green-500">Goal Oriented Academy</p>
       {!sendInfo ? (<div className="p-2 w-full mx-2">
         <Form {...form}>
-          <form method="get" action="http://localhost:5000/login" className="space-y-8">
+          <form method="post"  className="space-y-8">
             <FormField
               control={form.control}
               name="email"

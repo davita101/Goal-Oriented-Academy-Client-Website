@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Button } from "@/components/ui/button"
+import { Button } from "./ui/button"
 import {
   Sheet,
   SheetContent,
@@ -7,7 +7,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet"
+} from "./ui/sheet"
 
 import {
   ColumnDef,
@@ -24,7 +24,7 @@ import {
 import { ArrowUpDown, ChevronDown, Circle, MoreHorizontal } from "lucide-react"
 import { Row } from "@tanstack/react-table"
 
-import { Checkbox } from "@/components/ui/checkbox"
+import { Checkbox } from "./ui/checkbox"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -38,8 +38,8 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
+} from "./ui/dropdown-menu"
+import { Input } from "./ui/input"
 import {
   Table,
   TableBody,
@@ -47,7 +47,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "./ui/table"
 import { Link } from "react-router-dom"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card"
 import { Label } from "./ui/label"
@@ -58,7 +58,7 @@ import { AlertDialog } from "@radix-ui/react-alert-dialog"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./ui/select"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { userSchema } from "@/schema/user"
+import { userSchema } from "../schema/user"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
 
 const data: Student[] = [

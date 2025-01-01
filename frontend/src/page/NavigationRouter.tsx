@@ -1,21 +1,22 @@
 import * as React from "react"
-import { AppSidebar } from "@/components/app-sidebar"
-import { NavigationMenuNotification } from "@/components/nav-notification"
+import { JSX } from "react"
+import { AppSidebar } from "../components/app-sidebar"
+import { NavigationMenuNotification } from "../components/nav-notification"
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Input } from "@/components/ui/input"
-import { Separator } from "@/components/ui/separator"
+} from "../components/ui/breadcrumb"
+import { Input } from "../components/ui/input"
+import { Separator } from "../components/ui/separator"
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar"
-import ToggleDarkMode from "@/components/ui/togle-dark-mode"
+} from "../components/ui/sidebar"
+import ToggleDarkMode from "../components/ui/togle-dark-mode"
 
 import { Route, Routes, useLocation } from "react-router-dom"
 import Dashboard from "./Dashboard"

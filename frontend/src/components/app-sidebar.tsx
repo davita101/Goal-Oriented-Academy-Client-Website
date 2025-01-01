@@ -16,15 +16,14 @@ import {
   UserRoundPen,
 } from "lucide-react"
 
-import { AsideDashboard } from "@/components/aside-dashboard"
-import { NavUser } from "@/components/nav-user"
+import { AsideDashboard } from "./aside-dashboard"
+import { NavUser } from "./nav-user"
 import {
   Sidebar,
   SidebarContent,
   SidebarHeader,
-  SidebarProvider,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from "./ui/sidebar"
 import { ScrollArea } from "./ui/scroll-area"
 import { useParams } from "react-router-dom"
 import { NavProjects } from "./nav-projects"
