@@ -1,11 +1,11 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "backend/server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon backend/server.js",
-    "start": "node backend/server.js",
+    "dev": "cross-env NODE_ENV=development nodemon backend/server.js",
+    "start": "cross-env NODE_ENV=production node backend/server.js",
     "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
   },
   "keywords": [],
@@ -27,5 +27,8 @@
     "nodemailer": "^6.9.16",
     "uuid": "^11.0.3",
     "uuidv4": "^6.2.13"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }

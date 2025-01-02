@@ -1,7 +1,7 @@
 # //! BACKEND
 PORT = 5000
-MONGODB_URI =
-JWT_SECRET = 
+MONGODB_URI = mongod.com
+JWT_SECRET = jwt key
 TIME_PER_LOGIN = 6 * 60 * 60 * 1000 # 6 hours
 TOKEN_EXPIRATION = 1 * 24 * 60 * 60 * 1000 # 1 days
 
