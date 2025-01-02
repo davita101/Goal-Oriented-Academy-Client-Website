@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import axios from 'axios';
 import { Student } from '../components/data-table';
 
-const API_URL = 'http://localhost:5000';
+const API_URL = import.meta.env.MODE === "development" ? 'http://localhost:5000' : "";
 
 interface AuthState {
   user: any;

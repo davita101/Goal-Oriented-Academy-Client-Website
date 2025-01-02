@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { create } from 'zustand';
 import axios from 'axios';
-const API_URL = 'http://localhost:5000';
+const API_URL = import.meta.env.MODE === "development" ? 'http://localhost:5000' : "";
 const useAuthStore = create((set) => ({
     user: null,
     oneLeaderStudentArr: [],
