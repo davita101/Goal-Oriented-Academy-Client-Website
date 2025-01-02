@@ -1,0 +1,20 @@
+# //! BACKEND
+PORT = 5000
+MONGODB_URI =
+JWT_SECRET = 
+TIME_PER_LOGIN = 6 * 60 * 60 * 1000 # 6 hours
+TOKEN_EXPIRATION = 1 * 24 * 60 * 60 * 1000 # 1 days
+
+ADMIN_USER = example@gmail.com
+SMTP_PASS = 4444 4444 4444 4444
+NODE_ENV = development
+
+FRONT_URL = http://localhost:5173
+
+
+# //! FRONTEND
+
+VITE_API_URL= http://localhost:5000
+
+GOOGLE_APPLICATION_CREDENTIALS = ./secret.json
+SHEET_ID = 4444444444444444444444444444  
