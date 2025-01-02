@@ -1,3 +1,4 @@
+import { group } from "console";
 import { z } from "zod";
 
 export const userSchema = z.object({
@@ -17,6 +18,7 @@ export const userSchema = z.object({
         .max(4, "Speed must be at least 5"),
     role: z.string().min(2, "Role must be at one "),
     parentFbLink: z.string().url({ message: "You must enter correct URL" }),
+    group: z.number().min(0, "Group must be 0"),
     githubToken: z.string().min(2, "Github Token must be at least 2 characters "),
     githubLastUpdate: z.string().min(2, "Github Last Update must be at least 2 characters "),
     fines: z.object({
@@ -38,7 +40,7 @@ export const userSchema = z.object({
         leaderProof: z.string().url({ message: "You must enter a correct URL" }),
         controller: z.object({
             miniLeaderController: z.string().min(0, "Mini Leader Controller must be at least 0 characters"),
-            leaderController: z.string().min(0, "Leader Controller must be at least 0 characters"),
+            githubController: z.string().min(0, "Leader Controller must be at least 0 characters"),
         }),
     }),
 })

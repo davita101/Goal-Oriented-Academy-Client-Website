@@ -27,7 +27,7 @@ const StudentSchema = new mongoose.Schema(
       required: true,
     },
     group: {
-      type: String,
+      type: Number,
       required: true,
     },
     leaderId: {
@@ -64,7 +64,7 @@ const StudentSchema = new mongoose.Schema(
       points: {
         type: Number,
       },
-      classWork: {
+      classwork: {
         type: Number,
       },
       attendance: {

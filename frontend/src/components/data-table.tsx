@@ -21,10 +21,9 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, Circle, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, ChevronDown, Circle, MoreHorizontal, X } from "lucide-react"
 import { Row } from "@tanstack/react-table"
 
-import { Checkbox } from "./ui/checkbox"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -62,6 +61,8 @@ import { userSchema } from "../schema/user"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
 import { useAuthStore } from "../store/authStore"
 import Loading from "./loading"
+import { AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog"
+import { toast } from "sonner"
 
 export type Student = {
   _id: string
@@ -71,12 +72,13 @@ export type Student = {
   email: string
   githubLink: string
   speed: number
-  group: string
+  group: number
   leaderId: string
   role: string
   parentFbLink: string
   githubToken: string
   githubLastUpdate: string
+  updatedAt: string
   fines: {
     githubFine: number
     miniLeaderFine: number
@@ -96,33 +98,12 @@ export type Student = {
     leaderProof: string
     controller: {
       miniLeaderController: string
-      leaderController: string
+      githubController: string
     }
   }
 }
 export const columns: ColumnDef<Student>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ? true :
-            table.getIsSomePageRowsSelected() ? "indeterminate" : false
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
+
   {
     accessorKey: "role",
     header: ({ column }) => {
@@ -365,7 +346,10 @@ export const columns: ColumnDef<Student>[] = [
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(payment._id)}
             >
-              Copy payment ID
+              Copy Student ID
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              Edt Student
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
@@ -413,6 +397,8 @@ export function DataTable() {
     const savedSelection = localStorage.getItem('oneRowSelection');
     return savedSelection ? JSON.parse(savedSelection) : null;
   });
+  const [studentInfo, setStudentInfo] = React.useState(false)
+  const [sheetOpen, setSheetOpen] = React.useState(false)
 
   React.useEffect(() => {
     localStorage.setItem('sorting', JSON.stringify(sorting));
@@ -426,7 +412,7 @@ export function DataTable() {
     localStorage.setItem('columnVisibility', JSON.stringify(columnVisibility));
   }, [columnVisibility]);
 
-  const { user, oneLeaderStudent, oneLeaderStudentArr, oneStudentDefine, oneStudent, isLoading } = useAuthStore()
+  const { user, oneLeaderStudent, oneLeaderStudentArr, oneStudentDefine, oneStudent, isLoading, studentUpdate } = useAuthStore()
 
   React.useEffect(() => {
     oneLeaderStudent(user.user._id)
@@ -460,7 +446,7 @@ export function DataTable() {
     resolver: zodResolver(userSchema),
     defaultValues: {
       _id: '',
-      group: '',
+      group: 0,
       leaderId: '',
       name: '',
       studentFbLink: '',
@@ -475,14 +461,14 @@ export function DataTable() {
       fines: { githubFine: 0, miniLeaderFine: 0, miniStudentFine: 0 },
       aura: { points: 0, classwork: 0, attendance: 0, help: 0, camera: 0, answers: 0 },
       payedInfo: false,
-      comment: { leaderComment: '', leaderProof: '', controller: { miniLeaderController: '', leaderController: '' } },
+      comment: { leaderComment: '', leaderProof: '', controller: { miniLeaderController: '', githubController: '' } },
     },
   });
 
   React.useEffect(() => {
     form.reset({
       _id: oneStudent?._id || '',
-      group: oneStudent?.group || '',
+      group: oneStudent?.group || 0,
       leaderId: oneStudent?.leaderId || '',
       name: oneStudent?.name || '',
       studentFbLink: oneStudent?.studentFbLink || '',
@@ -497,7 +483,7 @@ export function DataTable() {
       fines: oneStudent?.fines || { githubFine: 0, miniLeaderFine: 0, miniStudentFine: 0 },
       aura: oneStudent?.aura || { points: 0, classwork: 0, attendance: 0, help: 0, camera: 0, answers: 0 },
       payedInfo: oneStudent?.payedInfo || false,
-      comment: oneStudent?.comment || { leaderComment: '', leaderProof: '', controller: { miniLeaderController: '', leaderController: '' } },
+      comment: oneStudent?.comment || { leaderComment: '', leaderProof: '', controller: { miniLeaderController: '', githubController: '' } },
     });
   }, [oneStudent, form]);
   const formRender = (typeMain: string, minNum: number, maxNum: number, id: string, label: string, roles: string[], row: string) => {
@@ -560,26 +546,36 @@ export function DataTable() {
       )
     } else if (typeMain === 'role') {
       return (
+        // ! not working!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         <FormField
           control={form.control}
           name={id as keyof Student}
           render={({ fieldState: { error } }) => (
-            <FormItem className="grid grid-cols-4  items-center w-full justify-start gap-2">
+            <FormItem className="grid grid-cols-4 items-center w-full justify-start gap-2">
               <FormLabel className="grid-cols-2">Role</FormLabel>
-              <Select onValueChange={(value) => handleInputChange(row, 'role', value)}>
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder={`${label}`} />
-                </SelectTrigger>
-                <SelectContent >
-                  <SelectGroup>
-                    <SelectLabel className="capitalize">{label}</SelectLabel>
-                    {roles.map((role, index) => (
-                      <SelectItem key={index} value={role}>{role}</SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <FormMessage className="col-span-3">{error?.message}</FormMessage>
+              <FormField
+                control={form.control}
+                name={id as keyof Student}
+                render={({ fieldState: { error } }) => (
+                  <FormItem className="grid grid-cols-4 items-center w-full justify-start gap-2">
+                    <Select onValueChange={(value) => handleInputChange(oneRowSelection, 'role', value)}>
+                      <SelectTrigger className="col-span-3">
+                        <SelectValue placeholder={`${label}`} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel className="capitalize">{label}</SelectLabel>
+                          {roles.map((role, index) => (
+                            <SelectItem key={index} value={role}>
+                              {role}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
             </FormItem>
           )}
         />
@@ -594,7 +590,8 @@ export function DataTable() {
   }
   const onSubmit: SubmitHandler<Student> = (data) => {
     setOneRowSelection((prev: Student) => ({ ...prev, leaderId: data.leaderId }));
-    form.reset({ leaderId: data.leaderId });
+    studentUpdate(oneStudent.leaderId, oneStudent._id, data);
+    if (!isLoading) setStudentInfo(false)
   };
   return (
     <>
@@ -602,7 +599,7 @@ export function DataTable() {
         className={`bg-[var(--background)] grid auto-rows-min overflow-hidden gap-4 grid-cols-1 px-2`}>
         <div className="flex items-center py-4">
           <Input
-            placeholder="Filter name..."
+            placeholder="Student name..."
             value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
               table.getColumn("name")?.setFilterValue(event.target.value)
@@ -661,9 +658,9 @@ export function DataTable() {
                 {table.getRowModel().rows?.length ? (
                   table.getRowModel().rows.map((row) => (
 
-                    <Sheet key={row.id} >
-                      <SheetTrigger asChild onClick={() => setOneRowSelection(row.original)}>
-                        <TableRow
+                    <Sheet key={row.id} open={sheetOpen}  >
+                      <SheetTrigger asChild onClick={() => { setOneRowSelection(row.original), (setSheetOpen(true)) }}>
+                        {(<TableRow
                           data-state={row.getIsSelected() && "selected"}
                           style={{ backgroundColor: JSON.parse(localStorage.getItem('rowColors') || '{}')[row.original._id] || '' }}
                         >
@@ -675,23 +672,54 @@ export function DataTable() {
                               )}
                             </TableCell>
                           ))}
-                        </TableRow>
+                        </TableRow>)}
                       </SheetTrigger>
-                      <AlertDialog>
-                        <SheetContent>
-                          <SheetHeader className="shadow-sm pb-2">
-                            <SheetTitle>Edit student</SheetTitle>
-                            <SheetDescription>
-                              Make changes to your profile here. Click save when you're done.
-                            </SheetDescription>
-                          </SheetHeader>
-                          {isLoading ? <Loading /> : (<ScrollArea className="h-full p-4 pb-16">
-                            <Form {...form}>
+                      <SheetContent>
+                        <SheetHeader className="shadow-sm pb-2">
+                          <div className="flex justify-between">
+                            <SheetTitle>{studentInfo ? "Edit Student" : "Info Student"}</SheetTitle>
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild onClick={() => !studentInfo && setSheetOpen(false)}>
+                                <X className="cursor-pointer" />
+                              </AlertDialogTrigger>
+                              {studentInfo && (<AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    This action cannot be undone. This will permanently delete your
+                                    account and remove your data from our servers.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel onClick={() => setSheetOpen(false)}>Continue</AlertDialogCancel>
+                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>)}
+                            </AlertDialog>
+                          </div>
+                          <SheetDescription className="flex items-center justify-between">
+                            <span>{studentInfo ? "Make changes to your profile here. Click save when you're done." : "Get Student information here."}</span>
+                            <Button
+                              onClick={() => { setStudentInfo(!studentInfo) }}
+                              className="bg-green-500 text-sm px-6 py-4 hover:bg-green-400">{!studentInfo ? "Edit" : "Info"}</Button>
+                          </SheetDescription>
+                        </SheetHeader>
+                        {isLoading ? <Loading /> : (
+                          <ScrollArea className="h-full p-4 pb-16">
+                            {(studentInfo && !isLoading) ? (<Form {...form}>
                               <form onSubmit={form.handleSubmit(onSubmit)}>
                                 <div className="grid gap-4 py-4">
                                   <p className="font-bold leading-[5px] text-slate-400">leader edit</p>
                                   {/* // ? leader id */}
-                                  {formRender('string', 0, 0, 'leaderId', 'Leader ID', [], '')}
+
+                                  {
+                                    (user.user.role.includes("leaderController") ||
+                                      (user.user.role.includes("admin"))) && (
+                                      <>
+                                        {formRender('string', 0, 0, 'leaderId', 'Leader ID', [], '')}
+                                      </>
+                                    )
+                                  }
                                   {/* // ? name */}
                                   {formRender('string', 0, 0, 'name', 'Name', [], '')}
                                   {/* // ? age */}
@@ -708,11 +736,20 @@ export function DataTable() {
 
                                   {!user.user.role.includes("miniLeader") && (
                                     <>
-                                      {formRender('role', 0, 0, 'role', 'Role', ['student', 'miniLeader'], oneRowSelection)}
+                                      {formRender('role', 0, 0, 'role', 'Role', ['student', 'miniLeader'], "")}
                                     </>
                                   )}
                                   {/* // ? parent facebook link */}
                                   {formRender('string', 0, 0, 'parentFbLink', 'Parent Facebook Link', [], '')}
+                                  {/* // ? group */}
+                                  {
+                                    (user.user.role.includes("leaderController") ||
+                                      (user.user.role.includes("admin"))) && (
+                                      <>
+                                        {formRender('number', 0, 99, 'group', 'Group', [], '')}
+                                      </>
+                                    )
+                                  }
                                   {/* // ? github token */}
                                   {formRender('string', 0, 0, 'githubToken', 'Github Token', [], '')}
                                   {/* // ? github last update */}
@@ -778,18 +815,178 @@ export function DataTable() {
                                       <>
                                         {formRender('string', 0, 0, 'comment.controller.miniLeaderController', 'Mini Leader Controller', [], '')}
                                         {/* // ? leader controller */}
-                                        {formRender('string', 0, 0, 'comment.controller.leaderController', 'Leader Controller', [], '')}
+                                        {formRender('string', 0, 0, 'comment.controller.githubController', 'Github Controller', [], '')}
                                       </>
                                     )
                                   }
-                                  <Button type="submit">Save changes</Button>
+                                  <div className="ml-auto space-x-2">
+                                    <Button type="submit" variant={"green"}
+                                      onClick={() =>
+                                        toast("Student has been updated", {
+                                          description: `${oneStudent.updatedAt}`,
+                                          action: {
+                                            label: "Undo",
+                                            onClick: () => console.log("Undo"),
+                                          }
+                                        })}
+
+                                    > Save changes</Button>
+                                    <AlertDialog>
+                                      <AlertDialogTrigger asChild>
+                                        <Button variant={"destructive"}>Cancel</Button>
+                                      </AlertDialogTrigger>
+                                      {sheetOpen && (<AlertDialogContent>
+                                        <AlertDialogHeader>
+                                          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                          <AlertDialogDescription>
+                                            This action cannot be undone. This will permanently delete your
+                                            account and remove your data from our servers.
+                                          </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                          <AlertDialogAction onClick={() => setSheetOpen(false)}>Continue</AlertDialogAction>
+                                        </AlertDialogFooter>
+                                      </AlertDialogContent>)}
+                                    </AlertDialog>
+                                  </div>
                                 </div>
                               </form>
-                            </Form>
+                            </Form>)
+
+                              :
+                              <>
+                                <div>
+                                  <div className="grid gap-4 py-4">
+                                    {/* //* student info */}
+                                    <p className="font-bold leading-[5px] text-slate-400 capitalize"><b>Student info</b></p>
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2 capitalize">Leader ID</span>
+                                      <span className="col-span-3  font-bold">{oneStudent.leaderId}</span>
+                                    </div>
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2">Name</span>
+                                      <span className="col-span-3 font-bold">{oneStudent.name}</span>
+                                    </div>
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2">Age</span>
+                                      <span className="col-span-3 font-bold">{oneStudent.age}</span>
+                                    </div>
+
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2">Email</span>
+                                      <span className="col-span-3 font-bold">{oneStudent.email}</span>
+                                    </div>
+
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2">Role</span>
+                                      <span className="col-span-3 font-bold">{oneStudent.role}</span>
+                                    </div>
+
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2">Github Link</span>
+                                      <Link className="col-span-3 font-bold " to={oneStudent.githubLink} target="_blank"><Button variant={"link"} className="m-0 p-0 text-blue-500">Github</Button></Link>
+                                    </div>
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2">Parent Facebook Link</span>
+                                      <Link className="col-span-3 font-bold" to={oneStudent.parentFbLink} target="_blank"><Button variant={"link"} className="m-0 p-0 text-blue-500">Parent</Button></Link>
+                                    </div>
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2">Student Facebook Link</span>
+                                      <Link className="col-span-3 font-bold" to={oneStudent.studentFbLink} target="_blank"><Button variant={"link"} className="m-0 p-0 text-blue-500">Student</Button></Link>
+                                    </div>
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2">Group</span>
+                                      <span className="col-span-3 font-bold">{oneStudent.group}</span>
+                                    </div>
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2">Speed</span>
+                                      <span className="col-span-3 font-bold">{oneStudent.speed}</span>
+                                    </div>
+
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2">Github Token</span>
+                                      <span className="col-span-3 font-bold">****</span>
+                                    </div>
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2">Github Last Update</span>
+                                      <span className="col-span-3 font-bold">{oneStudent?.githubLastUpdate}</span>
+                                    </div>
+                                    {/* //* controller info */}
+
+                                    <Separator />
+                                    <p className="font-bold leading-[5px] text-slate-400 capitalize"><b>Controller info</b></p>
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2">Github Fine</span>
+                                      <span className="col-span-3 font-bold">{oneStudent?.fines?.githubFine}</span>
+                                    </div>
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2">MiniLeader Fine</span>
+                                      <span className="col-span-3 font-bold">{oneStudent?.fines?.miniLeaderFine}</span>
+                                    </div>
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2">MiniLeader Fine</span>
+                                      <span className="col-span-3 font-bold">{oneStudent?.fines?.miniLeaderFine}</span>
+                                    </div>
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2">Mini Student Fine</span>
+                                      <span className="col-span-3 font-bold">{oneStudent?.fines?.miniStudentFine}</span>
+                                    </div>
+                                    {/* //* aura info */}
+
+                                    <Separator />
+                                    <p className="font-bold leading-[5px] text-slate-400 capitalize"><b>Aura info</b></p>
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2">Points</span>
+                                      <span className="col-span-3 font-bold">{oneStudent?.aura?.answers + oneStudent?.aura?.attendance + oneStudent?.aura?.camera + oneStudent?.aura?.classwork + oneStudent?.aura?.help + oneStudent?.aura?.points}</span>
+                                    </div>
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2">Classwork</span>
+                                      <span className="col-span-3 font-bold">{oneStudent?.aura?.classwork}</span>
+                                    </div>
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2">Attendance</span>
+                                      <span className="col-span-3 font-bold">{oneStudent?.aura?.attendance}</span>
+                                    </div>
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2">Help</span>
+                                      <span className="col-span-3 font-bold">{oneStudent?.aura?.help}</span>
+                                    </div>
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2">Camera</span>
+                                      <span className="col-span-3 font-bold">{oneStudent?.aura?.camera}</span>
+                                    </div>
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2">Answers</span>
+                                      <span className="col-span-3 font-bold">{oneStudent?.aura?.answers}</span>
+                                    </div>
+                                    {/* //* comments info */}
+
+                                    <Separator />
+                                    <p className="font-bold leading-[5px] text-slate-400 capitalize"><b>Comments</b></p>
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2">Leader Comment</span>
+                                      <span className="col-span-3 font-bold">{oneStudent?.comment?.leaderComment}</span>
+                                    </div>
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2">Leader Poof</span>
+                                      <Link className="col-span-3 font-bold" to={oneStudent?.comment?.leaderProof} target="_blank"><Button variant={"link"} className="m-0 p-0 text-blue-500">Proof</Button></Link>
+                                    </div>
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2">Mini Leader Controller</span>
+                                      <span className="col-span-3 font-bold" >{oneStudent?.comment?.controller.miniLeaderController}</span>
+                                    </div>
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="grid-cols-2">Github Controller</span>
+                                      <span className="col-span-3 font-bold" >{oneStudent?.comment?.controller.githubController}</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </>
+                            }
                           </ScrollArea>
-                          )}
-                        </SheetContent>
-                      </AlertDialog>
+                        )}
+                      </SheetContent>
                     </Sheet>
                   ))
                 ) : (

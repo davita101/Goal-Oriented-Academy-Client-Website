@@ -60,93 +60,21 @@ export const createStudent = async (req, res) => {
 };
 export const updateStudent = async (req, res) => {
   try {
-    const student = await StudentModel.findById(req.params.studentId);
+    const student = await StudentModel.findByIdAndUpdate(
+      req.params.studentId,
+      req.body,
+    );
     if (!student) {
       return res.status(404).json({ error: 'Student not found' });
     }
-
-    let updateData = {};
-
-    if (req.user.role.includes("githubController")) {
-      updateData = {
-        ...updateData,
-        "fines": {
-          ...updateData.fines,
-          "githubFine": req.body?.fines?.githubFine,
-        },
-        "comment": {
-          ...updateData.comment,
-          "controller": {
-            ...updateData.comment?.controller,
-            "githubController": req.body?.comment?.controller?.githubController,
-          }
-        },
-      };
-    }
-
-    if (req.user.role.includes("miniLeaderController")) {
-      updateData = {
-        ...updateData,
-        "fines": {
-          ...updateData.fines,
-          "miniLeaderFine": req.body?.fines?.miniLeaderFine,
-        },
-        "comment": {
-          ...updateData.comment,
-          "controller": {
-            ...updateData.comment?.controller,
-            "miniLeaderController": req.body?.comment?.controller?.miniLeaderController,
-          }
-        }
-      };
-    }
-
-    if (req.user.role.includes("mentor")) {
-      updateData = {
-        ...updateData,
-        "aura": {
-          "points": req.body?.aura?.points,
-          "classWork": req.body?.aura?.classWork,
-          "attendance": req.body?.aura?.attendance,
-          "help": req.body?.aura?.help,
-          "camera": req.body?.aura?.camera,
-          "answers": req.body?.aura?.answers
-        }
-      };
-    }
-
-    if (req.user.role.includes("leader") && req.user.id === student.leaderId && req.user.role.includes("leaderController")) {
-      updateData = {
-        ...updateData,
-        "comment": {
-          ...updateData.comment,
-          "leaderComment": req.body?.comment?.leaderComment,
-          "leaderProof": req.body?.comment?.leaderProof,
-        },
-        "name": req.body?.name,
-        "age": req.body?.age,
-        "group": req.body?.group,
-        "leaderId": req.body?.leaderId,
-        "role": req.body?.role,
-        "parentFbLink": req.body?.parentFbLink,
-        "githubToken": req.body?.githubToken,
-        "githubLastUpdate": req.body?.githubLastUpdate,
-        "studentFbLink": req.body?.studentFbLink,
-        "email": req.body?.email,
-        "githubLink": req.body?.githubLink,
-      };
-    }
-
-    Object.keys(updateData).forEach(key => {
-      student[key] = updateData[key];
-    });
-
-    await student.save();
-
+    console.log("Student updated successfully");
     res.status(200).json(student);
+    console.log(student,"\n", req.body);
   } catch (error) {
-    console.error('Error updating student:', error);
-    res.status(500).json({ error: 'Error updating student' });
+    if (error.kind === 'ObjectId') {
+      error.messageFormat = `Cast to ObjectId failed for value "${error.value}" at path "${error.path}"`;
+    }
+    res.status(400).json({ error: error.messageFormat || error.message });
   }
 };
 export const deleteStudent = async (req, res) => {

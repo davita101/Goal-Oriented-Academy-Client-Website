@@ -16,6 +16,7 @@ interface AuthState {
   logout: (email: string) => Promise<void>;
   oneLeaderStudent: (leaderId: string) => Promise<void>;
   oneStudentDefine: (leaderId: string, studentId: string) => Promise<void>;
+  studentUpdate: (leaderId: string, studentId: string, data: Student) => Promise<void>;
 }
 
 const useAuthStore = create<AuthState>((set) => ({
@@ -56,7 +57,7 @@ const useAuthStore = create<AuthState>((set) => ({
       });
 
       localStorage.setItem('authToken', response.data.token); // Assuming the response contains a token
-      set({ user: response.data.user, isLoading: true, isLogin: true });
+      set({ user: response.data.user, isLoading: false, isLogin: true });
     } catch (error) {
       set({ user: null, isLoading: false, isLogin: true });
       console.error('Error logging in:', error);
@@ -91,7 +92,7 @@ const useAuthStore = create<AuthState>((set) => ({
         },
         withCredentials: true, // Include cookies in the request
       });
-      set({ oneLeaderStudentArr: response.data,isLoading: false });
+      set({ oneLeaderStudentArr: response.data, isLoading: false });
     } catch (error) {
       console.error('Error checking auth:', error);
       set({ isCheckingAuth: false });
@@ -110,11 +111,29 @@ const useAuthStore = create<AuthState>((set) => ({
       });
       set({ oneStudent: response.data, isLoading: false });
     } catch (error) {
-      set({  isLoading: false })
+      set({ isLoading: false })
       console.error('Error fetching student data:', error);
-      set({isCheckingAuth: false });
+      set({ isCheckingAuth: false });
+    }
+  },
+  studentUpdate: async (leaderId: string, studentId: string, data: Student) => {
+    set({ isLoading: true })
+    try {
+      const token = localStorage.getItem('authToken');
+      await axios.put(`${API_URL}/api/students/${leaderId}/${studentId}`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
+      set({ isLoading: false })
+    } catch (error) {
+      set({ isLoading: false })
+      console.error('Error updating student:', error);
     }
   }
+
 }));
 
 export { useAuthStore };
