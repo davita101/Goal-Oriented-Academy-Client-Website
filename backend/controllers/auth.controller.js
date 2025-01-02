@@ -18,53 +18,64 @@ const signupLimiter = rateLimit({
 });
 
 // * Signup controller
-export const signup = [signupLimiter, async (req, res) => {
-    const { email, name, role, github, fbLink, codwarsLink, leaderLevel, parentFb, cards } = req.body;
+export const signup = [
+    signupLimiter,
+    async (req, res) => {
+        const { email, name, role, avatar, github, facebook, linkedin, leaderInformation, mentorInformation, mentorAssistantInformation } = req.body;
 
-    try {
-        // ? Check if all fields are provided
-        if (!name || !email || !role) {
-            throw new Error("Name, email, and role are required");
-        }
-
-        // ? Check if user already exists
-        const userAlreadyExist = await UserModel.findOne({ email });
-        if (userAlreadyExist) {
-            return res.status(400).json({ success: false, message: "User already exists" });
-        }
-
-        // ? Create new user with verification token
-        const verificationToken = generateVerificationToken();
-        const user = new UserModel({
-            name,
-            email,
-            role,
-            github,
-            fbLink,
-            codwarsLink,
-            leaderLevel,
-            parentFb,
-            cards,
-            verificationToken,
-            verificationTokenExpiresAt: Date.now() + 1 * 60 * 60 * 1000, // 1 hour
-        });
-        await user.save();
-        await sendVerificationEmail({ email, token: verificationToken });
-
-        // ? Generate token and set cookie
-        generateTokenAndSetCookie(res, user._id);
-        res.status(201).json({
-            success: true,
-            message: "User created successfully. Please check your email for verification.",
-            user: {
-                ...user._doc,
+        try {
+            // Check if all required fields are provided
+            if (!name || !email || !role) {
+                return res.status(400).json({ success: false, message: "Name, email, and role are required" });
             }
-        });
-    } catch (error) {
-        res.status(400).json({ success: false, message: "An error occurred" });
+
+            // Check if user already exists
+            const userAlreadyExist = await UserModel.findOne({ email });
+            if (userAlreadyExist) {
+                return res.status(400).json({ success: false, message: "User already exists" });
+            }
+
+            // Create new user with verification token
+            const verificationToken = generateVerificationToken();
+            const user = new UserModel({
+                name,
+                email,
+                role,
+                avatar,
+                social: {
+                    github,
+                    facebook,
+                    linkedin
+                },
+                information: {
+                    leaderInformation,
+                    mentorInformation,
+                    mentorAssistantInformation
+                },
+                verificationToken,
+                verificationTokenExpiresAt: Date.now() + 1 * 60 * 60 * 1000, // 1 hour
+            });
+
+            await user.save();
+            await sendVerificationEmail({ email, token: verificationToken });
+
+            // Generate token and set cookie
+            generateTokenAndSetCookie(res, user._id);
+            res.status(201).json({
+                success: true,
+                message: "User created successfully. Please check your email for verification.",
+                user: {
+                    ...user._doc,
+                }
+            });
+        } catch (error) {
+            console.error("Signup error:", error);
+            res.status(500).json({ success: false, message: "An error occurred during signup" });
+        }
     }
-}];
+];
 // * Login controller
+
 
 export const login = [
     signupLimiter,
@@ -72,9 +83,10 @@ export const login = [
         const { email } = req.body;
 
         try {
-            if(!email) {
+            if (!email) {
                 return res.status(400).json({ success: false, message: "Email is required" });
             }
+
             // Helper function for sending verification email and updating the user
             const handleVerification = async (user, message) => {
                 user.verificationToken = generateVerificationToken();
@@ -215,8 +227,6 @@ export const verifyEmail = [signupLimiter, async (req, res) => {
         await generateTokenAndSetCookie(res, user._id);
         res.cookie('goa_auth_is_verified', true, { httpOnly: true, maxAge: 6 * 60 * 60 * 1000 }); // 24 საათი
         res.cookie('verificationTime', verificationTime, { httpOnly: true, maxAge: 6 * 60 * 60 * 1000 }); // 24 საათი
-
-        console.log('Email verified successfully for user:', user._id);
         res.status(200).json({ success: true, message: "Email verified successfully" });
     } catch (error) {
         console.error('Error during email verification:', error);

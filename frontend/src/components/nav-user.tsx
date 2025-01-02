@@ -90,15 +90,15 @@ export function NavUser() {
                 <div className="flex items-center gap-1">
                   <ClipboardX size={18} />
                   Cards <span>{
-                    user.user.rating.cards.leaderCards.black +
-                    user.user.rating.cards.leaderCards.green +
-                    user.user.rating.cards.leaderCards.purple +
-                    user.user.rating.cards.leaderCards.yellow +
+                    user.user?.rating?.cards?.leaderCards.black +
+                    user.user?.rating?.cards?.leaderCards.green +
+                    user.user?.rating?.cards?.leaderCards.purple +
+                    user.user?.rating?.cards?.leaderCards.yellow +
 
-                    user.user.rating.cards.mentorCards.black +
-                    user.user.rating.cards.mentorCards.green +
-                    user.user.rating.cards.mentorCards.purple +
-                    user.user.rating.cards.mentorCards.yellow
+                    user.user?.rating?.cards?.mentorCards.black +
+                    user.user?.rating?.cards?.mentorCards.green +
+                    user.user?.rating?.cards?.mentorCards.purple +
+                    user.user?.rating?.cards?.mentorCards.yellow
                   }</span>
                 </div>
               </DropdownMenuItem>

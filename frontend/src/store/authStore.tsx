@@ -58,6 +58,7 @@ const useAuthStore = create<AuthState>((set) => ({
 
       localStorage.setItem('authToken', response.data.token); // Assuming the response contains a token
       set({ user: response.data.user, isLoading: false, isLogin: true });
+      console.log('Successfully logged in:', response.data.user);
     } catch (error) {
       set({ user: null, isLoading: false, isLogin: true });
       console.error('Error logging in:', error);

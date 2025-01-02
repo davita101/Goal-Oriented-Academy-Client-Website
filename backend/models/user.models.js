@@ -233,6 +233,20 @@ const UserSchema = new mongoose.Schema(
         }
       }
     },
+    social: {
+      facebook: {
+        type: String,
+        default: ''
+      },
+      linkedin: {
+        type: String,
+        default: ''
+      },
+      github: {
+        type: String,
+        default: ''
+      }
+    },
 
     restEmailExpiredAt: Date,
     verificationToken: String,

@@ -152,7 +152,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="icon" {...props} className="data-[state=open]">
       <ScrollArea>
         <SidebarHeader className="sticky top-0 z-[2]">
-          <NavUser user={data.user} />
+          <NavUser/>
         </SidebarHeader>
         <SidebarContent>
           <AsideDashboard items={data.navMain} title="Dashboard" />
