@@ -25,11 +25,10 @@ import {
   SidebarRail,
 } from "./ui/sidebar"
 import { ScrollArea } from "./ui/scroll-area"
-import { useParams } from "react-router-dom"
 import { NavProjects } from "./nav-projects"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { userId } = useParams<{ userId: string }>();
+  
   // This is sample data.
   const data = {
     user: {

@@ -28,14 +28,6 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu"
 import { Input } from "./ui/input"
@@ -49,11 +41,9 @@ import {
 } from "./ui/table"
 import { Link } from "react-router-dom"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card"
-import { Label } from "./ui/label"
 import { Badge } from "./ui/badge"
 import { ScrollArea, ScrollBar } from "./ui/scroll-area"
 import { Separator } from "./ui/separator"
-import { AlertDialog } from "@radix-ui/react-alert-dialog"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./ui/select"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -61,8 +51,8 @@ import { userSchema } from "../schema/user"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
 import { useAuthStore } from "../store/authStore"
 import Loading from "./loading"
-import { AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog"
 import { toast } from "sonner"
+import { Checkbox } from "./ui/checkbox"
 
 export type Student = {
   _id: string
@@ -103,7 +93,28 @@ export type Student = {
   }
 }
 export const columns: ColumnDef<Student>[] = [
-
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ? true :
+            table.getIsSomePageRowsSelected() ? "indeterminate" : false
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: "role",
     header: ({ column }) => {
@@ -312,68 +323,6 @@ export const columns: ColumnDef<Student>[] = [
       <div className="capitalize">{row.getValue("payedInfo") ? "True" : "False"}</div>
     ),
   },
-
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const payment = row.original;
-      const [rowColor, setRowColor] = React.useState(() => {
-        const savedColors = JSON.parse(localStorage.getItem('rowColors') || '{}');
-        return savedColors[payment._id] || '';
-      });
-
-      React.useEffect(() => {
-        const savedColors = JSON.parse(localStorage.getItem('rowColors') || '{}');
-        savedColors[payment._id] = rowColor;
-        localStorage.setItem('rowColors', JSON.stringify(savedColors));
-      }, [rowColor, payment._id]);
-
-      const handleColorChange = (color: String) => {
-        setRowColor(color);
-      };
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment._id)}
-            >
-              Copy Student ID
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              Edt Student
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuSub>
-                <DropdownMenuSubTrigger>colors</DropdownMenuSubTrigger>
-                <DropdownMenuPortal>
-                  <DropdownMenuSubContent>
-                    <DropdownMenuItem onClick={() => handleColorChange('inherit')}>none</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleColorChange('var(action-color-white)')}><Circle color="var(--action-color-white)" />white</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleColorChange('var(--action-color-red)')}><Circle color="var(--action-color-red)" />red</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleColorChange('var(--action-color-green)')}><Circle color="var(--action-color-green)" />green</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleColorChange('var(--action-color-yellow)')}><Circle color="var(--action-color-yellow)" />yellow</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleColorChange('var(--action-color-purple)')}><Circle color="var(--action-color-purple)" />purple</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleColorChange('var(--action-color-orange)')}><Circle color="var(--action-color-orange)" />orange</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleColorChange('var(--action-color-pink)')}><Circle color="var(--action-color-pink)" />pink</DropdownMenuItem>
-                  </DropdownMenuSubContent>
-                </DropdownMenuPortal>
-              </DropdownMenuSub>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
 ]
 
 export function DataTable() {
@@ -398,7 +347,6 @@ export function DataTable() {
     return savedSelection ? JSON.parse(savedSelection) : null;
   });
   const [studentInfo, setStudentInfo] = React.useState(false)
-  const [sheetOpen, setSheetOpen] = React.useState(false)
 
   React.useEffect(() => {
     localStorage.setItem('sorting', JSON.stringify(sorting));
@@ -415,8 +363,8 @@ export function DataTable() {
   const { user, oneLeaderStudent, oneLeaderStudentArr, oneStudentDefine, oneStudent, isLoading, studentUpdate } = useAuthStore()
 
   React.useEffect(() => {
-    oneLeaderStudent(user.user._id)
-  }, [user.user._id, oneLeaderStudent])
+    oneLeaderStudent(user?.user?._id)
+  }, [user?.user?._id, oneLeaderStudent])
 
 
   React.useEffect(() => {
@@ -466,27 +414,32 @@ export function DataTable() {
   });
 
   React.useEffect(() => {
-    form.reset({
-      _id: oneStudent?._id || '',
-      group: oneStudent?.group || 0,
-      leaderId: oneStudent?.leaderId || '',
-      name: oneStudent?.name || '',
-      studentFbLink: oneStudent?.studentFbLink || '',
-      age: oneStudent?.age || 0,
-      email: oneStudent?.email || '',
-      githubLink: oneStudent?.githubLink || '',
-      speed: oneStudent?.speed || 0,
-      role: oneStudent?.role || '',
-      parentFbLink: oneStudent?.parentFbLink || '',
-      githubToken: oneStudent?.githubToken || '',
-      githubLastUpdate: oneStudent?.githubLastUpdate || '',
-      fines: oneStudent?.fines || { githubFine: 0, miniLeaderFine: 0, miniStudentFine: 0 },
-      aura: oneStudent?.aura || { points: 0, classwork: 0, attendance: 0, help: 0, camera: 0, answers: 0 },
-      payedInfo: oneStudent?.payedInfo || false,
-      comment: oneStudent?.comment || { leaderComment: '', leaderProof: '', controller: { miniLeaderController: '', githubController: '' } },
-    });
-  }, [oneStudent, form]);
+    if (oneStudent) {
+      form.reset({
+        _id: oneStudent._id || '',
+        group: oneStudent.group || 0,
+        leaderId: oneStudent.leaderId || '',
+        name: oneStudent.name || '',
+        studentFbLink: oneStudent.studentFbLink || '',
+        age: oneStudent.age || 0,
+        email: oneStudent.email || '',
+        githubLink: oneStudent.githubLink || '',
+        speed: oneStudent.speed || 0,
+        role: oneStudent.role || '',
+        parentFbLink: oneStudent.parentFbLink || '',
+        githubToken: oneStudent.githubToken || '',
+        githubLastUpdate: oneStudent.githubLastUpdate || '',
+        fines: oneStudent.fines || { githubFine: 0, miniLeaderFine: 0, miniStudentFine: 0 },
+        aura: oneStudent.aura || { points: 0, classwork: 0, attendance: 0, help: 0, camera: 0, answers: 0 },
+        payedInfo: oneStudent.payedInfo || false,
+        comment: oneStudent.comment || { leaderComment: '', leaderProof: '', controller: { miniLeaderController: '', githubController: '' } },
+      });
+      oneLeaderStudent(user?.user?._id)
+    }
+  }, [form, oneStudent, ]);
+  console.log(oneLeaderStudentArr)
   const formRender = (typeMain: string, minNum: number, maxNum: number, id: string, label: string, roles: string[], row: string) => {
+    <Separator />
     if (typeMain === 'number') {
       return (
         <FormField
@@ -591,7 +544,9 @@ export function DataTable() {
   const onSubmit: SubmitHandler<Student> = (data) => {
     setOneRowSelection((prev: Student) => ({ ...prev, leaderId: data.leaderId }));
     studentUpdate(oneStudent.leaderId, oneStudent._id, data);
-    if (!isLoading) setStudentInfo(false)
+    if (!isLoading) {
+      setStudentInfo(false);
+    }
   };
   return (
     <>
@@ -658,45 +613,24 @@ export function DataTable() {
                 {table.getRowModel().rows?.length ? (
                   table.getRowModel().rows.map((row) => (
 
-                    <Sheet key={row.id} open={sheetOpen}  >
-                      <SheetTrigger asChild onClick={() => { setOneRowSelection(row.original), (setSheetOpen(true)) }}>
-                        {(<TableRow
+                    <Sheet key={row.id}>
+                      <SheetTrigger asChild onClick={() => { setOneRowSelection(row.original) }}>
+                        <TableRow
                           data-state={row.getIsSelected() && "selected"}
-                          style={{ backgroundColor: JSON.parse(localStorage.getItem('rowColors') || '{}')[row.original._id] || '' }}
                         >
                           {row.getVisibleCells().map((cell) => (
-                            <TableCell key={cell.id}>
+                            <TableCell key={cell.id} >
                               {flexRender(
                                 cell.column.columnDef.cell,
                                 cell.getContext()
                               )}
                             </TableCell>
                           ))}
-                        </TableRow>)}
+                        </TableRow>
                       </SheetTrigger>
                       <SheetContent>
                         <SheetHeader className="shadow-sm pb-2">
-                          <div className="flex justify-between">
-                            <SheetTitle>{studentInfo ? "Edit Student" : "Info Student"}</SheetTitle>
-                            <AlertDialog>
-                              <AlertDialogTrigger asChild onClick={() => !studentInfo && setSheetOpen(false)}>
-                                <X className="cursor-pointer" />
-                              </AlertDialogTrigger>
-                              {studentInfo && (<AlertDialogContent>
-                                <AlertDialogHeader>
-                                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                                  <AlertDialogDescription>
-                                    This action cannot be undone. This will permanently delete your
-                                    account and remove your data from our servers.
-                                  </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                  <AlertDialogCancel onClick={() => setSheetOpen(false)}>Continue</AlertDialogCancel>
-                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                </AlertDialogFooter>
-                              </AlertDialogContent>)}
-                            </AlertDialog>
-                          </div>
+                          <SheetTitle>{studentInfo ? "Edit Student" : "Info Student"}</SheetTitle>
                           <SheetDescription className="flex items-center justify-between">
                             <span>{studentInfo ? "Make changes to your profile here. Click save when you're done." : "Get Student information here."}</span>
                             <Button
@@ -713,78 +647,96 @@ export function DataTable() {
                                   {/* // ? leader id */}
 
                                   {
-                                    (user.user.role.includes("leaderController") ||
-                                      (user.user.role.includes("admin"))) && (
+                                    (user?.user?.role.includes("leaderController") ||
+                                      (user?.user?.role.includes("admin"))) && (
                                       <>
                                         {formRender('string', 0, 0, 'leaderId', 'Leader ID', [], '')}
+                                        <Separator />
                                       </>
                                     )
                                   }
                                   {/* // ? name */}
                                   {formRender('string', 0, 0, 'name', 'Name', [], '')}
+                                  <Separator />
                                   {/* // ? age */}
                                   {formRender("number", 0, 99, "age", "Age", [], '')}
+                                  <Separator />
                                   {/* // ? Student Facebook Link */}
                                   {formRender('string', 0, 0, 'studentFbLink', 'Student Facebook Link', [], '')}
+                                  <Separator />
                                   {/* // ? email */}
                                   {formRender('string', 0, 0, 'email', 'Email', [], '')}
+                                  <Separator />
                                   {/* // ? github link */}
                                   {formRender('string', 0, 0, 'githubLink', 'Github Link', [], '')}
+                                  <Separator />
                                   {/* // ? speed */}
                                   {formRender('number', 0, 4, 'speed', 'Speed', [], '')}
+                                  <Separator />
                                   {/* // ? role */}
 
-                                  {!user.user.role.includes("miniLeader") && (
+                                  {!user?.user?.role.includes("miniLeader") && (
                                     <>
                                       {formRender('role', 0, 0, 'role', 'Role', ['student', 'miniLeader'], "")}
+                                      <Separator />
                                     </>
                                   )}
                                   {/* // ? parent facebook link */}
                                   {formRender('string', 0, 0, 'parentFbLink', 'Parent Facebook Link', [], '')}
+                                  <Separator />
                                   {/* // ? group */}
                                   {
-                                    (user.user.role.includes("leaderController") ||
-                                      (user.user.role.includes("admin"))) && (
+                                    (user?.user?.role.includes("leaderController") ||
+                                      (user?.user?.role.includes("admin"))) && (
                                       <>
                                         {formRender('number', 0, 99, 'group', 'Group', [], '')}
+                                        <Separator />
                                       </>
                                     )
                                   }
                                   {/* // ? github token */}
                                   {formRender('string', 0, 0, 'githubToken', 'Github Token', [], '')}
+                                  <Separator />
                                   {/* // ? github last update */}
                                   {formRender('string', 0, 0, 'githubLastUpdate', 'Github Last Update', [], '')}
                                   <Separator />
-                                  <Label className="capitalize font-bold leading-[5px] text-slate-400">Fines</Label>
+                                  <p className="capitalize font-bold leading-[1px] text-md text-slate-400">Fines</p>
                                   {/* // ? github fine */}
-                                  {(user.user.role.includes("githubController") ||
-                                    (user.user.role.includes("miniLeaderController")) ||
-                                    (user.user.role.includes("miniMentorController")) ||
-                                    (user.user.role.includes("admin"))) && (
+                                  {(user?.user?.role.includes("githubController") ||
+                                    (user?.user?.role.includes("miniLeaderController")) ||
+                                    (user?.user?.role.includes("miniMentorController")) ||
+                                    (user?.user?.role.includes("admin"))) && (
                                       <>
                                         {formRender('number', 0, 99, 'fines.githubFine', 'Github Fine', [], '')}
+                                        <Separator />
                                         {/* // ? mini leader fine */}
                                         {formRender('number', 0, 99, 'fines.miniLeaderFine', 'Mini Leader Fine', [], '')}
+                                        <Separator />
                                         {/* // ? mini student fine */}
                                         {formRender('number', 0, 99, 'fines.miniStudentFine', 'Mini Student Fine', [], '')}
                                       </>
                                     )}
                                   <Separator />
-                                  <Label className="capitalize font-bold leading-[5px] text-slate-400">Mentor Section</Label>
+                                  <p className="capitalize font-bold leading-[5px] text-slate-400">Mentor Section</p>
                                   {(
-                                    user.user.role.includes("admin") ||
-                                    user.user.role.includes("mentor")) && (
+                                    user?.user?.role.includes("admin") ||
+                                    user?.user?.role.includes("mentor")) && (
                                       <>
                                         {/* // ? aura points */}
                                         {formRender('number', 0, 999999, 'aura.points', 'Points', [], '')}
+                                        <Separator />
                                         {/* // ? aura classwork */}
                                         {formRender('number', 0, 999999, 'aura.classwork', 'Classwork', [], '')}
+                                        <Separator />
                                         {/* // ? aura attendance */}
                                         {formRender('number', 0, 999999, 'aura.attendance', 'Attendance', [], '')}
+                                        <Separator />
                                         {/* // ? aura help */}
                                         {formRender('number', 0, 999999, 'aura.help', 'Help', [], '')}
+                                        <Separator />
                                         {/* // ? aura camera */}
                                         {formRender('number', 0, 999999, 'aura.camera', 'Camera', [], '')}
+                                        <Separator />
                                         {/* // ? aura answers */}
                                         {formRender('number', 0, 999999, 'aura.answers', 'Answers', [], '')}
                                         {/* // ? payed info */}
@@ -792,64 +744,47 @@ export function DataTable() {
                                         {/* // ? leader comment */}
                                       </>)}
                                   <Separator />
-                                  <Label className="capitalize font-bold leading-[5px] text-slate-400">Leader Comment</Label>
-                                  {(user.user.role.includes("admin") ||
-                                    (user.user.role.includes("leader") && (oneStudent.leaderId == user.user._id)) ||
-                                    user.user.role.includes("admin")
+                                  <p className="capitalize font-bold leading-[5px] text-slate-400">Leader Comment</p>
+                                  {(user?.user?.role.includes("admin") ||
+                                    (user?.user?.role.includes("leader") && (oneStudent.leaderId == user?.user?._id)) ||
+                                    user?.user?.role.includes("admin")
                                   ) && (
                                       <>
                                         {formRender('string', 0, 0, 'comment.leaderComment', 'Leader Comment', [], '')}
+                                        <Separator />
                                         {/* // ? leader proof */}
                                         {formRender('string', 0, 0, 'comment.leaderProof', 'Leader Proof', [], '')}
                                         {/* // ? mini leader controller */}
                                       </>
                                     )}
                                   <Separator />
-                                  <Label className="capitalize font-bold leading-[5px] text-slate-400">Control comment</Label>
+                                  <p className="capitalize font-bold leading-[5px] text-slate-400">Control comment</p>
                                   {(
-                                    user.user.role.includes("miniLeaderController") ||
-                                    user.user.role.includes("githubController") ||
-                                    user.user.role.includes("admin")
+                                    user?.user?.role.includes("miniLeaderController") ||
+                                    user?.user?.role.includes("githubController") ||
+                                    user?.user?.role.includes("admin")
                                   ) &&
                                     (
                                       <>
                                         {formRender('string', 0, 0, 'comment.controller.miniLeaderController', 'Mini Leader Controller', [], '')}
+                                        <Separator />
                                         {/* // ? leader controller */}
                                         {formRender('string', 0, 0, 'comment.controller.githubController', 'Github Controller', [], '')}
+                                        <Separator />
                                       </>
                                     )
                                   }
-                                  <div className="ml-auto space-x-2">
-                                    <Button type="submit" variant={"green"}
-                                      onClick={() =>
-                                        toast("Student has been updated", {
-                                          description: `${oneStudent.updatedAt}`,
-                                          action: {
-                                            label: "Undo",
-                                            onClick: () => console.log("Undo"),
-                                          }
-                                        })}
+                                  <Button type="submit" variant={"green"}
+                                    onClick={() =>
+                                      toast("Student has been updated", {
+                                        description: `${oneStudent.updatedAt}`,
+                                        action: {
+                                          label: "Undo",
+                                          onClick: () => console.log("Undo"),
+                                        }
+                                      })}
 
-                                    > Save changes</Button>
-                                    <AlertDialog>
-                                      <AlertDialogTrigger asChild>
-                                        <Button variant={"destructive"}>Cancel</Button>
-                                      </AlertDialogTrigger>
-                                      {sheetOpen && (<AlertDialogContent>
-                                        <AlertDialogHeader>
-                                          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                                          <AlertDialogDescription>
-                                            This action cannot be undone. This will permanently delete your
-                                            account and remove your data from our servers.
-                                          </AlertDialogDescription>
-                                        </AlertDialogHeader>
-                                        <AlertDialogFooter>
-                                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                          <AlertDialogAction onClick={() => setSheetOpen(false)}>Continue</AlertDialogAction>
-                                        </AlertDialogFooter>
-                                      </AlertDialogContent>)}
-                                    </AlertDialog>
-                                  </div>
+                                  > Save changes</Button>
                                 </div>
                               </form>
                             </Form>)
@@ -861,125 +796,148 @@ export function DataTable() {
                                     {/* //* student info */}
                                     <p className="font-bold leading-[5px] text-slate-400 capitalize"><b>Student info</b></p>
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2 capitalize">Leader ID</span>
-                                      <span className="col-span-3  font-bold">{oneStudent.leaderId}</span>
+                                      <span className="col-span-2 capitalize">Leader ID</span>
+                                      <span className="col-start-3 font-bold">{oneStudent.leaderId}</span>
                                     </div>
+                                    <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2">Name</span>
-                                      <span className="col-span-3 font-bold">{oneStudent.name}</span>
+                                      <span className="col-span-2">Name</span>
+                                      <span className="col-start-3 font-bold">{oneStudent.name}</span>
                                     </div>
+                                    <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2">Age</span>
-                                      <span className="col-span-3 font-bold">{oneStudent.age}</span>
+                                      <span className="col-span-2">Age</span>
+                                      <span className="col-start-3 font-bold">{oneStudent.age}</span>
                                     </div>
+                                    <Separator />
 
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2">Email</span>
-                                      <span className="col-span-3 font-bold">{oneStudent.email}</span>
+                                      <span className="col-span-2">Email</span>
+                                      <span className="col-start-3 font-bold">{oneStudent.email}</span>
                                     </div>
+                                    <Separator />
 
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2">Role</span>
-                                      <span className="col-span-3 font-bold">{oneStudent.role}</span>
+                                      <span className="col-span-2">Role</span>
+                                      <span className="col-start-3 font-bold">{oneStudent.role}</span>
                                     </div>
+                                    <Separator />
 
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2">Github Link</span>
-                                      <Link className="col-span-3 font-bold " to={oneStudent.githubLink} target="_blank"><Button variant={"link"} className="m-0 p-0 text-blue-500">Github</Button></Link>
+                                      <span className="col-span-2">Github Link</span>
+                                      <Link className="col-start-3 font-bold " to={oneStudent.githubLink} target="_blank"><Button variant={"link"} className="m-0 p-0 text-blue-500">Github</Button></Link>
                                     </div>
+                                    <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2">Parent Facebook Link</span>
-                                      <Link className="col-span-3 font-bold" to={oneStudent.parentFbLink} target="_blank"><Button variant={"link"} className="m-0 p-0 text-blue-500">Parent</Button></Link>
+                                      <span className="col-span-2">Parent Facebook Link</span>
+                                      <Link className="col-start-3 font-bold" to={oneStudent.parentFbLink} target="_blank"><Button variant={"link"} className="m-0 p-0 text-blue-500">Parent</Button></Link>
                                     </div>
+                                    <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2">Student Facebook Link</span>
-                                      <Link className="col-span-3 font-bold" to={oneStudent.studentFbLink} target="_blank"><Button variant={"link"} className="m-0 p-0 text-blue-500">Student</Button></Link>
+                                      <span className="col-span-2">Student Facebook Link</span>
+                                      <Link className="col-start-3 font-bold" to={oneStudent.studentFbLink} target="_blank"><Button variant={"link"} className="m-0 p-0 text-blue-500">Student</Button></Link>
                                     </div>
+                                    <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2">Group</span>
-                                      <span className="col-span-3 font-bold">{oneStudent.group}</span>
+                                      <span className="col-span-2">Group</span>
+                                      <span className="col-start-3 font-bold">{oneStudent.group}</span>
                                     </div>
+                                    <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2">Speed</span>
-                                      <span className="col-span-3 font-bold">{oneStudent.speed}</span>
+                                      <span className="col-span-2">Speed</span>
+                                      <span className="col-start-3 font-bold">{oneStudent.speed}</span>
                                     </div>
+                                    <Separator />
 
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2">Github Token</span>
-                                      <span className="col-span-3 font-bold">****</span>
+                                      <span className="col-span-2">Github Token</span>
+                                      <span className="col-start-3 font-bold">****</span>
                                     </div>
+                                    <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2">Github Last Update</span>
-                                      <span className="col-span-3 font-bold">{oneStudent?.githubLastUpdate}</span>
+                                      <span className="col-span-2">Github Last Update</span>
+                                      <span className="col-start-3 font-bold">{oneStudent?.githubLastUpdate}</span>
                                     </div>
+                                    <Separator />
                                     {/* //* controller info */}
 
-                                    <Separator />
                                     <p className="font-bold leading-[5px] text-slate-400 capitalize"><b>Controller info</b></p>
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2">Github Fine</span>
-                                      <span className="col-span-3 font-bold">{oneStudent?.fines?.githubFine}</span>
+                                      <span className="col-span-2">Github Fine</span>
+                                      <span className="col-start-3 font-bold">{oneStudent?.fines?.githubFine}</span>
                                     </div>
+                                    <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2">MiniLeader Fine</span>
-                                      <span className="col-span-3 font-bold">{oneStudent?.fines?.miniLeaderFine}</span>
+                                      <span className="col-span-2">MiniLeader Fine</span>
+                                      <span className="col-start-3 font-bold">{oneStudent?.fines?.miniLeaderFine}</span>
                                     </div>
+                                    <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2">MiniLeader Fine</span>
-                                      <span className="col-span-3 font-bold">{oneStudent?.fines?.miniLeaderFine}</span>
+                                      <span className="col-span-2">MiniLeader Fine</span>
+                                      <span className="col-start-3 font-bold">{oneStudent?.fines?.miniLeaderFine}</span>
                                     </div>
+                                    <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2">Mini Student Fine</span>
-                                      <span className="col-span-3 font-bold">{oneStudent?.fines?.miniStudentFine}</span>
+                                      <span className="col-span-2">Mini Student Fine</span>
+                                      <span className="col-start-3 font-bold">{oneStudent?.fines?.miniStudentFine}</span>
                                     </div>
                                     {/* //* aura info */}
 
                                     <Separator />
                                     <p className="font-bold leading-[5px] text-slate-400 capitalize"><b>Aura info</b></p>
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2">Points</span>
-                                      <span className="col-span-3 font-bold">{oneStudent?.aura?.answers + oneStudent?.aura?.attendance + oneStudent?.aura?.camera + oneStudent?.aura?.classwork + oneStudent?.aura?.help + oneStudent?.aura?.points}</span>
+                                      <span className="col-span-2">Points</span>
+                                      <span className="col-start-3 font-bold">{oneStudent?.aura?.answers + oneStudent?.aura?.attendance + oneStudent?.aura?.camera + oneStudent?.aura?.classwork + oneStudent?.aura?.help + oneStudent?.aura?.points}</span>
                                     </div>
+                                    <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2">Classwork</span>
-                                      <span className="col-span-3 font-bold">{oneStudent?.aura?.classwork}</span>
+                                      <span className="col-span-2">Classwork</span>
+                                      <span className="col-start-3 font-bold">{oneStudent?.aura?.classwork}</span>
                                     </div>
+                                    <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2">Attendance</span>
-                                      <span className="col-span-3 font-bold">{oneStudent?.aura?.attendance}</span>
+                                      <span className="col-span-2">Attendance</span>
+                                      <span className="col-start-3 font-bold">{oneStudent?.aura?.attendance}</span>
                                     </div>
+                                    <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2">Help</span>
-                                      <span className="col-span-3 font-bold">{oneStudent?.aura?.help}</span>
+                                      <span className="col-span-2">Help</span>
+                                      <span className="col-start-3 font-bold">{oneStudent?.aura?.help}</span>
                                     </div>
+                                    <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2">Camera</span>
-                                      <span className="col-span-3 font-bold">{oneStudent?.aura?.camera}</span>
+                                      <span className="col-span-2">Camera</span>
+                                      <span className="col-start-3 font-bold">{oneStudent?.aura?.camera}</span>
                                     </div>
+                                    <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2">Answers</span>
-                                      <span className="col-span-3 font-bold">{oneStudent?.aura?.answers}</span>
+                                      <span className="col-span-2">Answers</span>
+                                      <span className="col-start-3 font-bold">{oneStudent?.aura?.answers}</span>
                                     </div>
+                                    <Separator />
                                     {/* //* comments info */}
 
-                                    <Separator />
                                     <p className="font-bold leading-[5px] text-slate-400 capitalize"><b>Comments</b></p>
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2">Leader Comment</span>
-                                      <span className="col-span-3 font-bold">{oneStudent?.comment?.leaderComment}</span>
+                                      <span className="col-span-2">Leader Comment</span>
+                                      <span className="col-start-3 font-bold">{oneStudent?.comment?.leaderComment}</span>
                                     </div>
+                                    <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2">Leader Poof</span>
-                                      <Link className="col-span-3 font-bold" to={oneStudent?.comment?.leaderProof} target="_blank"><Button variant={"link"} className="m-0 p-0 text-blue-500">Proof</Button></Link>
+                                      <span className="col-span-2">Leader Poof</span>
+                                      <Link className="col-start-3 font-bold" to={oneStudent?.comment?.leaderProof} target="_blank"><Button variant={"link"} className="m-0 p-0 text-blue-500">Proof</Button></Link>
                                     </div>
+                                    <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2">Mini Leader Controller</span>
-                                      <span className="col-span-3 font-bold" >{oneStudent?.comment?.controller.miniLeaderController}</span>
+                                      <span className="col-span-2">Mini Leader Controller</span>
+                                      <span className="col-start-3 font-bold" >{oneStudent?.comment?.controller.miniLeaderController}</span>
                                     </div>
+                                    <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="grid-cols-2">Github Controller</span>
-                                      <span className="col-span-3 font-bold" >{oneStudent?.comment?.controller.githubController}</span>
+                                      <span className="col-span-2">Github Controller</span>
+                                      <span className="col-start-3 font-bold" >{oneStudent?.comment?.controller.githubController}</span>
                                     </div>
+                                    <Separator />
                                   </div>
                                 </div>
                               </>
@@ -989,17 +947,11 @@ export function DataTable() {
                       </SheetContent>
                     </Sheet>
                   ))
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={columns.length}
-                      className="h-24 text-center"
-                    >
-                      <Loading />
-                      No results.
-                    </TableCell>
-                  </TableRow>
-                )}
+                ) :
+                  <div className="flex items-center justify-center">
+                    <Loading />
+                  </div>
+                }
               </TableBody>
             </Table>
           </div>
