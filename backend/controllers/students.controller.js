@@ -69,7 +69,6 @@ export const updateStudent = async (req, res) => {
     }
     console.log("Student updated successfully");
     res.status(200).json(student);
-    console.log(student,"\n", req.body);
   } catch (error) {
     if (error.kind === 'ObjectId') {
       error.messageFormat = `Cast to ObjectId failed for value "${error.value}" at path "${error.path}"`;

@@ -10,10 +10,10 @@ SMTP_PASS = 4444 4444 4444 4444
 NODE_ENV = development
 
 FRONT_URL = http://localhost:5173
-
+WEB_URL = https://example
 
 # //! FRONTEND
-
+MODE = development
 VITE_API_URL= http://localhost:5000
 
 GOOGLE_APPLICATION_CREDENTIALS = ./secret.json
