@@ -39,7 +39,7 @@ export default function Login() {
     }
   };
   return (
-    isLoading ?
+    !isLoading ?
       <>
         <div className="h-[90vh] w-full flex items-center justify-center">
           <Loading />

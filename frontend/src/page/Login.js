@@ -37,7 +37,7 @@ export default function Login() {
             console.error("Error logging in:", error);
         }
     });
-    return (isLoading ?
+    return (!isLoading ?
         React.createElement(React.Fragment, null,
             React.createElement("div", { className: "h-[90vh] w-full flex items-center justify-center" },
                 React.createElement(Loading, null)))
