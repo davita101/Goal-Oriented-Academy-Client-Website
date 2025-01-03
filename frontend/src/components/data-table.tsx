@@ -21,7 +21,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, Circle, MoreHorizontal, X } from "lucide-react"
+import { ArrowUpDown, ChevronDown,} from "lucide-react"
 import { Row } from "@tanstack/react-table"
 
 import {
@@ -44,7 +44,7 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card"
 import { Badge } from "./ui/badge"
 import { ScrollArea, ScrollBar } from "./ui/scroll-area"
 import { Separator } from "./ui/separator"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./ui/select"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { userSchema } from "../schema/user"
@@ -94,6 +94,8 @@ export type Student = {
 }
 export const columns: ColumnDef<Student>[] = [
   {
+
+
     id: "select",
     header: ({ table }) => (
       <Checkbox
@@ -123,13 +125,13 @@ export const columns: ColumnDef<Student>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          role
+          Role
           <ArrowUpDown />
         </Button>
       )
     },
     cell: ({ row }) => (
-      <div className="capitalize">
+      <div className="capitalize font-bold">
         {<Badge>{row.getValue("role")}</Badge>}
       </div>
     ),
@@ -142,34 +144,34 @@ export const columns: ColumnDef<Student>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          name
+          Name
           <ArrowUpDown />
         </Button>
       )
     },
     cell: ({ row }) => (
-      <div className="capitalize">
+      <div className="capitalize font-bold">
         {row.getValue("name")}
       </div>
     ),
   },
   {
     accessorKey: "age",
-    header: "age",
+    header: "Age",
     cell: ({ row }) => (
-      <div className="capitalize"><Badge variant="outline">{row.getValue("age")}</Badge></div>
+      <div className="capitalize font-bold"><Badge variant="outline" className="font-b">{row.getValue("age")}</Badge></div>
     ),
   },
   {
     accessorKey: "email",
-    header: "email",
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+    header: "Email",
+    cell: ({ row }) => <div className="font-bold">{row.getValue("email")}</div>,
   },
   {
     accessorKey: "studentFbLink",
-    header: "studentFbLink",
+    header: "Student FB",
     cell: ({ row }) => (
-      <div className="capitalize"><Link target="_blank" to={row.getValue("studentFbLink")}><Button variant="link">Facebook</Button></Link></div>
+      <div className="capitalize font-bold"><Link target="_blank" to={row.getValue("studentFbLink")}><Button className="text-blue-400 pl-0" variant="link">Facebook</Button></Link></div>
     ),
   },
   {
@@ -178,22 +180,23 @@ export const columns: ColumnDef<Student>[] = [
       return (
         <Button
           variant="ghost"
+          className="pl-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          LastUpdate
+          Last Update
           <ArrowUpDown />
         </Button>
       )
     },
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("githubLastUpdate")}</div>
+      <div className="capitalize font-bold">{row.getValue("githubLastUpdate")}</div>
     ),
   },
   {
     accessorKey: "githubLink",
-    header: "githubLink",
+    header: "Github",
     cell: ({ row }) => (
-      <div className="capitalize"><Link target="_blank" to={row.getValue("githubLink")}><Button variant="link">githubLink</Button></Link></div>
+      <div className="capitalize font-bold"><Link target="_blank" to={row.getValue("githubLink")}><Button className="text-blue-400 pl-0" variant="link">github Link</Button></Link></div>
     ),
   },
   {
@@ -202,15 +205,16 @@ export const columns: ColumnDef<Student>[] = [
       return (
         <Button
           variant="ghost"
+          className="pl-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          speed
+          Speed
           <ArrowUpDown />
         </Button>
       )
     },
     cell: ({ row }) => (
-      <div className="capitalize "><Badge variant="outline">{row.getValue("speed")}</Badge></div>
+      <div className="capitalize "><Badge variant="outline" className="font-bold">{row.getValue("speed")}</Badge></div>
     ),
   },
   {
@@ -218,30 +222,32 @@ export const columns: ColumnDef<Student>[] = [
     header: ({ column }) => {
       return (
         <Button
+          className="pl-0"
+
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          group
+          Group
           <ArrowUpDown />
         </Button>
       )
     },
     cell: ({ row }) => (
-      <div className="capitalize"><Badge variant="outline">{row.getValue("group")}</Badge></div>
+      <div className="capitalize font-bold"><Badge className="font-bold" variant="outline">{row.getValue("group")}</Badge></div>
     ),
   },
   {
     accessorKey: "leaderId",
-    header: "leaderId",
+    header: "LeaderId",
     cell: ({ row }) => (
-      <div className="capitalize"><Link target="_blank" to={row.getValue("leaderId")}><Button variant="link">leaderID</Button></Link></div>
+      <div className="capitalize font-bold"><Link target="_blank" to={row.getValue("leaderId")}><Button className="text-blue-400 pl-0" variant="link">leaderID</Button></Link></div>
     ),
   },
   {
     accessorKey: "parentFbLink",
-    header: "parentFbLink",
+    header: "Parent FB",
     cell: ({ row }) => (
-      <div className="capitalize"><Link target="_blank" to={row.getValue("parentFbLink")}><Button variant="link">parenLink</Button></Link></div>
+      <div className="capitalize font-bold"><Link target="_blank" to={row.getValue("parentFbLink")}><Button className="text-blue-400 pl-0" variant="link">parenLink</Button></Link></div>
     ),
   },
   {
@@ -249,9 +255,9 @@ export const columns: ColumnDef<Student>[] = [
     header: () => {
       return (
         <Button
-          variant="destructive"
+          variant="ghost"
         >
-          fines
+          Fines
           <ArrowUpDown />
         </Button>
       )
@@ -280,9 +286,9 @@ export const columns: ColumnDef<Student>[] = [
     header: () => {
       return (
         <Button
-          variant="destructive"
+          variant="ghost"
         >
-          aura
+          Aura
           <ArrowUpDown />
         </Button>
       )
@@ -318,9 +324,9 @@ export const columns: ColumnDef<Student>[] = [
 
   {
     accessorKey: "payedInfo",
-    header: "payedInfo",
+    header: "PayedInfo",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("payedInfo") ? "True" : "False"}</div>
+      <div className="capitalize font-bold">{row.getValue("payedInfo") ? "True" : "False"}</div>
     ),
   },
 ]
@@ -362,15 +368,13 @@ export function DataTable() {
 
   const { user, oneLeaderStudent, oneLeaderStudentArr, oneStudentDefine, oneStudent, isLoading, studentUpdate } = useAuthStore()
 
-  React.useEffect(() => {
-    oneLeaderStudent(user?.user?._id)
-  }, [user?.user?._id, oneLeaderStudent])
 
   React.useEffect(() => {
     if (oneRowSelection) {
       oneStudentDefine(oneRowSelection.leaderId, oneRowSelection._id)
+      oneLeaderStudent(user?.user?._id)
     }
-  }, [oneRowSelection])
+  }, [oneRowSelection, user?.user?._id, oneLeaderStudent])
   const table = useReactTable({
     data: oneLeaderStudentArr.sort((a, b) => a.group < b.group ? 1 : -1),
     columns,
@@ -433,9 +437,8 @@ export function DataTable() {
         payedInfo: oneStudent.payedInfo || false,
         comment: oneStudent.comment || { leaderComment: '', leaderProof: '', controller: { miniLeaderController: '', githubController: '' } },
       });
-      oneLeaderStudent(user?.user?._id)
     }
-  }, [form, oneStudent,]);
+  }, [form, oneStudent]);
   const formRender = (typeMain: string, minNum: number, maxNum: number, id: string, label: string, roles: string[], row: string) => {
     <Separator />
     if (typeMain === 'number') {
@@ -497,7 +500,6 @@ export function DataTable() {
       )
     } else if (typeMain === 'role') {
       return (
-        // ! not working!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         <FormField
           control={form.control}
           name={id as keyof Student}
@@ -507,15 +509,14 @@ export function DataTable() {
               <FormField
                 control={form.control}
                 name={id as keyof Student}
-                render={({ fieldState: { error } }) => (
-                  <FormItem className="grid grid-cols-4 items-center w-full justify-start gap-2">
-                    <Select onValueChange={(value) => handleInputChange(oneRowSelection, 'role', value)}>
-                      <SelectTrigger className="col-span-3">
-                        <SelectValue placeholder={`${label}`} />
+                render={({ field, fieldState: { error } }) => (
+                  <FormItem className="col-span-3">
+                    <Select onValueChange={field.onChange} defaultValue={typeof field.value === 'string' ? field.value : undefined}>
+                      <SelectTrigger >
+                        <SelectValue placeholder="Select a fruit" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectLabel className="capitalize">{label}</SelectLabel>
                           {roles.map((role, index) => (
                             <SelectItem key={index} value={role}>
                               {role}
@@ -524,6 +525,7 @@ export function DataTable() {
                         </SelectGroup>
                       </SelectContent>
                     </Select>
+                    <FormMessage className="col-span-3">{error?.message}</FormMessage>
                   </FormItem>
                 )}
               />
@@ -628,7 +630,7 @@ export function DataTable() {
                       </SheetTrigger>
                       <SheetContent>
                         <SheetHeader className="shadow-sm pb-2">
-                          <SheetTitle>{studentInfo ? "Edit Student" : "Info Student"}</SheetTitle>
+                          <SheetTitle><span >{studentInfo ? "Edit Student" : "Info Student"}</span> <span className="text-black/50">{oneStudent.name}</span></SheetTitle>
                           <SheetDescription className="flex items-center justify-between">
                             <span>{studentInfo ? "Make changes to your profile here. Click save when you're done." : "Get Student information here."}</span>
                             <Button
@@ -660,13 +662,13 @@ export function DataTable() {
                                   {formRender("number", 0, 99, "age", "Age", [], '')}
                                   <Separator />
                                   {/* // ? Student Facebook Link */}
-                                  {formRender('string', 0, 0, 'studentFbLink', 'Student Facebook Link', [], '')}
+                                  {formRender('string', 0, 0, 'studentFbLink', 'Student Facebook', [], '')}
                                   <Separator />
                                   {/* // ? email */}
                                   {formRender('string', 0, 0, 'email', 'Email', [], '')}
                                   <Separator />
-                                  {/* // ? github link */}
-                                  {formRender('string', 0, 0, 'githubLink', 'Github Link', [], '')}
+                                  {/* // ? github */}
+                                  {formRender('string', 0, 0, 'github', 'Github', [], '')}
                                   <Separator />
                                   {/* // ? speed */}
                                   {formRender('number', 0, 4, 'speed', 'Speed', [], '')}
@@ -680,7 +682,7 @@ export function DataTable() {
                                     </>
                                   )}
                                   {/* // ? parent facebook link */}
-                                  {formRender('string', 0, 0, 'parentFbLink', 'Parent Facebook Link', [], '')}
+                                  {formRender('string', 0, 0, 'parentFbLink', 'Parent Facebook', [], '')}
                                   <Separator />
                                   {/* // ? group */}
                                   {
@@ -794,66 +796,66 @@ export function DataTable() {
                                     {/* //* student info */}
                                     <p className="font-bold leading-[5px] text-slate-400 capitalize"><b>Student info</b></p>
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2 capitalize">Leader ID</span>
+                                      <span className="col-span-2 font-bold capitalize">Leader ID</span>
                                       <span className="col-start-3 font-bold">{oneStudent.leaderId}</span>
                                     </div>
                                     <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2">Name</span>
+                                      <span className="col-span-2 font-bold">Name</span>
                                       <span className="col-start-3 font-bold">{oneStudent.name}</span>
                                     </div>
                                     <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2">Age</span>
+                                      <span className="col-span-2 font-bold">Age</span>
                                       <span className="col-start-3 font-bold">{oneStudent.age}</span>
                                     </div>
                                     <Separator />
 
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2">Email</span>
+                                      <span className="col-span-2 font-bold">Email</span>
                                       <span className="col-start-3 font-bold">{oneStudent.email}</span>
                                     </div>
                                     <Separator />
 
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2">Role</span>
+                                      <span className="col-span-2 font-bold">Role</span>
                                       <span className="col-start-3 font-bold">{oneStudent.role}</span>
                                     </div>
                                     <Separator />
 
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2">Github Link</span>
-                                      <Link className="col-start-3 font-bold " to={oneStudent.githubLink} target="_blank"><Button variant={"link"} className="m-0 p-0 text-blue-500">Github</Button></Link>
+                                      <span className="col-span-2 font-bold">Github</span>
+                                      <Link className="col-start-3 font-bold " to={oneStudent.githubLink} target="_blank"><Button variant={"link"} className="m-0 p-0 text-blue-500 pl-0">Github</Button></Link>
                                     </div>
                                     <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2">Parent Facebook Link</span>
-                                      <Link className="col-start-3 font-bold" to={oneStudent.parentFbLink} target="_blank"><Button variant={"link"} className="m-0 p-0 text-blue-500">Parent</Button></Link>
+                                      <span className="col-span-2 font-bold">Parent Facebook</span>
+                                      <Link className="col-start-3 font-bold" to={oneStudent.parentFbLink} target="_blank"><Button variant={"link"} className="m-0 p-0 text-blue-500 pl-0">Parent</Button></Link>
                                     </div>
                                     <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2">Student Facebook Link</span>
-                                      <Link className="col-start-3 font-bold" to={oneStudent.studentFbLink} target="_blank"><Button variant={"link"} className="m-0 p-0 text-blue-500">Student</Button></Link>
+                                      <span className="col-span-2 font-bold">Student Facebook</span>
+                                      <Link className="col-start-3 font-bold" to={oneStudent.studentFbLink} target="_blank"><Button variant={"link"} className="m-0 p-0 text-blue-500 pl-0">Student</Button></Link>
                                     </div>
                                     <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2">Group</span>
+                                      <span className="col-span-2 font-bold">Group</span>
                                       <span className="col-start-3 font-bold">{oneStudent.group}</span>
                                     </div>
                                     <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2">Speed</span>
+                                      <span className="col-span-2 font-bold">Speed</span>
                                       <span className="col-start-3 font-bold">{oneStudent.speed}</span>
                                     </div>
                                     <Separator />
 
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2">Github Token</span>
+                                      <span className="col-span-2 font-bold">Github Token</span>
                                       <span className="col-start-3 font-bold">****</span>
                                     </div>
                                     <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2">Github Last Update</span>
+                                      <span className="col-span-2 font-bold">Github Last Update</span>
                                       <span className="col-start-3 font-bold">{oneStudent?.githubLastUpdate}</span>
                                     </div>
                                     <Separator />
@@ -861,22 +863,22 @@ export function DataTable() {
 
                                     <p className="font-bold leading-[5px] text-slate-400 capitalize"><b>Controller info</b></p>
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2">Github Fine</span>
+                                      <span className="col-span-2 font-bold">Github Fine</span>
                                       <span className="col-start-3 font-bold">{oneStudent?.fines?.githubFine}</span>
                                     </div>
                                     <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2">MiniLeader Fine</span>
+                                      <span className="col-span-2 font-bold">MiniLeader Fine</span>
                                       <span className="col-start-3 font-bold">{oneStudent?.fines?.miniLeaderFine}</span>
                                     </div>
                                     <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2">MiniLeader Fine</span>
+                                      <span className="col-span-2 font-bold">MiniLeader Fine</span>
                                       <span className="col-start-3 font-bold">{oneStudent?.fines?.miniLeaderFine}</span>
                                     </div>
                                     <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2">Mini Student Fine</span>
+                                      <span className="col-span-2 font-bold">Mini Student Fine</span>
                                       <span className="col-start-3 font-bold">{oneStudent?.fines?.miniStudentFine}</span>
                                     </div>
                                     {/* //* aura info */}
@@ -884,32 +886,32 @@ export function DataTable() {
                                     <Separator />
                                     <p className="font-bold leading-[5px] text-slate-400 capitalize"><b>Aura info</b></p>
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2">Points</span>
+                                      <span className="col-span-2 font-bold">Points</span>
                                       <span className="col-start-3 font-bold">{oneStudent?.aura?.answers + oneStudent?.aura?.attendance + oneStudent?.aura?.camera + oneStudent?.aura?.classwork + oneStudent?.aura?.help + oneStudent?.aura?.points}</span>
                                     </div>
                                     <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2">Classwork</span>
+                                      <span className="col-span-2 font-bold">Classwork</span>
                                       <span className="col-start-3 font-bold">{oneStudent?.aura?.classwork}</span>
                                     </div>
                                     <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2">Attendance</span>
+                                      <span className="col-span-2 font-bold">Attendance</span>
                                       <span className="col-start-3 font-bold">{oneStudent?.aura?.attendance}</span>
                                     </div>
                                     <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2">Help</span>
+                                      <span className="col-span-2 font-bold">Help</span>
                                       <span className="col-start-3 font-bold">{oneStudent?.aura?.help}</span>
                                     </div>
                                     <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2">Camera</span>
+                                      <span className="col-span-2 font-bold">Camera</span>
                                       <span className="col-start-3 font-bold">{oneStudent?.aura?.camera}</span>
                                     </div>
                                     <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2">Answers</span>
+                                      <span className="col-span-2 font-bold">Answers</span>
                                       <span className="col-start-3 font-bold">{oneStudent?.aura?.answers}</span>
                                     </div>
                                     <Separator />
@@ -917,22 +919,22 @@ export function DataTable() {
 
                                     <p className="font-bold leading-[5px] text-slate-400 capitalize"><b>Comments</b></p>
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2">Leader Comment</span>
+                                      <span className="col-span-2 font-bold">Leader Comment</span>
                                       <span className="col-start-3 font-bold">{oneStudent?.comment?.leaderComment}</span>
                                     </div>
                                     <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2">Leader Poof</span>
-                                      <Link className="col-start-3 font-bold" to={oneStudent?.comment?.leaderProof} target="_blank"><Button variant={"link"} className="m-0 p-0 text-blue-500">Proof</Button></Link>
+                                      <span className="col-span-2 font-bold">Leader Poof</span>
+                                      <Link className="col-start-3 font-bold" to={oneStudent?.comment?.leaderProof} target="_blank"><Button variant={"link"} className="m-0 p-0 text-blue-500 pl-0">Proof</Button></Link>
                                     </div>
                                     <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2">Mini Leader Controller</span>
+                                      <span className="col-span-2 font-bold">Mini Leader Controller</span>
                                       <span className="col-start-3 font-bold" >{oneStudent?.comment?.controller.miniLeaderController}</span>
                                     </div>
                                     <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                      <span className="col-span-2">Github Controller</span>
+                                      <span className="col-span-2 font-bold">Github Controller</span>
                                       <span className="col-start-3 font-bold" >{oneStudent?.comment?.controller.githubController}</span>
                                     </div>
                                     <Separator />
