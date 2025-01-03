@@ -10,7 +10,7 @@ export function NavUser() {
     const { user, logout, oneLeaderStudent, oneLeaderStudentArr } = useAuthStore();
     const handleLogout = () => {
         var _a;
-        logout((_a = user === null || user === void 0 ? void 0 : user.user) === null || _a === void 0 ? void 0 : _a.email);
+        logout((_a = user.user) === null || _a === void 0 ? void 0 : _a.email);
     };
     React.useEffect(() => {
         var _a;

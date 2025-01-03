@@ -68,10 +68,17 @@ const useAuthStore = create<AuthState>((set) => ({
   logout: async (email: string) => {
     try {
       const token = localStorage.getItem('authToken'); // Assuming the token is stored in localStorage
-      set({ user: null, isLogin: false, isCheckingAuth: false });
+      const response = await axios.post(`${API_URL}/api/auth/logout`, { email }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        withCredentials: true, // Include cookies in the request
+      });
+      set({ user: null, isLogin: false, isLoading:false, isCheckingAuth: false });
     } catch (error) {
       console.error('Error checking auth:', error);
-      set({ isCheckingAuth: false });
+      set({ isCheckingAuth: false,isLoading:false,  });
     }
   },
 

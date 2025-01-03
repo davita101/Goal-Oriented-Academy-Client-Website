@@ -37,13 +37,13 @@ export default function Login() {
             console.error("Error logging in:", error);
         }
     });
-    return (!isLoading ?
+    return (isLoading ?
         React.createElement(React.Fragment, null,
             React.createElement("div", { className: "h-[90vh] w-full flex items-center justify-center" },
                 React.createElement(Loading, null)))
         : (React.createElement("div", { className: "max-w-[400px] mx-auto h-screen w-full flex flex-col items-center justify-center" },
             React.createElement("p", { className: "text-center text-[35px] pb-4 font-bold text-green-500" }, "Goal Oriented Academy"),
-            (isLoading ? (React.createElement("div", { className: "p-2 w-full mx-2" },
+            (!isLoading ? (React.createElement("div", { className: "p-2 w-full mx-2" },
                 React.createElement(Form, Object.assign({}, form),
                     React.createElement("form", { onSubmit: form.handleSubmit(handleEmailSubmit), className: "space-y-8" },
                         React.createElement(FormField, { control: form.control, name: "email", render: ({ field }) => (React.createElement(FormItem, null,
@@ -52,7 +52,7 @@ export default function Login() {
                                     React.createElement(Input, Object.assign({ className: "p-2 px-4", placeholder: "Enter your email" }, field, { type: "email" }))),
                                 React.createElement(FormDescription, null, "Enter your Goal-Oriented Academy email."),
                                 React.createElement(FormMessage, null))) }),
-                        React.createElement(Button, { type: "submit", className: `w-full py-6 ${form.formState.isValid ? "bg-green-400 hover:bg-green-300" : "bg-green-300 hover:bg-green-300 cursor-not-allowed"}` }, isLoading ? React.createElement(Submit, null) : "Submit"))))) : (React.createElement(React.Fragment, null,
+                        React.createElement(Button, { type: "submit", className: `w-full py-6 ${form.formState.isValid ? "bg-green-400 hover:bg-green-300" : "bg-green-300 hover:bg-green-300 cursor-not-allowed"}` }, !isLoading ? React.createElement(Submit, null) : "Submit"))))) : (React.createElement(React.Fragment, null,
                 React.createElement(MoveLeft, { onClick: () => setSendInfo(false), className: "mr-auto cursor-pointer w-[30px] h-[30px] mb-2 bg-slate-300 hover:bg-slate-200 rounded-full p-2" }),
                 React.createElement("div", { className: "w-full bg-green-100 rounded-sm p-2" },
                     React.createElement("div", { className: "flex items-start space-x-3" },

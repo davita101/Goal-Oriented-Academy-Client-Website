@@ -39,7 +39,7 @@ export default function Login() {
     }
   };
   return (
-    !isLoading ?
+    isLoading ?
       <>
         <div className="h-[90vh] w-full flex items-center justify-center">
           <Loading />
@@ -48,7 +48,7 @@ export default function Login() {
 
       : (<div className="max-w-[400px] mx-auto h-screen w-full flex flex-col items-center justify-center">
         <p className="text-center text-[35px] pb-4 font-bold text-green-500">Goal Oriented Academy</p>
-        {(isLoading ? (
+        {(!isLoading ? (
           <div className="p-2 w-full mx-2">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(handleEmailSubmit)} className="space-y-8">
@@ -77,7 +77,7 @@ export default function Login() {
                   type="submit"
                   className={`w-full py-6 ${form.formState.isValid ? "bg-green-400 hover:bg-green-300" : "bg-green-300 hover:bg-green-300 cursor-not-allowed"}`}
                 >
-                  {isLoading ? <Submit /> : "Submit"}
+                  {!isLoading ? <Submit /> : "Submit"}
                 </Button>
               </form>
             </Form>

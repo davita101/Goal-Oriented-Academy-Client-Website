@@ -437,7 +437,6 @@ export function DataTable() {
       oneLeaderStudent(user?.user?._id)
     }
   }, [form, oneStudent, ]);
-  console.log(oneLeaderStudentArr)
   const formRender = (typeMain: string, minNum: number, maxNum: number, id: string, label: string, roles: string[], row: string) => {
     <Separator />
     if (typeMain === 'number') {

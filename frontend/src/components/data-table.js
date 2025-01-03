@@ -279,7 +279,6 @@ export function DataTable() {
             oneLeaderStudent((_a = user === null || user === void 0 ? void 0 : user.user) === null || _a === void 0 ? void 0 : _a._id);
         }
     }, [form, oneStudent,]);
-    console.log(oneLeaderStudentArr);
     const formRender = (typeMain, minNum, maxNum, id, label, roles, row) => {
         React.createElement(Separator, null);
         if (typeMain === 'number') {

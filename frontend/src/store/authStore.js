@@ -56,11 +56,18 @@ const useAuthStore = create((set) => ({
     logout: (email) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const token = localStorage.getItem('authToken'); // Assuming the token is stored in localStorage
-            set({ user: null, isLogin: false, isCheckingAuth: false });
+            const response = yield axios.post(`${API_URL}/api/auth/logout`, { email }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                withCredentials: true, // Include cookies in the request
+            });
+            set({ user: null, isLogin: false, isLoading: false, isCheckingAuth: false });
         }
         catch (error) {
             console.error('Error checking auth:', error);
-            set({ isCheckingAuth: false });
+            set({ isCheckingAuth: false, isLoading: false, });
         }
     }),
     oneLeaderStudent: (leaderId) => __awaiter(void 0, void 0, void 0, function* () {
