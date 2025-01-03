@@ -13,7 +13,7 @@ export const sendVerificationEmail = async ({ email, token }) => {
         <h1 style="font-size: 2em; color: #000000;">Please verify your GOA account!</h1>
         <p style="font-size: 1em; color: #6c6c6c; margin-bottom: 30px;">To keep things secure and make sure your account
             is protected, please verify your account using the button below</p>
-        <a href="${process.env.MODE =="production" ? process.env.WEB_URL : `http://localhost:${process.env.port}`}/api/auth/verify-email/${token}}"
+        <a href="${process.env.MODE =="production" ? process.env.WEB_URL : `http://localhost:${process.env.port}`}/api/auth/verify-email/${token}"
             style="display: inline-block; padding: 15px 30px; background-color: #1b8620; color: #ffffff; text-decoration: none; font-weight: bold; font-size: 1.2em; border-radius: 5px;">Click
             to Verify</a>
     </div>

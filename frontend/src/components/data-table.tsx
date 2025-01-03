@@ -366,7 +366,6 @@ export function DataTable() {
     oneLeaderStudent(user?.user?._id)
   }, [user?.user?._id, oneLeaderStudent])
 
-
   React.useEffect(() => {
     if (oneRowSelection) {
       oneStudentDefine(oneRowSelection.leaderId, oneRowSelection._id)
@@ -436,7 +435,7 @@ export function DataTable() {
       });
       oneLeaderStudent(user?.user?._id)
     }
-  }, [form, oneStudent, ]);
+  }, [form, oneStudent,]);
   const formRender = (typeMain: string, minNum: number, maxNum: number, id: string, label: string, roles: string[], row: string) => {
     <Separator />
     if (typeMain === 'number') {
@@ -947,9 +946,11 @@ export function DataTable() {
                     </Sheet>
                   ))
                 ) :
-                  <div className="flex items-center justify-center">
-                    <Loading />
-                  </div>
+                  <TableRow className="flex items-center justify-center">
+                    <TableCell>
+                      <Loading />
+                    </TableCell>
+                  </TableRow>
                 }
               </TableBody>
             </Table>

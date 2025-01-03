@@ -24,24 +24,13 @@ import { ProtectedRoute, RedirectAuthenticatedUser } from "./utils/protected-rou
 import Login from "./page/Login";
 import { useAuthStore } from "./store/authStore";
 import Dashboard from "./page/Dashboard";
+import Loading from "./components/loading";
 
 export default function App() {
   const location = useLocation();
-  const navigate = useNavigate();
-  const { user, isLogin, checkAuth } = useAuthStore();
+  const { user, isLogin, isLoading } = useAuthStore();
 
   const path = location.pathname;
-
-  React.useEffect(() => {
-    checkAuth()
-  }, [checkAuth])
-
-  React.useEffect(() => {
-    if (!user) {
-      navigate("/login");
-    }
-  }, [user, navigate]);
-
 
   const BreadRender = (name: string): JSX.Element => {
     return (
@@ -70,7 +59,7 @@ export default function App() {
           } as React.CSSProperties
         }
       >
-        {isLogin && (<AppSidebar />)}
+        {(isLogin && user?.success) && (<AppSidebar />)}
 
         <SidebarInset>
           {true && (<header className="sticky top-0 left-0 flex shrink-0 items-center gap-2 border-b bg-background p-4 z-[2]">
@@ -99,7 +88,7 @@ export default function App() {
             <Routes>
               <Route path="/login" element={
                 <RedirectAuthenticatedUser>
-                  <Login />
+                  {<Login />}
                 </RedirectAuthenticatedUser>
               } />
               <Route path="/*" element={

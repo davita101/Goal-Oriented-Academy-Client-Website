@@ -28,7 +28,7 @@ const useAuthStore = create<AuthState>((set) => ({
   oneStudent: {} as Student,
 
   checkAuth: async () => {
-    set({isLoading: true});
+    set({ isLoading: true });
     try {
       const token = localStorage.getItem('authToken'); // Assuming the token is stored in localStorage
       const response = await axios.get(`${API_URL}/api/auth/check-auth`, {
@@ -38,15 +38,19 @@ const useAuthStore = create<AuthState>((set) => ({
         },
         withCredentials: true, // Include cookies in the request
       });
+      if(response.data.success){
+        localStorage.setItem('authLogin', "true")
+      }
 
       set({ user: response.data, isLogin: true, isLoading: false, isCheckingAuth: true });
     } catch (error) {
       console.error('Error checking auth:', error);
-      set({ isCheckingAuth: false,isLoading: false });
+      set({ isCheckingAuth: false, isLoading: false });
     }
   },
 
   login: async (email: string) => {
+    set({ isLoading: true });
     try {
       console.log('Attempting to log in with email:', email);
       const response = await axios.post(`${API_URL}/api/auth/login`, { email }, {
@@ -56,7 +60,7 @@ const useAuthStore = create<AuthState>((set) => ({
         withCredentials: true, // Include cookies in the request
       });
 
-      set({ user: response.data.user, isLogin: true });
+      set({ user: response.data.user, isLoading: false, isLogin: true });
       localStorage.setItem('authToken', response.data.token); // Assuming the response contains a token
       console.log('Successfully logged in:', response.data.user);
     } catch (error) {
@@ -66,6 +70,7 @@ const useAuthStore = create<AuthState>((set) => ({
   },
 
   logout: async (email: string) => {
+    localStorage.setItem('authLogin', "false")
     try {
       const token = localStorage.getItem('authToken'); // Assuming the token is stored in localStorage
       const response = await axios.post(`${API_URL}/api/auth/logout`, { email }, {
@@ -75,10 +80,10 @@ const useAuthStore = create<AuthState>((set) => ({
         },
         withCredentials: true, // Include cookies in the request
       });
-      set({ user: null, isLogin: false, isLoading:false, isCheckingAuth: false });
+      set({ user: null, isLogin: false, isLoading: false, isCheckingAuth: false });
     } catch (error) {
       console.error('Error checking auth:', error);
-      set({ isCheckingAuth: false,isLoading:false,  });
+      set({ isCheckingAuth: false, isLoading: false, });
     }
   },
 
