@@ -249,12 +249,18 @@ export const verifyEmail = [
       if (!user) {
         return res
           .status(400)
-          .sendFile(path.join(__dirname, 'backend', 'public', 'invalid-user.html'))
+          .sendFile(
+            path.join(__dirname, 'backend', 'public', 'invalid-user.html')
+          )
       }
 
       // ? Check if token is expired
       if (user.verificationTokenExpiresAt < Date.now()) {
-        return res.status(400).sendFile(path.join(__dirname, 'backend', 'public', 'invalid-token.html'))
+        return res
+          .status(400)
+          .sendFile(
+            path.join(__dirname, 'backend', 'public', 'invalid-token.html')
+          )
       }
 
       // ? Verify user and clear verification token
@@ -300,14 +306,16 @@ export const verifyEmail = [
             <body>
                 <div class="flex flex-col h-screen w-screen justify-center items-center">
                     <p class="text-2xl text-green-400">Email verified successfully. Click to go to the website.</p>
-                    <button type="button" href='${
+                    <a href='${
                       process.env.NODE_ENV === 'development'
                         ? process.env.FRONT_URL
                         : process.env.WEB_URL
-                    }/dashboard'
+                    }/dashboard'> 
+                    <button type="button" 
                         class="px-4 py-2 bg-green-400 text-white rounded-sm active:ring active:ring-green-300 flex items-center justify-center gap-2">
                         <span>Click to go to Website</span>
                     </button>
+                    </a>
                 </div>
             </body>
             </html>
