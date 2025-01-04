@@ -39,7 +39,6 @@ import {
     TableRow,
 } from "../../components/ui/table"
 import { Link } from "react-router-dom"
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "../../components/ui/hover-card"
 import { Badge } from "../../components/ui/badge"
 import { ScrollArea, ScrollBar } from "../../components/ui/scroll-area"
 import { Separator } from "../../components/ui/separator"
@@ -78,20 +77,117 @@ export const columns: ColumnDef<Student>[] = [
             </div>
         ),
     },
+    {
+        accessorKey: "aura",
+        header: "Points",
+        cell: ({ row, column }) => (
+            <div
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            className="capitalize font-bold"
+            
+            >
+                {
+                    (row.getValue("aura") as Student["aura"])?.answers +
+                    (row.getValue("aura") as Student["aura"])?.attendance +
+                    (row.getValue("aura") as Student["aura"])?.camera +
+                    (row.getValue("aura") as Student["aura"])?.classwork +
+                    (row.getValue("aura") as Student["aura"])?.help
+                }
+            </div>
+        ),
+    },
+    {
+        header: "Classname",
+        cell: ({ row }) => (
+            <div key={(row.getValue("aura") as Student["aura"]).classwork} className="capitalize font-bold">
+                {(row.getValue("aura") as { classwork: number }).classwork}
+            </div>
+        ),
+    },
+    {
+        header: "Answers",
+        cell: ({ row }) => (
+            <div key={(row.getValue("aura") as Student["aura"]).answers} className="capitalize font-bold">
+                {(row.getValue("aura") as Student["aura"]).answers}
+            </div>
+        ),
+    },
+    {
+        header: "Attendance",
+        cell: ({ row }) => (
+            <div key={(row.getValue("aura") as Student["aura"]).attendance} className="capitalize font-bold">
+                {(row.getValue("aura") as Student["aura"]).attendance}
+            </div>
+        ),
+    },
+    {
+        header: "Camera",
+        cell: ({ row }) => (
+            <div key={(row.getValue("aura") as Student["aura"]).camera} className="capitalize font-bold">
+                {(row.getValue("aura") as Student["aura"]).camera}
+            </div>
+        ),
+    },
+    {
+        header: "Help",
+        cell: ({ row }) => (
+            <div key={(row.getValue("aura") as Student["aura"]).help} className="capitalize font-bold">
+                {(row.getValue("aura") as Student["aura"]).help}
+            </div>
+        ),
+    },
+    {
+        accessorKey: "speed",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Speed
+                    <ArrowUpDown />
+                </Button>
+            )
+        },
+        cell: ({ row }) => (
 
+            <div className="capitalize font-bold">
+                {row.getValue("speed") as Student["speed"]}
+            </div>
+        ),
+    },
+    {
+        accessorKey: "group",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    group
+                    <ArrowUpDown />
+                </Button>
+            )
+        },
+        cell: ({ row }) => (
+            <div className="capitalize font-bold">
+                {row.getValue("group") as Student["group"]}
+            </div>
+        ),
+    },
 ]
 
 export function Mentor() {
     const [sorting, setSorting] = React.useState<SortingState>(() => {
-        const savedSorting = localStorage.getItem('sorting');
+        const savedSorting = localStorage.getItem('sortingMentor');
         return savedSorting ? JSON.parse(savedSorting) : [];
     });
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(() => {
-        const savedFilters = localStorage.getItem('columnFilters');
+        const savedFilters = localStorage.getItem('columnFiltersMentor');
         return savedFilters ? JSON.parse(savedFilters) : [];
     });
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>(() => {
-        const savedVisibility = localStorage.getItem('columnVisibility');
+        const savedVisibility = localStorage.getItem('columnVisibilityMentor');
         return savedVisibility ? JSON.parse(savedVisibility) : {};
     });
     const [rowSelection, setRowSelection] = React.useState(() => {
@@ -121,15 +217,14 @@ export function Mentor() {
     const { getGroup, group } = useMentorStore()
 
     React.useEffect(() => {
+        getGroup("33")
         if (oneRowSelection) {
             getStudent(oneRowSelection.leaderId, oneRowSelection._id)
-            getGroup("33")
-            getLeaderStudents(user?.user?._id)
         }
     }, [oneRowSelection, user?.user?._id, getStudent, getGroup])
-    console.log(group)
+
     const table = useReactTable({
-        data: leaderStudents.sort((a, b) => a.group < b.group ? 1 : -1),
+        data: group.sort((a, b) => a.group < b.group ? 1 : -1),
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -195,11 +290,12 @@ export function Mentor() {
 
     const formRender = (typeMain: string, minNum: number, maxNum: number, id: string, label: string, roles: string[], row: string) => {
         <Separator />
+
         if (typeMain === 'number') {
             return (
                 <FormField
                     control={form.control}
-                    name={id as string}
+                    name={id as keyof Student}
                     render={({ field, fieldState: { error } }) => (
                         <FormItem className="grid grid-cols-4 items-center w-full justify-start gap-2">
                             <FormLabel className="grid-cols-2 capitalize">{label}</FormLabel>
@@ -231,7 +327,8 @@ export function Mentor() {
             return (
                 <FormField
                     control={form.control}
-                    name={id as string}
+                    name={id as keyof Student}
+
                     render={({ field, fieldState: { error } }) => (
                         <FormItem className="grid grid-cols-4  items-center w-full justify-start gap-2">
                             <FormLabel className="grid-cols-2">{label}</FormLabel>
@@ -256,15 +353,13 @@ export function Mentor() {
             return (
                 <FormField
                     control={form.control}
-                    name={id as string}
-
+                    name={id as keyof Student}
                     render={({ fieldState: { error } }) => (
                         <FormItem className="grid grid-cols-4 items-center w-full justify-start gap-2">
                             <FormLabel className="grid-cols-2">Role</FormLabel>
                             <FormField
                                 control={form.control}
-                                name={id as string}
-
+                                name={id as keyof Student}
                                 render={({ field, fieldState: { error } }) => (
                                     <FormItem className="col-span-3">
                                         <Select onValueChange={field.onChange} defaultValue={typeof field.value === 'string' ? field.value : undefined}>
@@ -367,7 +462,7 @@ export function Mentor() {
                             </TableHeader>
                             <TableBody >
                                 {table.getRowModel().rows?.length ? (
-                                    table.getRowModel().rows.map((row) => (
+                                    table.getRowModel().rows?.map((row) => (
 
                                         <Sheet key={row.id}>
                                             <SheetTrigger asChild onClick={() => { setOneRowSelection(row.original) }}>
@@ -399,30 +494,16 @@ export function Mentor() {
                                                         {(studentInfo && !isLoading) ? (<Form {...form}>
                                                             <form onSubmit={form.handleSubmit(onSubmit)}>
                                                                 <div className="grid gap-4 py-4">
-                                                                    {/* // ? leader id */}
-                                                                    {
-                                                                        (
-                                                                            user?.user?.role.includes("leaderController") ||
-                                                                            user?.user?.role.includes("mentor") ||
-                                                                            (user?.user?.role.includes("admin"))) && (
-                                                                            <>
-                                                                                {formRender('string', 0, 0, 'leaderId', 'Leader ID', [], '')}
-                                                                                <Separator />
-                                                                            </>
-                                                                        )
-                                                                    }
                                                                     {/* // ? speed */}
                                                                     {(user?.user?.role.includes("leaderController") ||
                                                                         user?.user?.role.includes("mentor") ||
                                                                         user?.user?.role.includes("mentorAssistant") ||
                                                                         user?.user?.role.includes("admin")) && (
                                                                             <>
-                                                                                {formRender('number', 0, 4, 'speed', 'Speed', [], '')}
+                                                                                {/* {formRender('number', 0, 4, 'speed', 'Speed', [], '')} */}
                                                                             </>
                                                                         )
                                                                     }
-
-                                                                    <Separator />
                                                                     {/* // ? group */}
                                                                     {
                                                                         (user?.user?.role.includes("leaderController") ||
@@ -530,7 +611,7 @@ export function Mentor() {
                                                                         <Separator />
                                                                         <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
                                                                             <span className="col-span-2 font-bold">Speed</span>
-                                                                            <span className="col-start-3 font-bold">{student.speed}</span>
+                                                                            <span className="col-start-3 font-bold">{student?.speed}</span>
                                                                         </div>
                                                                         <Separator />
 

@@ -24,6 +24,7 @@ import Login from "./page/Login";
 import { useAuthStore } from "./store/authStore";
 import Loading from "./components/loading";
 import DashboardRoutes from "./routes/dashboard-routes";
+import MentorRoutes from "./routes/mentor-routes";
 
 export default function AppRoutes() {
   const { user, checkAuth, isLogin } = useAuthStore();
@@ -113,6 +114,7 @@ export default function AppRoutes() {
               (!loading ? <Route path="*" element={<NotFound />} />)
 
               <Route path="/dashboard/*" element={<DashboardRoutes />} />
+              <Route path="/mentor/*" element={<MentorRoutes />} />
             </Routes>
           </div>
         </SidebarInset>

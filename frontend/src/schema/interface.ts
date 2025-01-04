@@ -36,13 +36,13 @@ export type Student = {
     }
 }
 export interface AuthState {
-  user: any;
-  isLogin: boolean;
-  isCheckingAuth: boolean;
-  isLoading: boolean;
-  checkAuth: () => Promise<void>;
-  login: (email: string) => Promise<void>;
-  logout: (email: string) => Promise<void>;
+    user: any;
+    isLogin: boolean;
+    isCheckingAuth: boolean;
+    isLoading: boolean;
+    checkAuth: () => Promise<void>;
+    login: (email: string) => Promise<void>;
+    logout: (email: string) => Promise<void>;
 }
 export interface LeaderState {
     leaderStudents: Student[];
@@ -52,4 +52,11 @@ export interface LeaderState {
     getLeaderStudents: (leaderId: string) => Promise<void>;
     getStudent: (leaderId: string, studentId: string) => Promise<void>;
     updateStudent: (leaderId: string, studentId: string, data: Student) => Promise<void>;
+}
+export interface GroupState {
+    groups: Student[];
+    group: Student[];
+    isLoading: boolean;
+    isCheckingAuth: boolean;
+    getGroup: (groupId: string) => Promise<void>;
 }

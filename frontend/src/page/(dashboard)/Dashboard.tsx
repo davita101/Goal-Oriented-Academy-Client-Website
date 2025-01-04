@@ -1,5 +1,4 @@
 import * as React from "react"
-import { Button } from "./ui/button"
 import {
   Sheet,
   SheetContent,
@@ -7,7 +6,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "./ui/sheet"
+} from "../../components/ui/sheet"
 
 import {
   ColumnDef,
@@ -29,8 +28,8 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu"
-import { Input } from "./ui/input"
+} from "../../components/ui/dropdown-menu"
+import { Input } from "../../components/ui/input"
 import {
   Table,
   TableBody,
@@ -38,23 +37,24 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./ui/table"
+} from "../../components/ui/table"
 import { Link } from "react-router-dom"
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card"
-import { Badge } from "./ui/badge"
-import { ScrollArea, ScrollBar } from "./ui/scroll-area"
-import { Separator } from "./ui/separator"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "../../components/ui/hover-card"
+import { Badge } from "../../components/ui/badge"
+import { ScrollArea, ScrollBar } from "../../components/ui/scroll-area"
+import { Separator } from "../../components/ui/separator"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { userSchema } from "../schema/user"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
-import { useAuthStore } from "../store/authStore"
-import Loading from "./loading"
+import { userSchema } from "../../schema/user"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../../components/ui/form"
+import { useAuthStore } from "../../store/authStore"
+import Loading from "../../components/loading"
 import { toast } from "sonner"
-import { Checkbox } from "./ui/checkbox"
-import { useLeaderStore } from "../store/leaderStore"
-import { Student } from "../schema/interface"
+import { Checkbox } from "../../components/ui/checkbox"
+import { useLeaderStore } from "../../store/leaderStore"
+import { Student } from "../../schema/interface"
+import { Button } from "../../components/ui/button"
 
 
 export const columns: ColumnDef<Student>[] = [
@@ -291,7 +291,7 @@ export const columns: ColumnDef<Student>[] = [
   },
 ]
 
-export function DataTable() {
+export function Dashboard() {
   const [sorting, setSorting] = React.useState<SortingState>(() => {
     const savedSorting = localStorage.getItem('sorting');
     return savedSorting ? JSON.parse(savedSorting) : [];
@@ -636,7 +636,7 @@ export function DataTable() {
                                     user?.user?.role.includes("mentorAssistant") ||
                                     user?.user?.role.includes("admin")) && (
                                       <>
-                                        formRender('number', 0, 4, 'speed', 'Speed', [], '')
+                                        {formRender('number', 0, 4, 'speed', 'Speed', [], '')}
                                         <Separator />
                                       </>
                                     )

@@ -14,6 +14,7 @@ import {
   MonitorCog,
   Presentation,
   SquareTerminal,
+  User,
   User2Icon,
   UserRoundPen,
 } from "lucide-react"
@@ -53,6 +54,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           },
         ],
       },
+    ],
+    mentor:
+    [
+      {
+        name: "Groups",
+        url: "/mentor/group",
+        icon: Book,
+      },
+    
     ],
     admin:
     [
@@ -165,6 +175,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarHeader>
         <SidebarContent>
           <AsideDashboard items={data.navMain} title="Dashboard" />
+          <NavProjects items={data.mentor} title="Mentor" />
           <NavProjects items={data.admin} title="Admin" />
           <NavProjects items={data.widgets} title="Widgets" />
           <NavProjects items={data.applications} title="Applications" />
