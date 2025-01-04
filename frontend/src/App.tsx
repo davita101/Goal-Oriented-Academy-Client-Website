@@ -9,7 +9,6 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "./components/ui/breadcrumb";
-import { Input } from "./components/ui/input";
 import { Separator } from "./components/ui/separator";
 import {
   SidebarInset,
@@ -18,19 +17,34 @@ import {
 } from "./components/ui/sidebar";
 import ToggleDarkMode from "./components/ui/togle-dark-mode";
 
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import NotFound from "./page/NotFound";
-import { ProtectedRoute, RedirectAuthenticatedUser } from "./utils/protected-routes";
+import { RedirectAuthenticatedUser } from "./utils/protected-routes";
 import Login from "./page/Login";
 import { useAuthStore } from "./store/authStore";
-import Dashboard from "./page/Dashboard";
 import Loading from "./components/loading";
+import DashboardRoutes from "./routes/dashboard-routes";
 
-export default function App() {
-  const location = useLocation();
-  const { user, isLogin, isLoading } = useAuthStore();
+export default function AppRoutes() {
+  const { user, checkAuth, isLogin } = useAuthStore();
+  const [loading, setLoading] = React.useState(true);
 
   const path = location.pathname;
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    const authenticate = async () => {
+      await checkAuth();
+      setLoading(false);
+    };
+    authenticate();
+  }, [checkAuth]);
+
+  React.useEffect(() => {
+    if (!loading && !user) {
+      navigate("/login");
+    }
+  }, [user, navigate, loading]);
 
   const BreadRender = (name: string): JSX.Element => {
     return (
@@ -50,6 +64,10 @@ export default function App() {
     );
   };
 
+  if (loading) {
+    return <Loading className="h-screen" />;
+  }
+
   return (
     <>
       <SidebarProvider
@@ -62,7 +80,7 @@ export default function App() {
         {(isLogin && user?.success) && (<AppSidebar />)}
 
         <SidebarInset>
-          {true && (<header className="sticky top-0 left-0 flex shrink-0 items-center gap-2 border-b bg-background p-4 z-[2]">
+          {user && (<header className="sticky top-0 left-0 flex shrink-0 items-center gap-2 border-b bg-background p-4 z-[2]">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
             <Breadcrumb className="flex-1 flex justify-between items-center">
@@ -91,12 +109,10 @@ export default function App() {
                   {<Login />}
                 </RedirectAuthenticatedUser>
               } />
-              <Route path="/*" element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              } />
-              <Route path="*" element={<NotFound />} />
+
+              (!loading ? <Route path="*" element={<NotFound />} />)
+
+              <Route path="/dashboard/*" element={<DashboardRoutes />} />
             </Routes>
           </div>
         </SidebarInset>

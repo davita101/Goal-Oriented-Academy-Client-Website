@@ -35,6 +35,7 @@ const useAuthStore = create((set) => ({
         }
         catch (error) {
             console.error('Error checking auth:', error);
+            localStorage.setItem('authLogin', "false");
             set({ isCheckingAuth: false, isLoading: false });
         }
     }),
@@ -48,11 +49,14 @@ const useAuthStore = create((set) => ({
                 },
                 withCredentials: true, // Include cookies in the request
             });
-            set({ user: response.data.user, isLoading: false, isLogin: true });
-            localStorage.setItem('authToken', response.data.token); // Assuming the response contains a token
-            console.log('Successfully logged in:', response.data.user);
+            if (response.data.success) {
+                set({ user: response.data.user, isLoading: false, isLogin: true });
+                localStorage.setItem('authToken', response.data.token); // Assuming the response contains a token
+                console.log('Successfully logged in:', response.data.user);
+            }
         }
         catch (error) {
+            localStorage.setItem('authLogin', "false");
             set({ user: null, isLoading: false, isLogin: true });
             console.error('Error logging in:', error);
         }
@@ -75,60 +79,5 @@ const useAuthStore = create((set) => ({
             set({ isCheckingAuth: false, isLoading: false, });
         }
     }),
-    oneLeaderStudent: (leaderId) => __awaiter(void 0, void 0, void 0, function* () {
-        set({ isLoading: true });
-        try {
-            const token = localStorage.getItem('authToken'); // Assuming the token is stored in localStorage
-            const response = yield axios.get(`${API_URL}/api/students/all-students/${leaderId}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                withCredentials: true, // Include cookies in the request
-            });
-            set({ oneLeaderStudentArr: response.data, isLoading: false });
-        }
-        catch (error) {
-            console.error('Error checking auth:', error);
-            set({ isCheckingAuth: false });
-        }
-    }),
-    oneStudentDefine: (leaderId, studentId) => __awaiter(void 0, void 0, void 0, function* () {
-        set({ isLoading: true });
-        try {
-            const token = localStorage.getItem('authToken'); // Assuming the token is stored in localStorage
-            const response = yield axios.get(`${API_URL}/api/students/${leaderId}/${studentId}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                withCredentials: true, // Include cookies in the request
-            });
-            set({ oneStudent: response.data, isLoading: false });
-        }
-        catch (error) {
-            set({ isLoading: false });
-            console.error('Error fetching student data:', error);
-            set({ isCheckingAuth: false });
-        }
-    }),
-    studentUpdate: (leaderId, studentId, data) => __awaiter(void 0, void 0, void 0, function* () {
-        set({ isLoading: true });
-        try {
-            const token = localStorage.getItem('authToken');
-            yield axios.put(`${API_URL}/api/students/${leaderId}/${studentId}`, data, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                withCredentials: true,
-            });
-            set({ isLoading: false });
-        }
-        catch (error) {
-            set({ isLoading: false });
-            console.error('Error updating student:', error);
-        }
-    })
 }));
 export { useAuthStore };

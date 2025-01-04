@@ -22,7 +22,7 @@ export default function Login() {
   const [sendInfo, setSendInfo] = React.useState(false);
   const navigate = useNavigate();
 
-  const { login, isLoading, isLogin, user, checkAuth } = useAuthStore();
+  const { login, isLoading, user, checkAuth } = useAuthStore();
 
   const form = useForm({
     resolver: zodResolver(formSchemaEmail),
@@ -30,22 +30,12 @@ export default function Login() {
       email: "",
     },
   });
-
-  React.useEffect(() => {
-    if (!user) {
-      navigate("/login");
-    }
-  }, [user, navigate]);
-
-
-  React.useEffect(() => {
-    checkAuth()
-  }, [checkAuth])
   // Handle form submission
   const handleEmailSubmit = async (data: { email: string }) => {
     try {
       await login(data.email);
       setSendInfo(true)
+      form.reset()
     } catch (error) {
       console.error("Error logging in:", error);
     }

@@ -17,6 +17,6 @@
     "alwaysStrict": true,
     "jsx": "react" // Add this line to enable JSX
   },
-  "include": ["src"],
+  "include": ["src", "../routes"],
   "exclude": ["node_modules"]
 }

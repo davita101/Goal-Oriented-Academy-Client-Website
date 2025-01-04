@@ -10,7 +10,7 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 import * as React from "react";
-import { Book, BookA, BookCopy, BookMarked, CalendarDays, ChartBarIncreasing, ChartColumnStacked, FileText, GalleryVertical, Inbox, MonitorCog, Presentation, SquareTerminal, UserRoundPen, } from "lucide-react";
+import { Book, BookA, BookCopy, BookMarked, CalendarDays, ChartBarIncreasing, ChartColumnStacked, Cookie, FileText, GalleryVertical, Inbox, MonitorCog, Presentation, SquareTerminal, User2Icon, UserRoundPen, } from "lucide-react";
 import { AsideDashboard } from "./aside-dashboard";
 import { NavUser } from "./nav-user";
 import { Sidebar, SidebarContent, SidebarHeader, SidebarRail, } from "./ui/sidebar";
@@ -20,11 +20,6 @@ export function AppSidebar(_a) {
     var props = __rest(_a, []);
     // This is sample data.
     const data = {
-        user: {
-            name: "shadcn",
-            email: "m@example.com",
-            avatar: "/avatars/shadcn.jpg",
-        },
         navMain: [
             {
                 title: "Dashboard",
@@ -44,6 +39,18 @@ export function AppSidebar(_a) {
                         url: "#",
                     },
                 ],
+            },
+        ],
+        admin: [
+            {
+                name: "Users",
+                url: "/admin/users",
+                icon: User2Icon,
+            },
+            {
+                name: "Salary",
+                url: "/admin/salary",
+                icon: Cookie,
             },
         ],
         widgets: [
@@ -134,6 +141,7 @@ export function AppSidebar(_a) {
                 React.createElement(NavUser, null)),
             React.createElement(SidebarContent, null,
                 React.createElement(AsideDashboard, { items: data.navMain, title: "Dashboard" }),
+                React.createElement(NavProjects, { items: data.admin, title: "Admin" }),
                 React.createElement(NavProjects, { items: data.widgets, title: "Widgets" }),
                 React.createElement(NavProjects, { items: data.applications, title: "Applications" }),
                 React.createElement(NavProjects, { items: data.controls, title: "Controls" })),

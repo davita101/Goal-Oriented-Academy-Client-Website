@@ -7,12 +7,14 @@ import {
   CalendarDays,
   ChartBarIncreasing,
   ChartColumnStacked,
+  Cookie,
   FileText,
   GalleryVertical,
   Inbox,
   MonitorCog,
   Presentation,
   SquareTerminal,
+  User2Icon,
   UserRoundPen,
 } from "lucide-react"
 
@@ -31,11 +33,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   
   // This is sample data.
   const data = {
-    user: {
-      name: "shadcn",
-      email: "m@example.com",
-      avatar: "/avatars/shadcn.jpg",
-    },
     navMain: [
       {
         title: "Dashboard",
@@ -57,7 +54,20 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         ],
       },
     ],
+    admin:
+    [
+      {
+        name: "Users",
+        url: "/admin/users",
+        icon: User2Icon,
+      },
+      {
+        name: "Salary",
+        url: "/admin/salary",
+        icon: Cookie,
 
+      },
+    ],
     widgets:
       [
         {
@@ -155,6 +165,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarHeader>
         <SidebarContent>
           <AsideDashboard items={data.navMain} title="Dashboard" />
+          <NavProjects items={data.admin} title="Admin" />
           <NavProjects items={data.widgets} title="Widgets" />
           <NavProjects items={data.applications} title="Applications" />
           <NavProjects items={data.controls} title="Controls" />

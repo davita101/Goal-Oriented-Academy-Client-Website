@@ -22,26 +22,19 @@ export default function Login() {
     var _a;
     const [sendInfo, setSendInfo] = React.useState(false);
     const navigate = useNavigate();
-    const { login, isLoading, isLogin, user, checkAuth } = useAuthStore();
+    const { login, isLoading, user, checkAuth } = useAuthStore();
     const form = useForm({
         resolver: zodResolver(formSchemaEmail),
         defaultValues: {
             email: "",
         },
     });
-    React.useEffect(() => {
-        if (!user) {
-            navigate("/login");
-        }
-    }, [user, navigate]);
-    React.useEffect(() => {
-        checkAuth();
-    }, [checkAuth]);
     // Handle form submission
     const handleEmailSubmit = (data) => __awaiter(this, void 0, void 0, function* () {
         try {
             yield login(data.email);
             setSendInfo(true);
+            form.reset();
         }
         catch (error) {
             console.error("Error logging in:", error);

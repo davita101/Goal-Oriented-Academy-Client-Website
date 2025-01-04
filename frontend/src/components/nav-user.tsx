@@ -29,22 +29,25 @@ import {
 } from "./ui/sidebar"
 import * as React from "react"
 import { useAuthStore } from "../store/authStore"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card"
+import { Button } from "./ui/button"
+import { useLeaderStore } from "../store/leaderStore"
 
 export function NavUser() {
   const { isMobile } = useSidebar()
-  const { user, logout, oneLeaderStudent, oneLeaderStudentArr } = useAuthStore()
-
+  const { user, logout } = useAuthStore()
+  const {getLeaderStudents, leaderStudents } = useLeaderStore()
   const handleLogout = () => {
     logout(user.user?.email)
   }
   React.useEffect(() => {
-    oneLeaderStudent(user?.user?._id)
-  }, [user?.user._id, oneLeaderStudent])
+    getLeaderStudents(user?.user?._id)
+  }, [user?.user._id, getLeaderStudents])
   return (
-    <SidebarMenu >
+    <SidebarMenu className="mt-[-.5rem]">
       <SidebarMenuItem >
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          <DropdownMenuTrigger asChild className="dark:bg-[var(--background)] bg-slate-50 mt-0">
             <SidebarMenuButton
               size="lg"
               className=" data-[state=open]:bg-gray-100 data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
@@ -82,8 +85,19 @@ export function NavUser() {
             <DropdownMenuGroup className="grid grid-cols-2 w-full">
               <DropdownMenuItem>
                 <div className="flex items-center gap-1">
-                  <Bolt size={18} />
-                  Roles <span>{user?.user?.role.length}</span>
+
+                  <HoverCard>
+                    <HoverCardTrigger asChild>
+                      <Button className=" w-[140px]"><Bolt size={18} />Roles <span>{user?.user?.role.length}</span></Button>
+                    </HoverCardTrigger>
+                    <HoverCardContent className="w-40 duration-100">
+                      {user?.user?.role.map((role: string) =>
+                        <div key={`${role}`} className="flex justify-between">
+                          <span>{role}</span>
+                        </div>
+                      )}
+                    </HoverCardContent>
+                  </HoverCard >
                 </div>
               </DropdownMenuItem>
               <DropdownMenuItem>
@@ -108,10 +122,10 @@ export function NavUser() {
             <DropdownMenuSeparator />
             <DropdownMenuGroup className="grid grid-cols-2  ">
               <DropdownMenuItem>
-                {oneLeaderStudentArr.length} <span>Squad Members</span>
+                {leaderStudents.length} <span>Squad Members</span>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                {oneLeaderStudentArr.filter(student => student.role === "miniLeader").length} <span>Mini Leader</span>
+                {leaderStudents.filter(student => student.role === "miniLeader").length} <span>Mini Leader</span>
               </DropdownMenuItem>
               <DropdownMenuItem className="text-slate-400 hover:text-slate-400 ">
                 <X /> <span>Groups</span>
