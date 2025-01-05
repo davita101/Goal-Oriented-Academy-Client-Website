@@ -32,11 +32,14 @@ import { useAuthStore } from "../store/authStore"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card"
 import { Button } from "./ui/button"
 import { useLeaderStore } from "../store/leaderStore"
+import { useTranslation } from "react-i18next"
 
 export function NavUser() {
   const { isMobile } = useSidebar()
   const { user, logout } = useAuthStore()
   const {getLeaderStudents, leaderStudents } = useLeaderStore()
+  const { t } = useTranslation()
+
   const handleLogout = () => {
     logout(user.user?.email)
   }
@@ -88,12 +91,12 @@ export function NavUser() {
 
                   <HoverCard>
                     <HoverCardTrigger asChild>
-                      <Button className=" w-[140px]"><Bolt size={18} />Roles <span>{user?.user?.role.length}</span></Button>
+                      <Button className=" w-[140px]"><Bolt size={18} />{t("role")} <span>{user?.user?.role.length}</span></Button>
                     </HoverCardTrigger>
                     <HoverCardContent className="w-40 duration-100">
                       {user?.user?.role.map((role: string) =>
                         <div key={`${role}`} className="flex justify-between">
-                          <span>{role}</span>
+                          <span>{t(role)}</span>
                         </div>
                       )}
                     </HoverCardContent>
@@ -101,18 +104,9 @@ export function NavUser() {
                 </div>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-1 text-slate-400 hover:text-slate-400">
                   <ClipboardX size={18} />
-                  Cards <span>{
-                    user?.user?.rating?.cards?.leaderCards.black +
-                    user?.user?.rating?.cards?.leaderCards.green +
-                    user?.user?.rating?.cards?.leaderCards.purple +
-                    user?.user?.rating?.cards?.leaderCards.yellow +
-
-                    user?.user?.rating?.cards?.mentorCards.black +
-                    user?.user?.rating?.cards?.mentorCards.green +
-                    user?.user?.rating?.cards?.mentorCards.purple +
-                    user?.user?.rating?.cards?.mentorCards.yellow
+                  {t("cards")} <span>{
                   }</span>
                 </div>
               </DropdownMenuItem>
@@ -122,28 +116,28 @@ export function NavUser() {
             <DropdownMenuSeparator />
             <DropdownMenuGroup className="grid grid-cols-2  ">
               <DropdownMenuItem>
-                {leaderStudents.length} <span>Squad Members</span>
+                {leaderStudents.length} <span>{t("squad member")}</span>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                {leaderStudents.filter(student => student.role === "miniLeader").length} <span>Mini Leader</span>
+                {leaderStudents.filter(student => student.role === "miniLeader").length} <span>{t("mini")} {t("leader")}</span>
               </DropdownMenuItem>
               <DropdownMenuItem className="text-slate-400 hover:text-slate-400 ">
-                <X /> <span>Groups</span>
+                <X /> <span>{t("group")}</span>
               </DropdownMenuItem>
               <DropdownMenuItem className="text-slate-400 hover:text-slate-400 " >
-                <X /> <span>Mini Member</span>
+                <X /> <span>{t("mini")} {t("member")}</span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="text-slate-400 hover:text-slate-400 ">
               <X />
-              <BadgePercent />
-              <span>salary</span>
+              {/* <BadgePercent /> */}
+              <span>{t("salary")}</span>
             </DropdownMenuItem>
             <DropdownMenuGroup>
               <DropdownMenuItem onClick={() => handleLogout()}>
                 <LogOut />
-                Log out
+                {t("log out")}
               </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>

@@ -17,16 +17,16 @@ const app = express()
 const PORT = process.env.PORT || 1000
 const __dirname = path.resolve()
 
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }))
+app.use(cors({ origin: process.env.FRONT_URL, credentials: true }))
 
 app.use(express.json())
 app.use(cookieParser())
 
-app.use(express.static(path.join(__dirname, "backend/public")))
+app.use(express.static(path.join(__dirname, 'backend/public')))
 
 app.use('/api/auth', authRouters)
 app.use('/api/groups', authMiddleware, groupRoutes)
-app.use('/api/leaders', leadersRoutes)
+app.use('/api/leaders', authMiddleware, leadersRoutes)
 app.use('/api/students', authMiddleware, studentRoutes)
 
 if (process.env.NODE_ENV === 'production') {

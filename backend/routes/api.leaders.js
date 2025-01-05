@@ -10,7 +10,6 @@ import { canDelete, canLeaderEditMiddleware, canViewLeaderMiddleware } from '../
 
 const router = express.Router();
 // Apply authentication middleware to all routes
-router.use(authMiddleware);
 
 // ! All leaders
 router.get('/', canViewLeaderMiddleware, getAllLeaders);

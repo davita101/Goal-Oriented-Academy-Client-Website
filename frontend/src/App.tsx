@@ -25,8 +25,12 @@ import { useAuthStore } from "./store/authStore";
 import Loading from "./components/loading";
 import DashboardRoutes from "./routes/dashboard-routes";
 import MentorRoutes from "./routes/mentor-routes";
+import { useTranslation } from "react-i18next";
+import i18n from "./i18n";
+import LanguageSwitcher from "./components/language-switcher";
 
 export default function AppRoutes() {
+  const { t } = useTranslation();
   const { user, checkAuth, isLogin } = useAuthStore();
   const [loading, setLoading] = React.useState(true);
 
@@ -46,12 +50,14 @@ export default function AppRoutes() {
       navigate("/login");
     }
   }, [user, navigate, loading]);
-
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
   const BreadRender = (name: string): JSX.Element => {
     return (
       <>
         <BreadcrumbItem className="hidden md:block">
-          <BreadcrumbLink href={`/${name}`}>{name}</BreadcrumbLink>
+          <BreadcrumbLink href={`/${name}`}>{t(name)}</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator className="hidden md:block" />
         {!path.includes(`/${name}/${name}`) && (
@@ -88,7 +94,7 @@ export default function AppRoutes() {
               <div>
                 <BreadcrumbList>
                   <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbLink href={`/dashboard`}>home</BreadcrumbLink>
+                    <BreadcrumbLink href={`/dashboard`}>{t("home")}</BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className="hidden md:block" />
                   {path.includes(`/dashboard`) && BreadRender("dashboard")}
@@ -99,6 +105,8 @@ export default function AppRoutes() {
                 </BreadcrumbList>
               </div>
               <div className="flex gap-2">
+                <LanguageSwitcher />
+           
                 <NavigationMenuNotification />
                 <ToggleDarkMode />
               </div>

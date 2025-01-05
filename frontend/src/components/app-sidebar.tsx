@@ -29,9 +29,9 @@ import {
 } from "./ui/sidebar"
 import { ScrollArea } from "./ui/scroll-area"
 import { NavProjects } from "./nav-projects"
+import { useTranslation } from "react-i18next"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  
   // This is sample data.
   const data = {
     navMain: [
@@ -56,28 +56,28 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       },
     ],
     mentor:
-    [
-      {
-        name: "Groups",
-        url: "/mentor/group",
-        icon: Book,
-      },
-    
-    ],
-    admin:
-    [
-      {
-        name: "Users",
-        url: "/admin/users",
-        icon: User2Icon,
-      },
-      {
-        name: "Salary",
-        url: "/admin/salary",
-        icon: Cookie,
+      [
+        {
+          name: "home",
+          url: "/mentor/group",
+          icon: Book,
+        },
 
-      },
-    ],
+      ],
+    admin:
+      [
+        {
+          name: "Users",
+          url: "/admin/users",
+          icon: User2Icon,
+        },
+        {
+          name: "Salary",
+          url: "/admin/salary",
+          icon: Cookie,
+
+        },
+      ],
     widgets:
       [
         {
@@ -171,7 +171,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="icon" {...props} className="data-[state=open]">
       <ScrollArea>
         <SidebarHeader className="sticky top-0 z-[2]">
-          <NavUser/>
+          <NavUser />
         </SidebarHeader>
         <SidebarContent>
           <AsideDashboard items={data.navMain} title="Dashboard" />

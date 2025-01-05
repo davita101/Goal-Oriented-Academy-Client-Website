@@ -2,8 +2,10 @@
 PORT = 5000
 MONGODB_URI = mongod.com
 JWT_SECRET = jwt key
-TIME_PER_LOGIN = 6 * 60 * 60 * 1000 # 6 hours
+
+TIME_PER_LOGIN = 7 * 24 * 60 * 60 * 1000 # 7 DAYS
 TOKEN_EXPIRATION = 1 * 24 * 60 * 60 * 1000 # 1 days
+BLOCK_IP_TIME = 6 * 60 * 60 * 1000 # 1 hour
 
 ADMIN_USER = example@gmail.com
 SMTP_PASS = 4444 4444 4444 4444

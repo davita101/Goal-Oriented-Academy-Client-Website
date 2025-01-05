@@ -17,6 +17,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "./ui/sidebar"
+import { t } from "i18next"
 export function AsideDashboard({
   items, title
 }: {
@@ -63,7 +64,7 @@ export function AsideDashboard({
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton asChild>
                         <a href={subItem.url}>
-                          <span>{subItem.title}</span>
+                          <span>{t(subItem.title)}</span>
                         </a>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>

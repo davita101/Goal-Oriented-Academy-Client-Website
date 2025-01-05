@@ -9,12 +9,12 @@ import path from 'path'
 
 const __dirname = path.resolve()
 // * Define constants
-const SIX_HOURS = 6 * 60 * 60 * 1000 // 6 საათი მილიწამებში
+const TIME_PER_LOGIN = 7 * 24 * 60 * 60 * 1000 // 7 days in milliseconds
 const ONE_HOUR = 60 * 60 * 1000 // 1 hour in milliseconds
 
 // * Define rate limiter for signup
 const signupLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 60 წუთი
+  windowMs: ONE_HOUR, // 60 წუთი
   max: 100, // თითოეული IP მისამართიდან 100 მოთხოვნა
   message: 'Too many signup attempts from this IP, please try again later.'
 })
@@ -71,7 +71,7 @@ export const signup = [
           mentorAssistantInformation
         },
         verificationToken,
-        verificationTokenExpiresAt: Date.now() + 1 * 60 * 60 * 1000 // 1 hour
+        verificationTokenExpiresAt: Date.now() + TIME_PER_LOGIN // 1 hour
       })
 
       await user.save()
@@ -128,14 +128,14 @@ export const login = [
 
       const now = Date.now()
 
-      // Check if last login was more than six hours ago
-      if (user.lastLogin && now - user.lastLogin.getTime() > SIX_HOURS) {
+      // Check if last login was more than 7 days ago
+      if (user.lastLogin && now - user.lastLogin.getTime() > TIME_PER_LOGIN) {
         user.lastLogin = undefined
         user.clientId = undefined
         user.isVerified = false
         await handleVerification(
           user,
-          'User has been inactive for more than 6 hours. Verification token sent.'
+          'User has been inactive for more than 7 days. Verification token sent.'
         )
         return
       }
@@ -174,7 +174,10 @@ export const login = [
       await user.save()
 
       // Set cookies and respond with success
-      res.cookie('clientId', clientId, { httpOnly: true, maxAge: ONE_HOUR })
+      res.cookie('clientId', clientId, {
+        httpOnly: true,
+        maxAge: TIME_PER_LOGIN
+      })
       generateTokenAndSetCookie(res, user._id)
       res.cookie('goa_auth_is_verified', user.isVerified, {
         httpOnly: true,
@@ -277,16 +280,16 @@ export const verifyEmail = [
       const verificationTime = new Date().toISOString()
       res.cookie('clientId', clientIdMain, {
         httpOnly: true,
-        maxAge: 6 * 60 * 60 * 1000
+        maxAge: TIME_PER_LOGIN
       }) // 24 საათი
       await generateTokenAndSetCookie(res, user._id)
       res.cookie('goa_auth_is_verified', true, {
         httpOnly: true,
-        maxAge: 6 * 60 * 60 * 1000
+        maxAge: TIME_PER_LOGIN
       }) // 24 საათი
       res.cookie('verificationTime', verificationTime, {
         httpOnly: true,
-        maxAge: 6 * 60 * 60 * 1000
+        maxAge: ONE_HOUR
       }) // 24 საათი
       res.status(200).send(
         `
