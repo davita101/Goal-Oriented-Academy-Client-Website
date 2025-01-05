@@ -95,6 +95,7 @@ export default function AppRoutes() {
                   {path.includes(`/widgets`) && BreadRender("widgets")}
                   {path.includes(`/applications`) && BreadRender("applications")}
                   {path.includes(`/controls`) && BreadRender("controls")}
+                  {path.includes(`/mentor`) && BreadRender("mentor/group")}
                 </BreadcrumbList>
               </div>
               <div className="flex gap-2">

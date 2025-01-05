@@ -1,5 +1,4 @@
 import { z } from "zod";
-
 export const userSchema = z.object({
     leaderId: z.string()
         .min(24, "Leader ID must be at most 24 characters long")
@@ -9,7 +8,6 @@ export const userSchema = z.object({
     age: z.number()
         .min(0, "Age must be at least 0")
         .max(99, "Age must be at least 99"),
-
     email: z.string().email({ message: "You must enter correct email" }),
     githubLink: z.string().url({ message: "You must enter correct URL" }),
     speed: z.number()
@@ -42,4 +40,4 @@ export const userSchema = z.object({
             githubController: z.string().min(0, "Leader Controller must be at least 0 characters"),
         }),
     }),
-})
+});

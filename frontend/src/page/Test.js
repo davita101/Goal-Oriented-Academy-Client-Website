@@ -1,3 +1,4 @@
+"use strict";
 // import * as React from "react"
 // import {
 //     Sheet,
@@ -7,7 +8,6 @@
 //     SheetTitle,
 //     SheetTrigger,
 // } from "../../components/ui/sheet"
-
 // import {
 //     ColumnDef,
 //     ColumnFiltersState,
@@ -22,7 +22,6 @@
 // } from "@tanstack/react-table"
 // import { ArrowUpDown, ChevronDown, } from "lucide-react"
 // import { Row } from "@tanstack/react-table"
-
 // import {
 //     DropdownMenu,
 //     DropdownMenuCheckboxItem,
@@ -55,10 +54,7 @@
 // import { Student } from "../../schema/interface"
 // import { Button } from "../../components/ui/button"
 // import { useMentorStore } from "../../store/mentorStore"
-
-
 // export const columns: ColumnDef<Student>[] = [
-
 //     {
 //         accessorKey: "name",
 //         header: ({ column }) => {
@@ -78,9 +74,7 @@
 //             </div>
 //         ),
 //     },
-
 // ]
-
 // export function Mentor() {
 //     const [sorting, setSorting] = React.useState<SortingState>(() => {
 //         const savedSorting = localStorage.getItem('sorting');
@@ -103,23 +97,18 @@
 //         return savedSelection ? JSON.parse(savedSelection) : null;
 //     });
 //     const [studentInfo, setStudentInfo] = React.useState(false)
-
 //     React.useEffect(() => {
 //         localStorage.setItem('sorting', JSON.stringify(sorting));
 //     }, [sorting]);
-
 //     React.useEffect(() => {
 //         localStorage.setItem('columnFilters', JSON.stringify(columnFilters));
 //     }, [columnFilters]);
-
 //     React.useEffect(() => {
 //         localStorage.setItem('columnVisibility', JSON.stringify(columnVisibility));
 //     }, [columnVisibility]);
-
 //     const { user, isLoading, } = useAuthStore()
 //     const { student, getStudent, updateStudent, getLeaderStudents, leaderStudents } = useLeaderStore()
 //     const { getGroup, group } = useMentorStore()
-
 //     React.useEffect(() => {
 //         if (oneRowSelection) {
 //             getStudent(oneRowSelection.leaderId, oneRowSelection._id)
@@ -168,7 +157,6 @@
 //             comment: { leaderComment: '', leaderProof: '', controller: { miniLeaderController: '', githubController: '' } },
 //         },
 //     });
-
 //     React.useEffect(() => {
 //         if (student) {
 //             form.reset({
@@ -192,7 +180,6 @@
 //             });
 //         }
 //     }, [form, student]);
-
 //     const formRender = (typeMain: string, minNum: number, maxNum: number, id: string, label: string, roles: string[], row: string) => {
 //         <Separator />
 //         if (typeMain === 'number') {
@@ -257,14 +244,12 @@
 //                 <FormField
 //                     control={form.control}
 //                     name={id as string}
-
 //                     render={({ fieldState: { error } }) => (
 //                         <FormItem className="grid grid-cols-4 items-center w-full justify-start gap-2">
 //                             <FormLabel className="grid-cols-2">Role</FormLabel>
 //                             <FormField
 //                                 control={form.control}
 //                                 name={id as string}
-
 //                                 render={({ field, fieldState: { error } }) => (
 //                                     <FormItem className="col-span-3">
 //                                         <Select onValueChange={field.onChange} defaultValue={typeof field.value === 'string' ? field.value : undefined}>
@@ -368,7 +353,6 @@
 //                             <TableBody >
 //                                 {table.getRowModel().rows?.length ? (
 //                                     table.getRowModel().rows.map((row) => (
-
 //                                         <Sheet key={row.id}>
 //                                             <SheetTrigger asChild onClick={() => { setOneRowSelection(row.original) }}>
 //                                                 <TableRow
@@ -421,7 +405,6 @@
 //                                                                             </>
 //                                                                         )
 //                                                                     }
-
 //                                                                     <Separator />
 //                                                                     {/* // ? group */}
 //                                                                     {
@@ -468,12 +451,10 @@
 //                                                                                     onClick: () => console.log("Undo"),
 //                                                                                 }
 //                                                                             })}
-
 //                                                                     > Save changes</Button>
 //                                                                 </div>
 //                                                             </form>
 //                                                         </Form>)
-
 //                                                             :
 //                                                             <>
 //                                                                 <div>
@@ -495,19 +476,16 @@
 //                                                                             <span className="col-start-3 font-bold">{student.age}</span>
 //                                                                         </div>
 //                                                                         <Separator />
-
 //                                                                         <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
 //                                                                             <span className="col-span-2 font-bold">Email</span>
 //                                                                             <span className="col-start-3 font-bold">{student.email}</span>
 //                                                                         </div>
 //                                                                         <Separator />
-
 //                                                                         <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
 //                                                                             <span className="col-span-2 font-bold">Role</span>
 //                                                                             <span className="col-start-3 font-bold">{student.role}</span>
 //                                                                         </div>
 //                                                                         <Separator />
-
 //                                                                         <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
 //                                                                             <span className="col-span-2 font-bold">Github</span>
 //                                                                             <Link className="col-start-3 font-bold " to={student.githubLink} target="_blank"><Button variant={"link"} className="m-0 p-0 text-blue-500 pl-0">Github</Button></Link>
@@ -533,7 +511,6 @@
 //                                                                             <span className="col-start-3 font-bold">{student.speed}</span>
 //                                                                         </div>
 //                                                                         <Separator />
-
 //                                                                         <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
 //                                                                             <span className="col-span-2 font-bold">Github Token</span>
 //                                                                             <span className="col-start-3 font-bold">****</span>
@@ -545,7 +522,6 @@
 //                                                                         </div>
 //                                                                         <Separator />
 //                                                                         {/* //* controller info */}
-
 //                                                                         <p className="font-bold leading-[5px] text-slate-400 capitalize"><b>Controller info</b></p>
 //                                                                         <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
 //                                                                             <span className="col-span-2 font-bold ">Finally</span>
@@ -567,7 +543,6 @@
 //                                                                             <span className="col-start-3 font-bold">{student?.fines?.miniStudentFine}</span>
 //                                                                         </div>
 //                                                                         {/* //* aura info */}
-
 //                                                                         <Separator />
 //                                                                         <p className="font-bold leading-[5px] text-slate-400 capitalize"><b>Aura info</b></p>
 //                                                                         <Separator />
@@ -602,7 +577,6 @@
 //                                                                         </div>
 //                                                                         <Separator />
 //                                                                         {/* //* comments info */}
-
 //                                                                         <p className="font-bold leading-[5px] text-slate-400 capitalize"><b>Comments</b></p>
 //                                                                         <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
 //                                                                             <span className="col-span-2 font-bold">Leader Comment</span>
@@ -643,7 +617,6 @@
 //                             </TableBody>
 //                         </Table>
 //                     </div>
-
 //                     <ScrollBar orientation="horizontal" />
 //                 </ScrollArea >
 //                 <div className=" flex items-center justify-end space-x-2 py-4">

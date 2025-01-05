@@ -38,7 +38,7 @@ import {
     TableHeader,
     TableRow,
 } from "../../components/ui/table"
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { Badge } from "../../components/ui/badge"
 import { ScrollArea, ScrollBar } from "../../components/ui/scroll-area"
 import { Separator } from "../../components/ui/separator"
@@ -79,19 +79,25 @@ export const columns: ColumnDef<Student>[] = [
     },
     {
         accessorKey: "aura",
-        header: "Points",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    className="m-0 p-0"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Points
+                    <ArrowUpDown />
+                </Button>
+            )
+        },
         cell: ({ row, column }) => (
             <div
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            className="capitalize font-bold"
-            
+                className="capitalize font-bold"
+
             >
                 {
-                    (row.getValue("aura") as Student["aura"])?.answers +
-                    (row.getValue("aura") as Student["aura"])?.attendance +
-                    (row.getValue("aura") as Student["aura"])?.camera +
-                    (row.getValue("aura") as Student["aura"])?.classwork +
-                    (row.getValue("aura") as Student["aura"])?.help
+                    (row.getValue("aura") as Student["aura"])?.points
                 }
             </div>
         ),
@@ -177,7 +183,7 @@ export const columns: ColumnDef<Student>[] = [
     },
 ]
 
-export function Mentor() {
+export function MentorGroup() {
     const [sorting, setSorting] = React.useState<SortingState>(() => {
         const savedSorting = localStorage.getItem('sortingMentor');
         return savedSorting ? JSON.parse(savedSorting) : [];
@@ -198,7 +204,7 @@ export function Mentor() {
         const savedSelection = localStorage.getItem('oneRowSelection');
         return savedSelection ? JSON.parse(savedSelection) : null;
     });
-    const [studentInfo, setStudentInfo] = React.useState(false)
+    const [studentInfo, setStudentInfo] = React.useState(true)
 
     React.useEffect(() => {
         localStorage.setItem('sorting', JSON.stringify(sorting));
@@ -215,16 +221,17 @@ export function Mentor() {
     const { user, isLoading, } = useAuthStore()
     const { student, getStudent, updateStudent, getLeaderStudents, leaderStudents } = useLeaderStore()
     const { getGroup, group } = useMentorStore()
-
+    const { groupId } = useParams()
     React.useEffect(() => {
-        getGroup("33")
+        getGroup(groupId as string)
         if (oneRowSelection) {
             getStudent(oneRowSelection.leaderId, oneRowSelection._id)
         }
     }, [oneRowSelection, user?.user?._id, getStudent, getGroup])
+    console.log(student)
 
     const table = useReactTable({
-        data: group.sort((a, b) => a.group < b.group ? 1 : -1),
+        data: group.sort((a, b) => a?.aura?.points < b?.aura?.points ? 1 : -1),
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -258,7 +265,14 @@ export function Mentor() {
             githubToken: '',
             githubLastUpdate: '',
             fines: { githubFine: 0, miniLeaderFine: 0, miniStudentFine: 0 },
-            aura: { classwork: 0, attendance: 0, help: 0, camera: 0, answers: 0 },
+            aura: {
+                points: (student?.aura?.answers || 0) + (student?.aura?.attendance || 0) + (student?.aura?.camera || 0) + (student?.aura?.classwork || 0) + (student?.aura?.help || 0),
+                classwork: 0,
+                attendance: 0,
+                help: 0,
+                camera: 0,
+                answers: 0
+            },
             payedInfo: false,
             comment: { leaderComment: '', leaderProof: '', controller: { miniLeaderController: '', githubController: '' } },
         },
@@ -281,13 +295,12 @@ export function Mentor() {
                 githubToken: student.githubToken || '',
                 githubLastUpdate: student.githubLastUpdate || '',
                 fines: student.fines || { githubFine: 0, miniLeaderFine: 0, miniStudentFine: 0 },
-                aura: student.aura || { classwork: 0, attendance: 0, help: 0, camera: 0, answers: 0 },
+                aura: student.aura || { points: 0, classwork: 0, attendance: 0, help: 0, camera: 0, answers: 0 },
                 payedInfo: student.payedInfo || false,
                 comment: student.comment || { leaderComment: '', leaderProof: '', controller: { miniLeaderController: '', githubController: '' } },
             });
         }
     }, [form, student]);
-
     const formRender = (typeMain: string, minNum: number, maxNum: number, id: string, label: string, roles: string[], row: string) => {
         <Separator />
 
@@ -393,6 +406,7 @@ export function Mentor() {
         }
     }
     const onSubmit: SubmitHandler<Student> = (data) => {
+        data.aura.points = (data.aura.answers || 0) + (data.aura.attendance || 0) + (data.aura.camera || 0) + (data.aura.classwork || 0) + (data.aura.help || 0);
         setOneRowSelection((prev: Student) => ({ ...prev, leaderId: data.leaderId }));
         updateStudent(student.leaderId, student._id, data);
         if (!isLoading) {
@@ -402,7 +416,7 @@ export function Mentor() {
     return (
         <>
             <div
-                className={`bg-[var(--background)] grid auto-rows-min overflow-hidden gap-4 grid-cols-1 px-2`}>
+                className={` bg-[var(--background)] grid auto-rows-min overflow-hidden gap-4 grid-cols-1 px-2`}>
                 <div className="flex items-center py-4">
                     <Input
                         placeholder="Student name..."
@@ -439,6 +453,7 @@ export function Mentor() {
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
+                <span className="font-bold text-xl">Group {groupId}</span>
                 <ScrollArea >
                     <div className="rounded-md border">
                         <Table>
@@ -465,7 +480,7 @@ export function Mentor() {
                                     table.getRowModel().rows?.map((row) => (
 
                                         <Sheet key={row.id}>
-                                            <SheetTrigger asChild onClick={() => { setOneRowSelection(row.original) }}>
+                                            <SheetTrigger asChild onClick={() => { setOneRowSelection(row.original), setStudentInfo(true) }}>
                                                 <TableRow
                                                     data-state={row.getIsSelected() && "selected"}
                                                 >
@@ -491,69 +506,70 @@ export function Mentor() {
                                                 </SheetHeader>
                                                 {isLoading ? <Loading /> : (
                                                     <ScrollArea className="h-full p-4 pb-16">
-                                                        {(studentInfo && !isLoading) ? (<Form {...form}>
-                                                            <form onSubmit={form.handleSubmit(onSubmit)}>
-                                                                <div className="grid gap-4 py-4">
-                                                                    {/* // ? speed */}
-                                                                    {(user?.user?.role.includes("leaderController") ||
-                                                                        user?.user?.role.includes("mentor") ||
-                                                                        user?.user?.role.includes("mentorAssistant") ||
-                                                                        user?.user?.role.includes("admin")) && (
-                                                                            <>
-                                                                                {/* {formRender('number', 0, 4, 'speed', 'Speed', [], '')} */}
-                                                                            </>
-                                                                        )
-                                                                    }
-                                                                    {/* // ? group */}
-                                                                    {
-                                                                        (user?.user?.role.includes("leaderController") ||
+                                                        {(studentInfo && !isLoading) ?
+                                                            (<Form {...form}>
+                                                                <form onSubmit={form.handleSubmit(onSubmit)}>
+                                                                    <div className="grid gap-4 py-4">
+                                                                        {/* // ? speed */}
+                                                                        {(user?.user?.role.includes("leaderController") ||
                                                                             user?.user?.role.includes("mentor") ||
                                                                             user?.user?.role.includes("mentorAssistant") ||
                                                                             user?.user?.role.includes("admin")) && (
-                                                                            <>
-                                                                                {formRender('number', 0, 99, 'group', 'Group', [], '')}
-                                                                                <Separator />
-                                                                            </>
-                                                                        )
-                                                                    }
-                                                                    <p className="capitalize font-bold leading-[5px] text-slate-400">Mentor Section</p>
-                                                                    {(
-                                                                        user?.user?.role.includes("admin") ||
-                                                                        user?.user?.role.includes("mentor")) && (
-                                                                            <>
-                                                                                {/* // ? aura classwork */}
-                                                                                {formRender('number', 0, 999999, 'aura.classwork', 'Classwork', [], '')}
-                                                                                <Separator />
-                                                                                {/* // ? aura attendance */}
-                                                                                {formRender('number', 0, 999999, 'aura.attendance', 'Attendance', [], '')}
-                                                                                <Separator />
-                                                                                {/* // ? aura help */}
-                                                                                {formRender('number', 0, 999999, 'aura.help', 'Help', [], '')}
-                                                                                <Separator />
-                                                                                {/* // ? aura camera */}
-                                                                                {formRender('number', 0, 999999, 'aura.camera', 'Camera', [], '')}
-                                                                                <Separator />
-                                                                                {/* // ? aura answers */}
-                                                                                {formRender('number', 0, 999999, 'aura.answers', 'Answers', [], '')}
-                                                                                {/* // ? payed info */}
-                                                                                {formRender('boolean', 0, 0, 'payedInfo', 'Payed Info', [], '')}
-                                                                                {/* // ? leader comment */}
-                                                                            </>)}
-                                                                    <Separator />
-                                                                    <Button type="submit" variant={"green"}
-                                                                        onClick={() =>
-                                                                            toast("Student has been updated", {
-                                                                                description: `${student.updatedAt}`,
-                                                                                action: {
-                                                                                    label: "Undo",
-                                                                                    onClick: () => console.log("Undo"),
-                                                                                }
-                                                                            })}
+                                                                                <>
+                                                                                    {/* {formRender('number', 0, 4, 'speed', 'Speed', [], '')} */}
+                                                                                </>
+                                                                            )
+                                                                        }
+                                                                        {/* // ? group */}
+                                                                        {
+                                                                            (user?.user?.role.includes("leaderController") ||
+                                                                                user?.user?.role.includes("mentor") ||
+                                                                                user?.user?.role.includes("admin")) && (
+                                                                                <>
+                                                                                    {formRender('number', 0, 99, 'group', 'Group', [], '')}
+                                                                                    <Separator />
+                                                                                </>
+                                                                            )
+                                                                        }
+                                                                        <p className="capitalize font-bold leading-[5px] text-slate-400">Mentor Section</p>
+                                                                        {(
+                                                                            user?.user?.role.includes("admin") ||
+                                                                            user?.user?.role.includes("mentorAssistant") ||
+                                                                            user?.user?.role.includes("mentor")) && (
+                                                                                <>
+                                                                                    {/* // ? aura classwork */}
+                                                                                    {formRender('number', 0, 999999, 'aura.classwork', 'Classwork', [], '')}
+                                                                                    <Separator />
+                                                                                    {/* // ? aura attendance */}
+                                                                                    {formRender('number', 0, 999999, 'aura.attendance', 'Attendance', [], '')}
+                                                                                    <Separator />
+                                                                                    {/* // ? aura help */}
+                                                                                    {formRender('number', 0, 999999, 'aura.help', 'Help', [], '')}
+                                                                                    <Separator />
+                                                                                    {/* // ? aura camera */}
+                                                                                    {formRender('number', 0, 999999, 'aura.camera', 'Camera', [], '')}
+                                                                                    <Separator />
+                                                                                    {/* // ? aura answers */}
+                                                                                    {formRender('number', 0, 999999, 'aura.answers', 'Answers', [], '')}
+                                                                                    {/* // ? payed info */}
+                                                                                    {formRender('boolean', 0, 0, 'payedInfo', 'Payed Info', [], '')}
+                                                                                    {/* // ? leader comment */}
+                                                                                </>)}
+                                                                        <Separator />
+                                                                        <Button type="submit" variant={"green"}
+                                                                            onClick={() =>
+                                                                                toast("Student has been updated", {
+                                                                                    description: `${student.updatedAt}`,
+                                                                                    action: {
+                                                                                        label: "Undo",
+                                                                                        onClick: () => console.log("Undo"),
+                                                                                    }
+                                                                                })}
 
-                                                                    > Save changes</Button>
-                                                                </div>
-                                                            </form>
-                                                        </Form>)
+                                                                        > Save changes </Button>
+                                                                    </div>
+                                                                </form>
+                                                            </Form>)
 
                                                             :
                                                             <>
@@ -630,7 +646,7 @@ export function Mentor() {
                                                                         <p className="font-bold leading-[5px] text-slate-400 capitalize"><b>Controller info</b></p>
                                                                         <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
                                                                             <span className="col-span-2 font-bold ">Finally</span>
-                                                                            <span className="col-start-3 font-bold text-blue-400">{student?.fines?.githubFine + student?.fines?.miniLeaderFine + student?.fines?.miniStudentFine}</span>
+                                                                            <span className="col-start-3 font-bold text-blue-400">{student?.aura?.points}</span>
                                                                         </div>
                                                                         <Separator />
                                                                         <div className="grid grid-cols-4  items-center w-full justify-start gap-2">

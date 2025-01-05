@@ -19,6 +19,7 @@ export type Student = {
         miniStudentFine: number
     }
     aura: {
+        points: number
         classwork: number
         attendance: number
         help: number
