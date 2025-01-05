@@ -175,7 +175,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarHeader>
         <SidebarContent>
           <AsideDashboard items={data.navMain} title="Dashboard" />
-          <NavProjects items={data.mentor} title="Mentor" />
+          <NavProjects items={data.mentor} title="Mentor/Mentor Assistant" />
           <NavProjects items={data.admin} title="Admin" />
           <NavProjects items={data.widgets} title="Widgets" />
           <NavProjects items={data.applications} title="Applications" />

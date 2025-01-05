@@ -148,7 +148,7 @@ export function AppSidebar(_a) {
                 React.createElement(NavUser, null)),
             React.createElement(SidebarContent, null,
                 React.createElement(AsideDashboard, { items: data.navMain, title: "Dashboard" }),
-                React.createElement(NavProjects, { items: data.mentor, title: "Mentor" }),
+                React.createElement(NavProjects, { items: data.mentor, title: "Mentor/Mentor Assistant" }),
                 React.createElement(NavProjects, { items: data.admin, title: "Admin" }),
                 React.createElement(NavProjects, { items: data.widgets, title: "Widgets" }),
                 React.createElement(NavProjects, { items: data.applications, title: "Applications" }),
