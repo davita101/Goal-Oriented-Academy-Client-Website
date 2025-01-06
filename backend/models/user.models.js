@@ -39,6 +39,9 @@ const UserSchema = new mongoose.Schema(
       type: Date,
       default: Date.now
     }, //  admin🟦
+    miniLeaderId: {
+      type: String,
+    }, // 🟩 miniLeader
     controllers: {
       leaderController: {
         type: String,

@@ -56,33 +56,10 @@ import { useLeaderStore } from "../../store/leaderStore"
 import { Student } from "../../utils/interface"
 import { Button } from "../../components/ui/button"
 import { useAllStudents } from "../../store/allStudentStore"
-import { defaultStudentRest, defaultStudentValues } from "../../utils/form/default-values"
-import { set } from "mongoose"
+import { defaultStudentValues } from "../../utils/form/default-values"
 
 
 export const columns: ColumnDef<Student>[] = [
-    {
-        id: "select",
-        header: ({ table }) => (
-            <Checkbox
-                checked={
-                    table.getIsAllPageRowsSelected() ? true :
-                        table.getIsSomePageRowsSelected() ? "indeterminate" : false
-                }
-                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                aria-label="Select all"
-            />
-        ),
-        cell: ({ row }) => (
-            <Checkbox
-                checked={row.getIsSelected()}
-                onCheckedChange={(value) => row.toggleSelected(!!value)}
-                aria-label="Select row"
-            />
-        ),
-        enableSorting: false,
-        enableHiding: false,
-    },
     {
         accessorKey: "role",
         header: ({ column }) => {
@@ -670,7 +647,7 @@ export function AllStudents() {
                                                                                 {formRender('number', 0, 99, 'fines.miniLeaderFine', 'Mini Leader Fine', [], '')}
                                                                                 <Separator />
                                                                                 {/* // ? mini student fine */}
-    "xlsx": "^0.18.5"
+                                                                                "xlsx": "^0.18.5"
                                                                                 {formRender('number', 0, 99, 'fines.miniStudentFine', 'Mini Student Fine', [], '')}
                                                                             </>
                                                                         )}
@@ -941,7 +918,7 @@ export function AllStudents() {
                                 </SelectContent>
                             </Select>
                         </div>
-                        <div>
+                        <div className="flex gap-2">
                             <Button
                                 variant="outline"
                                 size="sm"

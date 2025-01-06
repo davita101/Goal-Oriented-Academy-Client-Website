@@ -39,7 +39,6 @@ import {
     TableRow,
 } from "../../components/ui/table"
 import { Link, useParams } from "react-router-dom"
-import { Badge } from "../../components/ui/badge"
 import { ScrollArea, ScrollBar } from "../../components/ui/scroll-area"
 import { Separator } from "../../components/ui/separator"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select"
@@ -54,8 +53,6 @@ import { Button } from "../../components/ui/button"
 import { useMentorStore } from "../../store/mentorStore"
 import { Student } from "../../utils/interface"
 import { userSchema } from "../../utils/user"
-import { defaultStudentValues } from "../../utils/form/default-values"
-import { t } from "i18next"
 
 
 export const columns: ColumnDef<Student>[] = [
@@ -105,7 +102,7 @@ export const columns: ColumnDef<Student>[] = [
         ),
     },
     {
-        header: "classwork",
+        header: "Classname",
         cell: ({ row }) => (
             <div key={(row.getValue("aura") as Student["aura"]).classwork} className="capitalize font-bold">
                 {(row.getValue("aura") as { classwork: number }).classwork}
@@ -224,12 +221,14 @@ export function MentorGroup() {
     const { student, getStudent, updateStudent, getLeaderStudents, leaderStudents } = useLeaderStore()
     const { getGroup, group } = useMentorStore()
     const { groupId } = useParams()
+    
     React.useEffect(() => {
         getGroup(groupId as string)
         if (oneRowSelection) {
             getStudent(oneRowSelection.leaderId, oneRowSelection._id)
         }
     }, [oneRowSelection, user?.user?._id, getStudent, getGroup])
+
     const table = useReactTable({
         data: group.sort((a, b) => a?.aura?.points < b?.aura?.points ? 1 : -1),
         columns,
@@ -250,12 +249,55 @@ export function MentorGroup() {
     });
     const form = useForm<Student>({
         resolver: zodResolver(userSchema),
-        defaultValues: defaultStudentValues,
+        defaultValues: {
+            _id: '',
+            group: 0,
+            leaderId: '',
+            name: '',
+            studentFbLink: '',
+            age: 0,
+            email: '',
+            githubLink: '',
+            speed: 0,
+            role: '',
+            parentFbLink: '',
+            githubToken: '',
+            githubLastUpdate: '',
+            fines: { githubFine: 0, miniLeaderFine: 0, miniStudentFine: 0 },
+            aura: {
+                points: (student?.aura?.answers || 0) + (student?.aura?.attendance || 0) + (student?.aura?.camera || 0) + (student?.aura?.classwork || 0) + (student?.aura?.help || 0),
+                classwork: 0,
+                attendance: 0,
+                help: 0,
+                camera: 0,
+                answers: 0
+            },
+            payedInfo: false,
+            comment: { leaderComment: '', leaderProof: '', controller: { miniLeaderController: '', githubController: '' } },
+        },
     });
 
     React.useEffect(() => {
         if (student) {
-            form.reset(student);
+            form.reset({
+                _id: student._id || '',
+                group: student.group || 0,
+                leaderId: student.leaderId || '',
+                name: student.name || '',
+                studentFbLink: student.studentFbLink || '',
+                age: student.age || 0,
+                email: student.email || '',
+                githubLink: student.githubLink || '',
+                speed: student.speed || 0,
+                role: student.role || '',
+                parentFbLink: student.parentFbLink || '',
+                githubToken: student.githubToken || '',
+                githubLastUpdate: student.githubLastUpdate || '',
+                fines: student.fines || { githubFine: 0, miniLeaderFine: 0, miniStudentFine: 0 },
+                aura: student.aura || { points: 0, classwork: 0, attendance: 0, help: 0, camera: 0, answers: 0 },
+                payedInfo: student.payedInfo || false,
+                comment: student.comment || { leaderComment: '', leaderProof: '', controller: { miniLeaderController: '', githubController: '' } },
+            });
         }
     }, [form, student]);
     const formRender = (typeMain: string, minNum: number, maxNum: number, id: string, label: string, roles: string[], row: string) => {
@@ -397,13 +439,13 @@ export function MentorGroup() {
                                     return (
                                         <DropdownMenuCheckboxItem
                                             key={column.id}
-                                            className=" text-center"
+                                            className="capitalize text-center"
                                             checked={column.getIsVisible()}
                                             onCheckedChange={(value) =>
                                                 column.toggleVisibility(!!value)
                                             }
                                         >
-                                            {t(column.id)}
+                                            {column.id}
                                         </DropdownMenuCheckboxItem>
                                     );
                                 })}
@@ -481,6 +523,7 @@ export function MentorGroup() {
                                                                         {
                                                                             (user?.user?.role.includes("leaderController") ||
                                                                                 user?.user?.role.includes("mentor") ||
+                                                                                user?.user?.role.includes("mentorAssistant") ||
                                                                                 user?.user?.role.includes("admin")) && (
                                                                                 <>
                                                                                     {formRender('number', 0, 99, 'group', 'Group', [], '')}
@@ -491,7 +534,6 @@ export function MentorGroup() {
                                                                         <p className="capitalize font-bold leading-[5px] text-slate-400">Mentor Section</p>
                                                                         {(
                                                                             user?.user?.role.includes("admin") ||
-                                                                            user?.user?.role.includes("mentorAssistant") ||
                                                                             user?.user?.role.includes("mentor")) && (
                                                                                 <>
                                                                                     {/* // ? aura classwork */}
