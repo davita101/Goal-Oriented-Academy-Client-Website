@@ -22,12 +22,11 @@ import NotFound from "./page/NotFound";
 import { RedirectAuthenticatedUser } from "./utils/protected-routes";
 import Login from "./page/Login";
 import { useAuthStore } from "./store/authStore";
-import Loading from "./components/loading";
 import DashboardRoutes from "./routes/dashboard-routes";
 import MentorRoutes from "./routes/mentor-routes";
 import { useTranslation } from "react-i18next";
-import i18n from "./i18n";
 import LanguageSwitcher from "./components/language-switcher";
+import StudentRotes from "./routes/student-rotes";
 
 export default function AppRoutes() {
   const { t } = useTranslation();
@@ -50,9 +49,7 @@ export default function AppRoutes() {
       navigate("/login");
     }
   }, [user, navigate, loading]);
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
-  };
+
   const BreadRender = (name: string): JSX.Element => {
     return (
       <>
@@ -70,11 +67,6 @@ export default function AppRoutes() {
       </>
     );
   };
-
-  if (loading) {
-    return <Loading className="h-screen" />;
-  }
-
   return (
     <>
       <SidebarProvider
@@ -87,7 +79,7 @@ export default function AppRoutes() {
         {(isLogin && user?.success) && (<AppSidebar />)}
 
         <SidebarInset>
-          {user && (<header className="sticky top-0 left-0 flex shrink-0 items-center gap-2 border-b bg-background p-4 z-[2]">
+          {(<header className="sticky top-0 left-0 flex shrink-0 items-center gap-2 border-b bg-background p-4 z-[2]">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
             <Breadcrumb className="flex-1 flex justify-between items-center">
@@ -96,18 +88,26 @@ export default function AppRoutes() {
                   <BreadcrumbItem className="hidden md:block">
                     <BreadcrumbLink href={`/dashboard`}>{t("home")}</BreadcrumbLink>
                   </BreadcrumbItem>
-                  <BreadcrumbSeparator className="hidden md:block" />
-                  {path.includes(`/dashboard`) && BreadRender("dashboard")}
-                  {path.includes(`/widgets`) && BreadRender("widgets")}
-                  {path.includes(`/applications`) && BreadRender("applications")}
-                  {path.includes(`/controls`) && BreadRender("controls")}
-                  {path.includes(`/mentor`) && BreadRender("mentor/group")}
+                  {isLogin&&(
+                    <>
+                      <BreadcrumbSeparator className="hidden md:block" />
+                      {path.includes(`/dashboard`) && BreadRender("dashboard")}
+                      {path.includes(`/widgets`) && BreadRender("widgets")}
+                      {path.includes(`/applications`) && BreadRender("applications")}
+                      {path.includes(`/controls`) && BreadRender("controls")}
+                      {path.includes(`/mentor`) && BreadRender("mentor/group")}
+                    </>
+                  )}
                 </BreadcrumbList>
               </div>
               <div className="flex gap-2">
-                <LanguageSwitcher />
-           
-                <NavigationMenuNotification />
+                {isLogin && (
+                  <>
+                    <LanguageSwitcher />
+
+                    <NavigationMenuNotification />
+                  </>
+                )}
                 <ToggleDarkMode />
               </div>
             </Breadcrumb>
@@ -124,6 +124,7 @@ export default function AppRoutes() {
 
               <Route path="/dashboard/*" element={<DashboardRoutes />} />
               <Route path="/mentor/*" element={<MentorRoutes />} />
+              <Route path="/students/*" element={<StudentRotes />} />
             </Routes>
           </div>
         </SidebarInset>

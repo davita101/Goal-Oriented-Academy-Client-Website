@@ -10,20 +10,18 @@ import {
   FormMessage,
 } from "../components/ui/form";
 import { Input } from "../components/ui/input";
-import { formSchemaEmail } from "../schema/form";
+import { formSchemaEmail } from "../utils/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuthStore } from "../store/authStore";
 import Submit from "../components/submit";
 import Loading from "../components/loading";
-import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 export default function Login() {
   const [sendInfo, setSendInfo] = React.useState(false);
-  const navigate = useNavigate();
 
-  const { login, isLoading, user, checkAuth } = useAuthStore();
+  const { login, isLoading, } = useAuthStore();
 
   const form = useForm({
     resolver: zodResolver(formSchemaEmail),
@@ -42,7 +40,7 @@ export default function Login() {
     }
   };
   return (
-    (localStorage.getItem?.("authLogin") == "true") ? <Loading className="h-screen" /> : (<div className="max-w-[400px] mx-auto h-screen w-full flex flex-col items-center justify-center">
+    (localStorage.getItem?.("authLogin") == "true") ? <Loading className="h-screen " /> : (<div className="max-w-[400px] mx-auto h-screen w-full flex flex-col items-center justify-center">
       <p className="text-center text-[35px] pb-4 font-bold text-green-500">Goal Oriented Academy</p>
       {((
         <div className="p-2 w-full mx-2">

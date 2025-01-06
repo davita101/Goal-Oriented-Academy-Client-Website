@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import axios from 'axios';
-import { Student, GroupState } from '../schema/interface';
+import { Student, GroupState } from '../utils/interface';
 
 const API_URL = import.meta.env.MODE === "development" ? 'http://localhost:5000' : "";
 

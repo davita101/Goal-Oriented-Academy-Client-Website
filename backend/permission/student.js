@@ -2,12 +2,13 @@ function canStudentEdit(user, leaderId) {
     return (
         user.role.includes("admin") ||
         user.role.includes("moderator") ||
+        user.role.includes("miniLeader") ||
         user.role.includes("githubController") ||
         user.role.includes("miniLeaderController") ||
         user.role.includes("leaderController") ||
         user.role.includes("mentorAssistant") ||
         user.role.includes("mentor") ||
-        user.id === (leaderId)
+        user.role.includes("leader")
     )
 }
 function canDelete(user) {

@@ -14,7 +14,7 @@ i18n
         translation: ka
       }
     },
-    lng: 'ka', // set default language to ka
+    lng: localStorage.getItem("i18nextLng") || "ka", // set default language to ka
     fallbackLng: 'en',
     interpolation: {
       escapeValue: false

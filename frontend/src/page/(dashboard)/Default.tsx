@@ -43,18 +43,21 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from "../../components/
 import { Badge } from "../../components/ui/badge"
 import { ScrollArea, ScrollBar } from "../../components/ui/scroll-area"
 import { Separator } from "../../components/ui/separator"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../../components/ui/select"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { userSchema } from "../../schema/user"
+import { userSchema } from "../../utils/user"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../../components/ui/form"
 import { useAuthStore } from "../../store/authStore"
 import Loading from "../../components/loading"
 import { toast } from "sonner"
 import { Checkbox } from "../../components/ui/checkbox"
 import { useLeaderStore } from "../../store/leaderStore"
-import { Student } from "../../schema/interface"
+import { Student } from "../../utils/interface"
 import { Button } from "../../components/ui/button"
+import { useAllStudents } from "../../store/allStudentStore"
+import { defaultStudentRest, defaultStudentValues } from "../../utils/form/default-values"
+import { set } from "mongoose"
 
 
 export const columns: ColumnDef<Student>[] = [
@@ -160,6 +163,30 @@ export const columns: ColumnDef<Student>[] = [
     header: "Github",
     cell: ({ row }) => (
       <div className="capitalize font-bold"><Link target="_blank" to={row.getValue("githubLink")}><Button className="text-blue-400 pl-0" variant="link">github Link</Button></Link></div>
+    ),
+  },
+  {
+    accessorKey: "comment",
+    header: "comment",
+    cell: ({ row }) => (
+      <div className="capitalize font-bold">
+        <HoverCard>
+          <HoverCardTrigger asChild>
+            <Button variant="link" onTouchStart={(event) => event.preventDefault()}>@COMMENT</Button>
+          </HoverCardTrigger>
+          <HoverCardContent className=" duration-100 mx-0">
+            <div className="flex justify-between">
+              <span>leader</span><span>{(row.getValue("comment") as Student["comment"])?.leaderComment}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>mini-leader</span><span>{(row.getValue("comment") as Student["comment"])?.miniLeaderComment}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>github</span><span>{(row.getValue("comment") as Student["comment"])?.controller?.githubController}</span>
+            </div>
+          </HoverCardContent>
+        </HoverCard >
+      </div>
     ),
   },
   {
@@ -291,17 +318,17 @@ export const columns: ColumnDef<Student>[] = [
   },
 ]
 
-export function Dashboard() {
+export function Default() {
   const [sorting, setSorting] = React.useState<SortingState>(() => {
-    const savedSorting = localStorage.getItem('sorting');
+    const savedSorting = localStorage.getItem('sortingStudents');
     return savedSorting ? JSON.parse(savedSorting) : [];
   });
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(() => {
-    const savedFilters = localStorage.getItem('columnFilters');
+    const savedFilters = localStorage.getItem('columnFilterStudents');
     return savedFilters ? JSON.parse(savedFilters) : [];
   });
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>(() => {
-    const savedVisibility = localStorage.getItem('columnVisibility');
+    const savedVisibility = localStorage.getItem('columnVisibilityStudents');
     return savedVisibility ? JSON.parse(savedVisibility) : {};
   });
   const [rowSelection, setRowSelection] = React.useState(() => {
@@ -315,26 +342,29 @@ export function Dashboard() {
   const [studentInfo, setStudentInfo] = React.useState(false)
 
   React.useEffect(() => {
-    localStorage.setItem('sorting', JSON.stringify(sorting));
+    localStorage.setItem('sortingStudents', JSON.stringify(sorting));
   }, [sorting]);
 
   React.useEffect(() => {
-    localStorage.setItem('columnFilters', JSON.stringify(columnFilters));
+    localStorage.setItem('columnFilterStudents', JSON.stringify(columnFilters));
   }, [columnFilters]);
 
   React.useEffect(() => {
-    localStorage.setItem('columnVisibility', JSON.stringify(columnVisibility));
+    localStorage.setItem('columnVisibilityStudents', JSON.stringify(columnVisibility));
   }, [columnVisibility]);
 
   const { user, isLoading } = useAuthStore()
-  const { leaderStudents, student, getLeaderStudents, getStudent, updateStudent } = useLeaderStore()
+  const { getAllStudents, AllStudents } = useAllStudents()
+  const { student, getStudent, updateStudent, getLeaderStudents, leaderStudents } = useLeaderStore()
+  const [pageSizeSet, setPageSizeSet] = React.useState(10)
+  const [pagination, setPagination] = React.useState(0)
 
   React.useEffect(() => {
     if (oneRowSelection) {
       getStudent(oneRowSelection.leaderId, oneRowSelection._id)
       getLeaderStudents(user?.user?._id)
     }
-  }, [oneRowSelection, user?.user?._id, getStudent])
+  }, [oneRowSelection, user?.user?._id, getStudent, getAllStudents])
   const table = useReactTable({
     data: leaderStudents.sort((a, b) => a.group < b.group ? 1 : -1),
     columns,
@@ -351,54 +381,23 @@ export function Dashboard() {
       columnFilters,
       columnVisibility,
       rowSelection,
+      pagination: {
+        pageIndex: pagination,
+        pageSize: pageSizeSet,
+      }
     },
   });
   const form = useForm<Student>({
     resolver: zodResolver(userSchema),
-    defaultValues: {
-      _id: '',
-      group: 0,
-      leaderId: '',
-      name: '',
-      studentFbLink: '',
-      age: 0,
-      email: '',
-      githubLink: '',
-      speed: 0,
-      role: '',
-      parentFbLink: '',
-      githubToken: '',
-      githubLastUpdate: '',
-      fines: { githubFine: 0, miniLeaderFine: 0, miniStudentFine: 0 },
-      aura: { classwork: 0, attendance: 0, help: 0, camera: 0, answers: 0 },
-      payedInfo: false,
-      comment: { leaderComment: '', leaderProof: '', controller: { miniLeaderController: '', githubController: '' } },
-    },
+    defaultValues: defaultStudentValues,
   });
 
   React.useEffect(() => {
     if (student) {
-      form.reset({
-        _id: student._id || '',
-        group: student.group || 0,
-        leaderId: student.leaderId || '',
-        name: student.name || '',
-        studentFbLink: student.studentFbLink || '',
-        age: student.age || 0,
-        email: student.email || '',
-        githubLink: student.githubLink || '',
-        speed: student.speed || 0,
-        role: student.role || '',
-        parentFbLink: student.parentFbLink || '',
-        githubToken: student.githubToken || '',
-        githubLastUpdate: student.githubLastUpdate || '',
-        fines: student.fines || { githubFine: 0, miniLeaderFine: 0, miniStudentFine: 0 },
-        aura: student.aura || { classwork: 0, attendance: 0, help: 0, camera: 0, answers: 0 },
-        payedInfo: student.payedInfo || false,
-        comment: student.comment || { leaderComment: '', leaderProof: '', controller: { miniLeaderController: '', githubController: '' } },
-      });
+      form.reset(student);
     }
   }, [form, student]);
+  // console.log(AllStudents)
   const formRender = (typeMain: string, minNum: number, maxNum: number, id: string, label: string, roles: string[], row: string) => {
     <Separator />
     if (typeMain === 'number') {
@@ -615,26 +614,46 @@ export function Dashboard() {
                                       </>
                                     )
                                   }
-                                  {/* // ? name */}
-                                  {formRender('string', 0, 0, 'name', 'Name', [], '')}
-                                  <Separator />
-                                  {/* // ? age */}
-                                  {formRender("number", 0, 99, "age", "Age", [], '')}
-                                  <Separator />
-                                  {/* // ? Student Facebook Link */}
-                                  {formRender('string', 0, 0, 'studentFbLink', 'Student Facebook', [], '')}
-                                  <Separator />
-                                  {/* // ? email */}
-                                  {formRender('string', 0, 0, 'email', 'Email', [], '')}
-                                  <Separator />
-                                  {/* // ? github */}
-                                  {formRender('string', 0, 0, 'github', 'Github', [], '')}
-                                  <Separator />
+                                  {
+
+                                    (user?.user?.role.includes("leaderController") ||
+                                      user?.user?.role.includes("mentor") ||
+                                      user?.user?.role.includes("mentorAssistant") ||
+                                      user?.user?.role.includes("leader") ||
+                                      user?.user?.role.includes("admin")) &&
+                                    (<>
+                                      {/* // ? name */}
+                                      {formRender('string', 0, 0, 'name', 'Name', [], '')}
+                                      <Separator />
+                                      {/* // ? age */}
+                                      {formRender("number", 0, 99, "age", "Age", [], '')}
+                                      <Separator />
+                                      {/* // ? Student Facebook Link */}
+                                      {formRender('string', 0, 0, 'studentFbLink', 'Student Facebook', [], '')}
+                                      <Separator />
+                                      {/* // ? email */}
+                                      {formRender('string', 0, 0, 'email', 'Email', [], '')}
+                                      <Separator />
+                                      {/* // ? github */}
+                                      {formRender('string', 0, 0, 'github', 'Github', [], '')}
+                                      <Separator />
+                                      {/* // ? parent facebook link */}
+                                      {formRender('string', 0, 0, 'parentFbLink', 'Parent Facebook', [], '')}
+                                      <Separator />
+                                      {/* // ? github token */}
+                                      {formRender('string', 0, 0, 'githubToken', 'Github Token', [], '')}
+                                      <Separator />
+                                      {/* // ? github last update */}
+                                      {formRender('string', 0, 0, 'githubLastUpdate', 'Github Last Update', [], '')}
+                                      <Separator />
+                                    </>)}
                                   {/* // ? speed */}
-                                  {(user?.user?.role.includes("leaderController") ||
-                                    user?.user?.role.includes("mentor") ||
-                                    user?.user?.role.includes("mentorAssistant") ||
-                                    user?.user?.role.includes("admin")) && (
+                                  {
+                                    (
+                                      user?.user?.role.includes("leaderController") ||
+                                      user?.user?.role.includes("mentor") ||
+                                      user?.user?.role.includes("mentorAssistant") ||
+                                      user?.user?.role.includes("admin")) && (
                                       <>
                                         {formRender('number', 0, 4, 'speed', 'Speed', [], '')}
                                         <Separator />
@@ -650,9 +669,7 @@ export function Dashboard() {
                                       <Separator />
                                     </>
                                   )}
-                                  {/* // ? parent facebook link */}
-                                  {formRender('string', 0, 0, 'parentFbLink', 'Parent Facebook', [], '')}
-                                  <Separator />
+
                                   {/* // ? group */}
                                   {
                                     (user?.user?.role.includes("leaderController") ||
@@ -665,12 +682,7 @@ export function Dashboard() {
                                       </>
                                     )
                                   }
-                                  {/* // ? github token */}
-                                  {formRender('string', 0, 0, 'githubToken', 'Github Token', [], '')}
-                                  <Separator />
-                                  {/* // ? github last update */}
-                                  {formRender('string', 0, 0, 'githubLastUpdate', 'Github Last Update', [], '')}
-                                  <Separator />
+
                                   <p className="capitalize font-bold leading-[1px] text-md text-slate-400">Fines</p>
                                   {/* // ? github fine */}
                                   {(user?.user?.role.includes("githubController") ||
@@ -699,7 +711,7 @@ export function Dashboard() {
                                         {/* // ? aura attendance */}
                                         {formRender('number', 0, 999999, 'aura.attendance', 'Attendance', [], '')}
                                         <Separator />
-                                        {/* // ? aura help */}
+                                        {/*// ? aura help */}
                                         {formRender('number', 0, 999999, 'aura.help', 'Help', [], '')}
                                         <Separator />
                                         {/* // ? aura camera */}
@@ -713,6 +725,7 @@ export function Dashboard() {
                                       </>)}
                                   <Separator />
                                   <p className="capitalize font-bold leading-[5px] text-slate-400">Leader Comment</p>
+                                  {formRender('string', 0, 0, 'comment.miniLeaderComment', 'Mini Leader Comment', [], '')}
                                   {(user?.user?.role.includes("admin") ||
                                     (user?.user?.role.includes("leader") && (student.leaderId == user?.user?._id)) ||
                                     user?.user?.role.includes("admin")
@@ -888,8 +901,16 @@ export function Dashboard() {
 
                                     <p className="font-bold leading-[5px] text-slate-400 capitalize"><b>Comments</b></p>
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="col-span-2 font-bold">Mini Leader Comment</span>
+                                      <span className="col-start-3 font-bold">{student?.comment?.miniLeaderComment}</span>
+                                    </div>
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
                                       <span className="col-span-2 font-bold">Leader Comment</span>
                                       <span className="col-start-3 font-bold">{student?.comment?.leaderComment}</span>
+                                    </div>
+                                    <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                      <span className="col-span-2 font-bold">Mini Leader Comment</span>
+                                      <span className="col-start-3 font-bold">{student?.comment?.miniLeaderComment}</span>
                                     </div>
                                     <Separator />
                                     <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
@@ -929,28 +950,44 @@ export function Dashboard() {
 
           <ScrollBar orientation="horizontal" />
         </ScrollArea >
-        <div className=" flex items-center justify-end space-x-2 py-4">
+        <div className="flex space-x-2 py-4">
           <div className="flex-1 text-sm text-muted-foreground">
             {table.getFilteredSelectedRowModel().rows.length} of{" "}
             {table.getFilteredRowModel().rows.length} row(s) selected.
           </div>
-          <div className="space-x-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              Previous
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              Next
-            </Button>
+          <div className="flex gap-2">
+            <div className="space-x-10">
+              <Select value={pageSizeSet.toString()} onValueChange={(value) => setPageSizeSet(Number(value))}>
+                <SelectTrigger>{pageSizeSet}</SelectTrigger>
+                <SelectContent >
+                  <SelectGroup>
+                    <SelectLabel>Rows per page</SelectLabel>
+                    <SelectItem value="10">10</SelectItem>
+                    <SelectItem value="20">20</SelectItem>
+                    <SelectItem value="30">30</SelectItem>
+                    <SelectItem value="9999">all</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setPagination(pagination - 1)}
+                disabled={pagination === 0}
+              >
+                Previous
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setPagination(pagination + 1)}
+                disabled={pagination === Math.ceil(AllStudents.length / pageSizeSet) - 1}
+              >
+                Next
+              </Button>
+            </div>
           </div>
         </div>
       </div >

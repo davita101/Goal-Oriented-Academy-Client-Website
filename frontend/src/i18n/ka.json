@@ -3,7 +3,6 @@
   "points": "ქულები",
   "home": "მთავარი",
   "dashboard": "დაფა",
-  "classname": "კლასის სახელი",
   "answers": "პასუხები",
   "attendance": "დასწრება",
   "camera": "კამერა",
@@ -30,7 +29,7 @@
   "mini_leader_fine": "მინი ლიდერის ჯარიმა",
   "mini_student_fine": "მინი სტუდენტის ჯარიმა",
   "aura_info": "აურას ინფორმაცია",
-  "classwork": "კლასის სამუშაო",
+  "classwork": "საკლასო",
   "comments": "კომენტარები",
   "leader_comment": "ლიდერის კომენტარი",
   "leader_proof": "ლიდერის მტკიცებულება",
@@ -38,6 +37,8 @@
   "github_controller": "Github კონტროლერი",
 
   "Not Found": "ვერ მოიძებნა",
+
+  "aura": "აურა",
 
   "leader": "ლიდერი",
   "mentor": "მენტორი",

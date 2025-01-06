@@ -17,6 +17,7 @@ function canLeaderEdit(user, leaderId) {
     return (
         user.role.includes("admin") ||
         user.role.includes("moderator") ||
+        user.role.includes("miniLeader") ||
         user.role.includes("leaderController") ||
         user.role.includes("miniLeaderController") ||
         user.role.includes("githubController") ||
@@ -25,7 +26,7 @@ function canLeaderEdit(user, leaderId) {
 }
 function canMiniLeaderEdit(userReq, controller) {
     return (
-        controller === "miniLEaderController" &&
+        controller === "miniLeaderController" &&
         userReq?.controllers?.miniLeaderController
        && userReq?.rating?.miniLeaderGithubCheck)
 }

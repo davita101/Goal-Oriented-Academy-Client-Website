@@ -36,6 +36,7 @@ export const userSchema = z.object({
     payedInfo: z.boolean(),
     comment: z.object({
         leaderComment: z.string().min(0, "Leader Comment must be at least 0 characters"),
+        miniLeaderComment: z.string().min(0, "Mini Leader Comment must be at least 0 characters"),
         leaderProof: z.string().url({ message: "You must enter a correct URL" }),
         controller: z.object({
             miniLeaderController: z.string().min(0, "Mini Leader Controller must be at least 0 characters"),

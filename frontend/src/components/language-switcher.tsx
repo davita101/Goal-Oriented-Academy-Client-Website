@@ -10,6 +10,7 @@ import {
 import { ScrollArea } from "./ui/scroll-area"
 import { cn } from "../lib/utils";
 import { Languages } from "lucide-react";
+import i18n from "../i18n";
 
 const components: { title: string; href: string; description: string }[] = [
     {
@@ -27,6 +28,11 @@ const components: { title: string; href: string; description: string }[] = [
 ]
 
 export default function LanguageSwitcher() {
+    const [language, setLanguage] = React.useState();
+    const changeLanguage = (lng: string) => {
+        i18n.changeLanguage(lng);
+        localStorage.setItem("i18nextLng", lng);
+      };
     return (
         <NavigationMenu>
             <NavigationMenuList>
@@ -35,8 +41,8 @@ export default function LanguageSwitcher() {
                     <NavigationMenuContent>
                         <ScrollArea className="rounded-md border">
                             <ul className="w-[50px] gap-3 z-[999] ">
-                                <li><ListItem key={"ka"}>ka</ListItem></li>
-                                <li><ListItem key={"en"}>en</ListItem></li>
+                                <ListItem key={"ka"} onClick={() => changeLanguage("ka")}>ka</ListItem>
+                                <ListItem key={"en"} onClick={() => changeLanguage("en")}>en</ListItem>
                             </ul>
                         </ScrollArea>
                     </NavigationMenuContent>

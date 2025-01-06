@@ -40,11 +40,9 @@ const StudentSchema = new mongoose.Schema(
     },
     parentFbLink: {
       type: String,
-      required: true,
     },
     githubToken: {
       type: String,
-      required: true,
     },
     githubLastUpdate: {
       type: String,
@@ -86,6 +84,9 @@ const StudentSchema = new mongoose.Schema(
     },
     comment: {
       leaderComment: {
+        type: String,
+      },
+      miniLeaderComment: {
         type: String,
       },
       leaderProof: {

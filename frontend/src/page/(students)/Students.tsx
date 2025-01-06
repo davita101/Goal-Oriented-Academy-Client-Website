@@ -38,28 +38,70 @@ import {
     TableHeader,
     TableRow,
 } from "../../components/ui/table"
-import { Link, useParams } from "react-router-dom"
+import { Link } from "react-router-dom"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "../../components/ui/hover-card"
 import { Badge } from "../../components/ui/badge"
 import { ScrollArea, ScrollBar } from "../../components/ui/scroll-area"
 import { Separator } from "../../components/ui/separator"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../../components/ui/select"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { userSchema } from "../../utils/user"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../../components/ui/form"
 import { useAuthStore } from "../../store/authStore"
 import Loading from "../../components/loading"
 import { toast } from "sonner"
+import { Checkbox } from "../../components/ui/checkbox"
 import { useLeaderStore } from "../../store/leaderStore"
-import { Button } from "../../components/ui/button"
-import { useMentorStore } from "../../store/mentorStore"
 import { Student } from "../../utils/interface"
-import { userSchema } from "../../utils/user"
-import { defaultStudentValues } from "../../utils/form/default-values"
-import { t } from "i18next"
+import { Button } from "../../components/ui/button"
+import { useAllStudents } from "../../store/allStudentStore"
+import { defaultStudentRest, defaultStudentValues } from "../../utils/form/default-values"
+import { set } from "mongoose"
 
 
 export const columns: ColumnDef<Student>[] = [
-
+    {
+        id: "select",
+        header: ({ table }) => (
+            <Checkbox
+                checked={
+                    table.getIsAllPageRowsSelected() ? true :
+                        table.getIsSomePageRowsSelected() ? "indeterminate" : false
+                }
+                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                aria-label="Select all"
+            />
+        ),
+        cell: ({ row }) => (
+            <Checkbox
+                checked={row.getIsSelected()}
+                onCheckedChange={(value) => row.toggleSelected(!!value)}
+                aria-label="Select row"
+            />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+    },
+    {
+        accessorKey: "role",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Role
+                    <ArrowUpDown />
+                </Button>
+            )
+        },
+        cell: ({ row }) => (
+            <div className="capitalize font-bold">
+                {<Badge>{row.getValue("role")}</Badge>}
+            </div>
+        ),
+    },
     {
         accessorKey: "name",
         header: ({ column }) => {
@@ -80,68 +122,47 @@ export const columns: ColumnDef<Student>[] = [
         ),
     },
     {
-        accessorKey: "aura",
+        accessorKey: "age",
+        header: "Age",
+        cell: ({ row }) => (
+            <div className="capitalize font-bold"><Badge variant="outline" className="font-b">{row.getValue("age")}</Badge></div>
+        ),
+    },
+    {
+        accessorKey: "email",
+        header: "Email",
+        cell: ({ row }) => <div className="font-bold">{row.getValue("email")}</div>,
+    },
+    {
+        accessorKey: "studentFbLink",
+        header: "Student FB",
+        cell: ({ row }) => (
+            <div className="capitalize font-bold"><Link target="_blank" to={row.getValue("studentFbLink")}><Button className="text-blue-400 pl-0" variant="link">Facebook</Button></Link></div>
+        ),
+    },
+    {
+        accessorKey: "githubLastUpdate",
         header: ({ column }) => {
             return (
                 <Button
                     variant="ghost"
-                    className="m-0 p-0"
+                    className="pl-0"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    Points
+                    Last Update
                     <ArrowUpDown />
                 </Button>
             )
         },
-        cell: ({ row, column }) => (
-            <div
-                className="capitalize font-bold"
-
-            >
-                {
-                    (row.getValue("aura") as Student["aura"])?.points
-                }
-            </div>
+        cell: ({ row }) => (
+            <div className="capitalize font-bold">{row.getValue("githubLastUpdate")}</div>
         ),
     },
     {
-        header: "classwork",
+        accessorKey: "githubLink",
+        header: "Github",
         cell: ({ row }) => (
-            <div key={(row.getValue("aura") as Student["aura"]).classwork} className="capitalize font-bold">
-                {(row.getValue("aura") as { classwork: number }).classwork}
-            </div>
-        ),
-    },
-    {
-        header: "Answers",
-        cell: ({ row }) => (
-            <div key={(row.getValue("aura") as Student["aura"]).answers} className="capitalize font-bold">
-                {(row.getValue("aura") as Student["aura"]).answers}
-            </div>
-        ),
-    },
-    {
-        header: "Attendance",
-        cell: ({ row }) => (
-            <div key={(row.getValue("aura") as Student["aura"]).attendance} className="capitalize font-bold">
-                {(row.getValue("aura") as Student["aura"]).attendance}
-            </div>
-        ),
-    },
-    {
-        header: "Camera",
-        cell: ({ row }) => (
-            <div key={(row.getValue("aura") as Student["aura"]).camera} className="capitalize font-bold">
-                {(row.getValue("aura") as Student["aura"]).camera}
-            </div>
-        ),
-    },
-    {
-        header: "Help",
-        cell: ({ row }) => (
-            <div key={(row.getValue("aura") as Student["aura"]).help} className="capitalize font-bold">
-                {(row.getValue("aura") as Student["aura"]).help}
-            </div>
+            <div className="capitalize font-bold"><Link target="_blank" to={row.getValue("githubLink")}><Button className="text-blue-400 pl-0" variant="link">github Link</Button></Link></div>
         ),
     },
     {
@@ -150,6 +171,7 @@ export const columns: ColumnDef<Student>[] = [
             return (
                 <Button
                     variant="ghost"
+                    className="pl-0"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Speed
@@ -158,10 +180,7 @@ export const columns: ColumnDef<Student>[] = [
             )
         },
         cell: ({ row }) => (
-
-            <div className="capitalize font-bold">
-                {row.getValue("speed") as Student["speed"]}
-            </div>
+            <div className="capitalize "><Badge variant="outline" className="font-bold">{row.getValue("speed")}</Badge></div>
         ),
     },
     {
@@ -169,33 +188,123 @@ export const columns: ColumnDef<Student>[] = [
         header: ({ column }) => {
             return (
                 <Button
+                    className="pl-0"
+
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    group
+                    Group
                     <ArrowUpDown />
                 </Button>
             )
         },
         cell: ({ row }) => (
-            <div className="capitalize font-bold">
-                {row.getValue("group") as Student["group"]}
-            </div>
+            <div className="capitalize font-bold"><Badge className="font-bold" variant="outline">{row.getValue("group")}</Badge></div>
+        ),
+    },
+    {
+        accessorKey: "leaderId",
+        header: "LeaderId",
+        cell: ({ row }) => (
+            <div className="capitalize font-bold"><Link target="_blank" to={row.getValue("leaderId")}><Button className="text-blue-400 pl-0" variant="link">leaderID</Button></Link></div>
+        ),
+    },
+    {
+        accessorKey: "parentFbLink",
+        header: "Parent FB",
+        cell: ({ row }) => (
+            <div className="capitalize font-bold"><Link target="_blank" to={row.getValue("parentFbLink")}><Button className="text-blue-400 pl-0" variant="link">parenLink</Button></Link></div>
+        ),
+    },
+    {
+        accessorKey: "fines",
+        header: () => {
+            return (
+                <Button
+                    variant="ghost"
+                >
+                    Fines
+                    <ArrowUpDown />
+                </Button>
+            )
+        },
+        cell: ({ row }: { row: Row<Student> }) => (
+            <HoverCard>
+                <HoverCardTrigger asChild>
+                    <Button variant="link" >@fines</Button>
+                </HoverCardTrigger>
+                <HoverCardContent className="w-40 duration-100">
+                    <div className="flex justify-between">
+                        <span>githubFine</span><span>{(row.getValue("fines") as Student["fines"]).githubFine}</span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>miniLeaderFine</span><span>{(row.getValue("fines") as Student["fines"]).miniLeaderFine}</span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>miniStudentFine</span><span>{(row.getValue("fines") as Student["fines"]).miniStudentFine}</span>
+                    </div>
+                </HoverCardContent>
+            </HoverCard>
+        ),
+    },
+    {
+        accessorKey: "aura",
+        header: () => {
+            return (
+                <Button
+                    variant="ghost"
+                >
+                    Aura
+                    <ArrowUpDown />
+                </Button>
+            )
+        },
+        cell: ({ row }: { row: Row<Student> }) => (
+            <HoverCard>
+                <HoverCardTrigger asChild>
+                    <Button variant="link" onTouchStart={(event) => event.preventDefault()}>@Aura</Button>
+                </HoverCardTrigger>
+                <HoverCardContent className="w-40 duration-100">
+                    <div className="flex justify-between">
+                        <span>classwork</span><span>{(row.getValue("aura") as Student["aura"]).classwork}</span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>attendance</span><span>{(row.getValue("aura") as Student["aura"]).attendance}</span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>help</span><span>{(row.getValue("aura") as Student["aura"]).help}</span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>camera</span><span>{(row.getValue("aura") as Student["aura"]).camera}</span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>answers</span><span>{(row.getValue("aura") as Student["aura"]).answers}</span>
+                    </div>
+                </HoverCardContent>
+            </HoverCard >
+        ),
+    },
+
+    {
+        accessorKey: "payedInfo",
+        header: "PayedInfo",
+        cell: ({ row }) => (
+            <div className="capitalize font-bold">{row.getValue("payedInfo") ? "True" : "False"}</div>
         ),
     },
 ]
 
-export function MentorGroup() {
+export function AllStudents() {
     const [sorting, setSorting] = React.useState<SortingState>(() => {
-        const savedSorting = localStorage.getItem('sortingMentor');
+        const savedSorting = localStorage.getItem('sortingStudents');
         return savedSorting ? JSON.parse(savedSorting) : [];
     });
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(() => {
-        const savedFilters = localStorage.getItem('columnFiltersMentor');
+        const savedFilters = localStorage.getItem('columnFilterStudents');
         return savedFilters ? JSON.parse(savedFilters) : [];
     });
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>(() => {
-        const savedVisibility = localStorage.getItem('columnVisibilityMentor');
+        const savedVisibility = localStorage.getItem('columnVisibilityStudents');
         return savedVisibility ? JSON.parse(savedVisibility) : {};
     });
     const [rowSelection, setRowSelection] = React.useState(() => {
@@ -206,32 +315,34 @@ export function MentorGroup() {
         const savedSelection = localStorage.getItem('oneRowSelection');
         return savedSelection ? JSON.parse(savedSelection) : null;
     });
-    const [studentInfo, setStudentInfo] = React.useState(true)
+    const [studentInfo, setStudentInfo] = React.useState(false)
 
     React.useEffect(() => {
-        localStorage.setItem('sorting', JSON.stringify(sorting));
+        localStorage.setItem('sortingStudents', JSON.stringify(sorting));
     }, [sorting]);
 
     React.useEffect(() => {
-        localStorage.setItem('columnFilters', JSON.stringify(columnFilters));
+        localStorage.setItem('columnFilterStudents', JSON.stringify(columnFilters));
     }, [columnFilters]);
 
     React.useEffect(() => {
-        localStorage.setItem('columnVisibility', JSON.stringify(columnVisibility));
+        localStorage.setItem('columnVisibilityStudents', JSON.stringify(columnVisibility));
     }, [columnVisibility]);
 
-    const { user, isLoading, } = useAuthStore()
-    const { student, getStudent, updateStudent, getLeaderStudents, leaderStudents } = useLeaderStore()
-    const { getGroup, group } = useMentorStore()
-    const { groupId } = useParams()
+    const { user, isLoading } = useAuthStore()
+    const { getAllStudents, AllStudents } = useAllStudents()
+    const { student, getStudent, updateStudent } = useLeaderStore()
+    const [pageSizeSet, setPageSizeSet] = React.useState(10)
+    const [pagination, setPagination] = React.useState(0)
+
     React.useEffect(() => {
-        getGroup(groupId as string)
+        getAllStudents()
         if (oneRowSelection) {
             getStudent(oneRowSelection.leaderId, oneRowSelection._id)
         }
-    }, [oneRowSelection, user?.user?._id, getStudent, getGroup])
+    }, [oneRowSelection, user?.user?._id, getStudent, getAllStudents])
     const table = useReactTable({
-        data: group.sort((a, b) => a?.aura?.points < b?.aura?.points ? 1 : -1),
+        data: AllStudents.sort((a, b) => a.group < b.group ? 1 : -1),
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -246,6 +357,10 @@ export function MentorGroup() {
             columnFilters,
             columnVisibility,
             rowSelection,
+            pagination: {
+                pageIndex: pagination,
+                pageSize: pageSizeSet,
+            }
         },
     });
     const form = useForm<Student>({
@@ -258,9 +373,9 @@ export function MentorGroup() {
             form.reset(student);
         }
     }, [form, student]);
+    // console.log(AllStudents)
     const formRender = (typeMain: string, minNum: number, maxNum: number, id: string, label: string, roles: string[], row: string) => {
         <Separator />
-
         if (typeMain === 'number') {
             return (
                 <FormField
@@ -281,7 +396,7 @@ export function MentorGroup() {
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                         const value = e.target.value === '' ? '' : Number(e.target.value);
                                         const numericValue = Number(value);
-                                        if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= maxNum) {
+                                        if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= 99) {
                                             field.onChange(value);
                                             handleInputChange(oneRowSelection, id, value);
                                         }
@@ -298,7 +413,6 @@ export function MentorGroup() {
                 <FormField
                     control={form.control}
                     name={id as keyof Student}
-
                     render={({ field, fieldState: { error } }) => (
                         <FormItem className="grid grid-cols-4  items-center w-full justify-start gap-2">
                             <FormLabel className="grid-cols-2">{label}</FormLabel>
@@ -363,9 +477,9 @@ export function MentorGroup() {
         }
     }
     const onSubmit: SubmitHandler<Student> = (data) => {
-        data.aura.points = (data.aura.answers || 0) + (data.aura.attendance || 0) + (data.aura.camera || 0) + (data.aura.classwork || 0) + (data.aura.help || 0);
         setOneRowSelection((prev: Student) => ({ ...prev, leaderId: data.leaderId }));
         updateStudent(student.leaderId, student._id, data);
+        console.log("sss")
         if (!isLoading) {
             setStudentInfo(false);
         }
@@ -373,7 +487,7 @@ export function MentorGroup() {
     return (
         <>
             <div
-                className={` bg-[var(--background)] grid auto-rows-min overflow-hidden gap-4 grid-cols-1 px-2`}>
+                className={`bg-[var(--background)] grid auto-rows-min overflow-hidden gap-4 grid-cols-1 px-2`}>
                 <div className="flex items-center py-4">
                     <Input
                         placeholder="Student name..."
@@ -397,20 +511,19 @@ export function MentorGroup() {
                                     return (
                                         <DropdownMenuCheckboxItem
                                             key={column.id}
-                                            className=" text-center"
+                                            className="capitalize text-center"
                                             checked={column.getIsVisible()}
                                             onCheckedChange={(value) =>
                                                 column.toggleVisibility(!!value)
                                             }
                                         >
-                                            {t(column.id)}
+                                            {column.id}
                                         </DropdownMenuCheckboxItem>
                                     );
                                 })}
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
-                <span className="font-bold text-xl">Group {groupId}</span>
                 <ScrollArea >
                     <div className="rounded-md border">
                         <Table>
@@ -434,10 +547,10 @@ export function MentorGroup() {
                             </TableHeader>
                             <TableBody >
                                 {table.getRowModel().rows?.length ? (
-                                    table.getRowModel().rows?.map((row) => (
+                                    table.getRowModel().rows.map((row) => (
 
                                         <Sheet key={row.id}>
-                                            <SheetTrigger asChild onClick={() => { setOneRowSelection(row.original), setStudentInfo(true) }}>
+                                            <SheetTrigger asChild onClick={() => { setOneRowSelection(row.original) }}>
                                                 <TableRow
                                                     data-state={row.getIsSelected() && "selected"}
                                                 >
@@ -463,70 +576,174 @@ export function MentorGroup() {
                                                 </SheetHeader>
                                                 {isLoading ? <Loading /> : (
                                                     <ScrollArea className="h-full p-4 pb-16">
-                                                        {(studentInfo && !isLoading) ?
-                                                            (<Form {...form}>
-                                                                <form onSubmit={form.handleSubmit(onSubmit)}>
-                                                                    <div className="grid gap-4 py-4">
-                                                                        {/* // ? speed */}
-                                                                        {(user?.user?.role.includes("leaderController") ||
+                                                        {(studentInfo && !isLoading) ? (<Form {...form}>
+                                                            <form onSubmit={form.handleSubmit(onSubmit)}>
+                                                                <div className="grid gap-4 py-4">
+                                                                    <p className="font-bold leading-[5px] text-slate-400">leader edit</p>
+                                                                    {/* // ? leader id */}
+
+                                                                    {
+                                                                        (user?.user?.role.includes("leaderController") ||
+                                                                            (user?.user?.role.includes("admin"))) && (
+                                                                            <>
+                                                                                {formRender('string', 0, 0, 'leaderId', 'Leader ID', [], '')}
+                                                                                <Separator />
+                                                                            </>
+                                                                        )
+                                                                    }
+                                                                    {
+
+                                                                        (user?.user?.role.includes("leaderController") ||
+                                                                            user?.user?.role.includes("leader") ||
+                                                                            user?.user?.role.includes("admin")) &&
+                                                                        (<>
+                                                                            {/* // ? name */}
+                                                                            {formRender('string', 0, 0, 'name', 'Name', [], '')}
+                                                                            <Separator />
+                                                                            {/* // ? age */}
+                                                                            {formRender("number", 0, 99, "age", "Age", [], '')}
+                                                                            <Separator />
+                                                                            {/* // ? Student Facebook Link */}
+                                                                            {formRender('string', 0, 0, 'studentFbLink', 'Student Facebook', [], '')}
+                                                                            <Separator />
+                                                                            {/* // ? email */}
+                                                                            {formRender('string', 0, 0, 'email', 'Email', [], '')}
+                                                                            <Separator />
+                                                                            {/* // ? github */}
+                                                                            {formRender('string', 0, 0, 'github', 'Github', [], '')}
+                                                                            <Separator />
+                                                                            {/* // ? parent facebook link */}
+                                                                            {formRender('string', 0, 0, 'parentFbLink', 'Parent Facebook', [], '')}
+                                                                            <Separator />
+                                                                            {/* // ? github token */}
+                                                                            {formRender('string', 0, 0, 'githubToken', 'Github Token', [], '')}
+                                                                            <Separator />
+                                                                            {/* // ? github last update */}
+                                                                            {formRender('string', 0, 0, 'githubLastUpdate', 'Github Last Update', [], '')}
+                                                                            <Separator />
+                                                                        </>)}
+                                                                    {/* // ? speed */}
+                                                                    {
+                                                                        (
+                                                                            user?.user?.role.includes("leaderController") ||
+                                                                            user?.user?.role.includes("mentorAssistant") ||
+                                                                            user?.user?.role.includes("admin")) && (
+                                                                            <>
+                                                                                {formRender('number', 0, 4, 'speed', 'Speed', [], '')}
+                                                                                <Separator />
+                                                                            </>
+                                                                        )
+                                                                    }
+
+                                                                    {/* // ? role */}
+
+                                                                    {(!user?.user?.role?.includes("miniLeader") || (user?.user?.role?.includes("leader"))) && (
+                                                                        <>
+                                                                            {formRender('role', 0, 0, 'role', 'Role', ['student', 'miniLeader'], "")}
+                                                                            <Separator />
+                                                                        </>
+                                                                    )}
+
+                                                                    {/* // ? group */}
+                                                                    {
+                                                                        (user?.user?.role.includes("leaderController") ||
                                                                             user?.user?.role.includes("mentor") ||
                                                                             user?.user?.role.includes("mentorAssistant") ||
                                                                             user?.user?.role.includes("admin")) && (
-                                                                                <>
-                                                                                    {/* {formRender('number', 0, 4, 'speed', 'Speed', [], '')} */}
-                                                                                </>
-                                                                            )
-                                                                        }
-                                                                        {/* // ? group */}
-                                                                        {
-                                                                            (user?.user?.role.includes("leaderController") ||
-                                                                                user?.user?.role.includes("mentor") ||
-                                                                                user?.user?.role.includes("admin")) && (
-                                                                                <>
-                                                                                    {formRender('number', 0, 99, 'group', 'Group', [], '')}
-                                                                                    <Separator />
-                                                                                </>
-                                                                            )
-                                                                        }
-                                                                        <p className="capitalize font-bold leading-[5px] text-slate-400">Mentor Section</p>
-                                                                        {(
-                                                                            user?.user?.role.includes("admin") ||
-                                                                            user?.user?.role.includes("mentorAssistant") ||
-                                                                            user?.user?.role.includes("mentor")) && (
-                                                                                <>
-                                                                                    {/* // ? aura classwork */}
-                                                                                    {formRender('number', 0, 999999, 'aura.classwork', 'Classwork', [], '')}
-                                                                                    <Separator />
-                                                                                    {/* // ? aura attendance */}
-                                                                                    {formRender('number', 0, 999999, 'aura.attendance', 'Attendance', [], '')}
-                                                                                    <Separator />
-                                                                                    {/* // ? aura help */}
-                                                                                    {formRender('number', 0, 999999, 'aura.help', 'Help', [], '')}
-                                                                                    <Separator />
-                                                                                    {/* // ? aura camera */}
-                                                                                    {formRender('number', 0, 999999, 'aura.camera', 'Camera', [], '')}
-                                                                                    <Separator />
-                                                                                    {/* // ? aura answers */}
-                                                                                    {formRender('number', 0, 999999, 'aura.answers', 'Answers', [], '')}
-                                                                                    {/* // ? payed info */}
-                                                                                    {formRender('boolean', 0, 0, 'payedInfo', 'Payed Info', [], '')}
-                                                                                    {/* // ? leader comment */}
-                                                                                </>)}
-                                                                        <Separator />
-                                                                        <Button type="submit" variant={"green"}
-                                                                            onClick={() =>
-                                                                                toast("Student has been updated", {
-                                                                                    description: `${student.updatedAt}`,
-                                                                                    action: {
-                                                                                        label: "Undo",
-                                                                                        onClick: () => console.log("Undo"),
-                                                                                    }
-                                                                                })}
+                                                                            <>
+                                                                                {formRender('number', 0, 99, 'group', 'Group', [], '')}
+                                                                                <Separator />
+                                                                            </>
+                                                                        )
+                                                                    }
 
-                                                                        > Save changes </Button>
-                                                                    </div>
-                                                                </form>
-                                                            </Form>)
+                                                                    <p className="capitalize font-bold leading-[1px] text-md text-slate-400">Fines</p>
+                                                                    {/* // ? github fine */}
+                                                                    {(user?.user?.role.includes("githubController") ||
+                                                                        (user?.user?.role.includes("miniLeaderController")) ||
+                                                                        (user?.user?.role.includes("miniMentorController")) ||
+                                                                        (user?.user?.role.includes("admin"))) && (
+                                                                            <>
+                                                                                {formRender('number', 0, 99, 'fines.githubFine', 'Github Fine', [], '')}
+                                                                                <Separator />
+                                                                                {/* // ? mini leader fine */}
+                                                                                {formRender('number', 0, 99, 'fines.miniLeaderFine', 'Mini Leader Fine', [], '')}
+                                                                                <Separator />
+                                                                                {/* // ? mini student fine */}
+    "xlsx": "^0.18.5"
+                                                                                {formRender('number', 0, 99, 'fines.miniStudentFine', 'Mini Student Fine', [], '')}
+                                                                            </>
+                                                                        )}
+                                                                    <Separator />
+                                                                    <p className="capitalize font-bold leading-[5px] text-slate-400">Mentor Section</p>
+                                                                    {(
+                                                                        user?.user?.role.includes("admin") ||
+                                                                        user?.user?.role.includes("mentorAssistant") ||
+                                                                        user?.user?.role.includes("mentor")) && (
+                                                                            <>
+                                                                                {/* // ? aura classwork */}
+                                                                                {formRender('number', 0, 999999, 'aura.classwork', 'Classwork', [], '')}
+                                                                                <Separator />
+                                                                                {/* // ? aura attendance */}
+                                                                                {formRender('number', 0, 999999, 'aura.attendance', 'Attendance', [], '')}
+                                                                                <Separator />
+                                                                                {/*// ? aura help */}
+                                                                                {formRender('number', 0, 999999, 'aura.help', 'Help', [], '')}
+                                                                                <Separator />
+                                                                                {/* // ? aura camera */}
+                                                                                {formRender('number', 0, 999999, 'aura.camera', 'Camera', [], '')}
+                                                                                <Separator />
+                                                                                {/* // ? aura answers */}
+                                                                                {formRender('number', 0, 999999, 'aura.answers', 'Answers', [], '')}
+                                                                                {/* // ? payed info */}
+                                                                                {formRender('boolean', 0, 0, 'payedInfo', 'Payed Info', [], '')}
+                                                                                {/* // ? leader comment */}
+                                                                            </>)}
+                                                                    <Separator />
+                                                                    <p className="capitalize font-bold leading-[5px] text-slate-400">Leader Comment</p>
+                                                                    {(user?.user?.role.includes("admin") ||
+                                                                        (user?.user?.role.includes("leader") && (student.leaderId == user?.user?._id)) ||
+                                                                        user?.user?.role.includes("admin")
+                                                                    ) && (
+                                                                            <>
+                                                                                {formRender('string', 0, 0, 'comment.leaderComment', 'Leader Comment', [], '')}
+                                                                                <Separator />
+                                                                                {/* // ? leader proof */}
+                                                                                {formRender('string', 0, 0, 'comment.leaderProof', 'Leader Proof', [], '')}
+                                                                                {/* // ? mini leader controller */}
+                                                                            </>
+                                                                        )}
+                                                                    <Separator />
+                                                                    <p className="capitalize font-bold leading-[5px] text-slate-400">Control comment</p>
+                                                                    {(
+                                                                        user?.user?.role.includes("miniLeaderController") ||
+                                                                        user?.user?.role.includes("githubController") ||
+                                                                        user?.user?.role.includes("admin")
+                                                                    ) &&
+                                                                        (
+                                                                            <>
+                                                                                {formRender('string', 0, 0, 'comment.controller.miniLeaderController', 'Mini Leader Controller', [], '')}
+                                                                                <Separator />
+                                                                                {/* // ? leader controller */}
+                                                                                {formRender('string', 0, 0, 'comment.controller.githubController', 'Github Controller', [], '')}
+                                                                                <Separator />
+                                                                            </>
+                                                                        )
+                                                                    }
+                                                                    <Button type="submit" variant={"green"}
+                                                                        onClick={() =>
+                                                                            toast("Student has been updated", {
+                                                                                description: `${student.updatedAt}`,
+                                                                                action: {
+                                                                                    label: "Undo",
+                                                                                    onClick: () => console.log("Undo"),
+                                                                                }
+                                                                            })}
+
+                                                                    > Save changes</Button>
+                                                                </div>
+                                                            </form>
+                                                        </Form>)
 
                                                             :
                                                             <>
@@ -584,7 +801,7 @@ export function MentorGroup() {
                                                                         <Separator />
                                                                         <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
                                                                             <span className="col-span-2 font-bold">Speed</span>
-                                                                            <span className="col-start-3 font-bold">{student?.speed}</span>
+                                                                            <span className="col-start-3 font-bold">{student.speed}</span>
                                                                         </div>
                                                                         <Separator />
 
@@ -603,7 +820,7 @@ export function MentorGroup() {
                                                                         <p className="font-bold leading-[5px] text-slate-400 capitalize"><b>Controller info</b></p>
                                                                         <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
                                                                             <span className="col-span-2 font-bold ">Finally</span>
-                                                                            <span className="col-start-3 font-bold text-blue-400">{student?.aura?.points}</span>
+                                                                            <span className="col-start-3 font-bold text-blue-400">{student?.fines?.githubFine + student?.fines?.miniLeaderFine + student?.fines?.miniStudentFine}</span>
                                                                         </div>
                                                                         <Separator />
                                                                         <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
@@ -662,6 +879,10 @@ export function MentorGroup() {
                                                                             <span className="col-span-2 font-bold">Leader Comment</span>
                                                                             <span className="col-start-3 font-bold">{student?.comment?.leaderComment}</span>
                                                                         </div>
+                                                                        <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                                                            <span className="col-span-2 font-bold">Mini Leader Comment</span>
+                                                                            <span className="col-start-3 font-bold">{student?.comment?.miniLeaderComment}</span>
+                                                                        </div>
                                                                         <Separator />
                                                                         <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
                                                                             <span className="col-span-2 font-bold">Leader Poof</span>
@@ -700,28 +921,44 @@ export function MentorGroup() {
 
                     <ScrollBar orientation="horizontal" />
                 </ScrollArea >
-                <div className=" flex items-center justify-end space-x-2 py-4">
+                <div className="flex space-x-2 py-4">
                     <div className="flex-1 text-sm text-muted-foreground">
                         {table.getFilteredSelectedRowModel().rows.length} of{" "}
                         {table.getFilteredRowModel().rows.length} row(s) selected.
                     </div>
-                    <div className="space-x-2">
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => table.previousPage()}
-                            disabled={!table.getCanPreviousPage()}
-                        >
-                            Previous
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => table.nextPage()}
-                            disabled={!table.getCanNextPage()}
-                        >
-                            Next
-                        </Button>
+                    <div className="flex gap-2">
+                        <div className="space-x-10">
+                            <Select value={pageSizeSet.toString()} onValueChange={(value) => setPageSizeSet(Number(value))}>
+                                <SelectTrigger>{pageSizeSet}</SelectTrigger>
+                                <SelectContent >
+                                    <SelectGroup>
+                                        <SelectLabel>Rows per page</SelectLabel>
+                                        <SelectItem value="10">10</SelectItem>
+                                        <SelectItem value="20">20</SelectItem>
+                                        <SelectItem value="30">30</SelectItem>
+                                        <SelectItem value="9999">all</SelectItem>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setPagination(pagination - 1)}
+                                disabled={pagination === 0}
+                            >
+                                Previous
+                            </Button>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setPagination(pagination + 1)}
+                                disabled={pagination === Math.ceil(AllStudents.length / pageSizeSet) - 1}
+                            >
+                                Next
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </div >

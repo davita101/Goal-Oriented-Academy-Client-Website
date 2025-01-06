@@ -29,6 +29,7 @@ export type Student = {
     payedInfo: boolean
     comment: {
         leaderComment: string
+        miniLeaderComment: string
         leaderProof: string
         controller: {
             miniLeaderController: string
@@ -60,4 +61,11 @@ export interface GroupState {
     isLoading: boolean;
     isCheckingAuth: boolean;
     getGroup: (groupId: string) => Promise<void>;
+}
+
+export interface AllStudentState {
+    AllStudents: Student[];
+    isLoading: boolean;
+    isCheckingAuth: boolean;
+    getAllStudents: () => Promise<void>;
 }

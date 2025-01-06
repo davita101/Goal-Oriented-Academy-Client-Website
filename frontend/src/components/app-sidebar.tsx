@@ -14,8 +14,8 @@ import {
   MonitorCog,
   Presentation,
   SquareTerminal,
-  User,
   User2Icon,
+  UserRoundCheckIcon,
   UserRoundPen,
 } from "lucide-react"
 
@@ -55,10 +55,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         ],
       },
     ],
+    students:
+      [
+        {
+          name: "students",
+          url: "/students",
+          icon: UserRoundCheckIcon,
+        },
+
+      ],
     mentor:
       [
         {
-          name: "home",
+          name: "groups",
           url: "/mentor/group",
           icon: Book,
         },
@@ -175,6 +184,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarHeader>
         <SidebarContent>
           <AsideDashboard items={data.navMain} title="Dashboard" />
+          <NavProjects items={data.students} title="All Students" />
           <NavProjects items={data.mentor} title="Mentor/Mentor Assistant" />
           <NavProjects items={data.admin} title="Admin" />
           <NavProjects items={data.widgets} title="Widgets" />
