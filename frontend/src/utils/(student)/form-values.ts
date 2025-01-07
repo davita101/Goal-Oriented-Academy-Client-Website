@@ -1,4 +1,4 @@
-import { Student } from "../interface"
+import { Student } from "./student"
 
 export const defaultStudentValues = {
     _id: '',

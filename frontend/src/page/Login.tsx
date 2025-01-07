@@ -10,7 +10,7 @@ import {
   FormMessage,
 } from "../components/ui/form";
 import { Input } from "../components/ui/input";
-import { formSchemaEmail } from "../utils/form";
+import { formSchemaEmail } from "../utils/(login)/login-form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuthStore } from "../store/authStore";

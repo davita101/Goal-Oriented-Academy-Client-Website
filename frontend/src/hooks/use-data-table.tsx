@@ -6,30 +6,20 @@ import {
     SheetHeader,
     SheetTitle,
     SheetTrigger,
-} from "../../components/ui/sheet"
+} from "../components/ui/sheet"
 
 import {
-    ColumnDef,
-    ColumnFiltersState,
-    SortingState,
-    VisibilityState,
     flexRender,
-    getCoreRowModel,
-    getFilteredRowModel,
-    getPaginationRowModel,
-    getSortedRowModel,
-    useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, } from "lucide-react"
-import { Row } from "@tanstack/react-table"
+import { ChevronDown, } from "lucide-react"
 
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
     DropdownMenuTrigger,
-} from "../../components/ui/dropdown-menu"
-import { Input } from "../../components/ui/input"
+} from "../components/ui/dropdown-menu"
+import { Input } from "../components/ui/input"
 import {
     Table,
     TableBody,
@@ -37,434 +27,59 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "../../components/ui/table"
+} from "../components/ui/table"
 import { Link } from "react-router-dom"
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "../../components/ui/hover-card"
-import { Badge } from "../../components/ui/badge"
-import { ScrollArea, ScrollBar } from "../../components/ui/scroll-area"
-import { Separator } from "../../components/ui/separator"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../../components/ui/select"
-import { useForm, SubmitHandler } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { userSchema } from "../../utils/user"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../../components/ui/form"
-import { useAuthStore } from "../../store/authStore"
-import Loading from "../../components/loading"
+import { ScrollArea, ScrollBar } from "../components/ui/scroll-area"
+import { Separator } from "../components/ui/separator"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../components/ui/select"
+
+import { Form, } from "../components/ui/form"
+import Loading from "../components/loading"
 import { toast } from "sonner"
-import { Checkbox } from "../../components/ui/checkbox"
-import { useLeaderStore } from "../../store/leaderStore"
-import { Student } from "../../utils/interface"
-import { Button } from "../../components/ui/button"
-import { useAllStudents } from "../../store/allStudentStore"
-import { defaultStudentValues } from "../../utils/form/default-values"
+
+import { Student } from "../utils/(student)/student"
+import { Button } from "../components/ui/button"
 
 
-export const columns: ColumnDef<Student>[] = [
-    {
-        accessorKey: "role",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Role
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
-        cell: ({ row }) => (
-            <div className="capitalize font-bold">
-                {<Badge>{row.getValue("role")}</Badge>}
-            </div>
-        ),
-    },
-    {
-        accessorKey: "name",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Name
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
-        cell: ({ row }) => (
-            <div className="capitalize font-bold">
-                {row.getValue("name")}
-            </div>
-        ),
-    },
-    {
-        accessorKey: "age",
-        header: "Age",
-        cell: ({ row }) => (
-            <div className="capitalize font-bold"><Badge variant="outline" className="font-b">{row.getValue("age")}</Badge></div>
-        ),
-    },
-    {
-        accessorKey: "email",
-        header: "Email",
-        cell: ({ row }) => <div className="font-bold">{row.getValue("email")}</div>,
-    },
-    {
-        accessorKey: "studentFbLink",
-        header: "Student FB",
-        cell: ({ row }) => (
-            <div className="capitalize font-bold"><Link target="_blank" to={row.getValue("studentFbLink")}><Button className="text-blue-400 pl-0" variant="link">Facebook</Button></Link></div>
-        ),
-    },
-    {
-        accessorKey: "githubLastUpdate",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    className="pl-0"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Last Update
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
-        cell: ({ row }) => (
-            <div className="capitalize font-bold">{row.getValue("githubLastUpdate")}</div>
-        ),
-    },
-    {
-        accessorKey: "githubLink",
-        header: "Github",
-        cell: ({ row }) => (
-            <div className="capitalize font-bold"><Link target="_blank" to={row.getValue("githubLink")}><Button className="text-blue-400 pl-0" variant="link">github Link</Button></Link></div>
-        ),
-    },
-    {
-        accessorKey: "speed",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    className="pl-0"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Speed
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
-        cell: ({ row }) => (
-            <div className="capitalize "><Badge variant="outline" className="font-bold">{row.getValue("speed")}</Badge></div>
-        ),
-    },
-    {
-        accessorKey: "group",
-        header: ({ column }) => {
-            return (
-                <Button
-                    className="pl-0"
-
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Group
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
-        cell: ({ row }) => (
-            <div className="capitalize font-bold"><Badge className="font-bold" variant="outline">{row.getValue("group")}</Badge></div>
-        ),
-    },
-    {
-        accessorKey: "leaderId",
-        header: "LeaderId",
-        cell: ({ row }) => (
-            <div className="capitalize font-bold"><Link target="_blank" to={row.getValue("leaderId")}><Button className="text-blue-400 pl-0" variant="link">leaderID</Button></Link></div>
-        ),
-    },
-    {
-        accessorKey: "parentFbLink",
-        header: "Parent FB",
-        cell: ({ row }) => (
-            <div className="capitalize font-bold"><Link target="_blank" to={row.getValue("parentFbLink")}><Button className="text-blue-400 pl-0" variant="link">parenLink</Button></Link></div>
-        ),
-    },
-    {
-        accessorKey: "fines",
-        header: () => {
-            return (
-                <Button
-                    variant="ghost"
-                >
-                    Fines
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
-        cell: ({ row }: { row: Row<Student> }) => (
-            <HoverCard>
-                <HoverCardTrigger asChild>
-                    <Button variant="link" >@fines</Button>
-                </HoverCardTrigger>
-                <HoverCardContent className="w-40 duration-100">
-                    <div className="flex justify-between">
-                        <span>githubFine</span><span>{(row.getValue("fines") as Student["fines"]).githubFine}</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span>miniLeaderFine</span><span>{(row.getValue("fines") as Student["fines"]).miniLeaderFine}</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span>miniStudentFine</span><span>{(row.getValue("fines") as Student["fines"]).miniStudentFine}</span>
-                    </div>
-                </HoverCardContent>
-            </HoverCard>
-        ),
-    },
-    {
-        accessorKey: "aura",
-        header: () => {
-            return (
-                <Button
-                    variant="ghost"
-                >
-                    Aura
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
-        cell: ({ row }: { row: Row<Student> }) => (
-            <HoverCard>
-                <HoverCardTrigger asChild>
-                    <Button variant="link" onTouchStart={(event) => event.preventDefault()}>@Aura</Button>
-                </HoverCardTrigger>
-                <HoverCardContent className="w-40 duration-100">
-                    <div className="flex justify-between">
-                        <span>classwork</span><span>{(row.getValue("aura") as Student["aura"]).classwork}</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span>attendance</span><span>{(row.getValue("aura") as Student["aura"]).attendance}</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span>help</span><span>{(row.getValue("aura") as Student["aura"]).help}</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span>camera</span><span>{(row.getValue("aura") as Student["aura"]).camera}</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span>answers</span><span>{(row.getValue("aura") as Student["aura"]).answers}</span>
-                    </div>
-                </HoverCardContent>
-            </HoverCard >
-        ),
-    },
-
-    {
-        accessorKey: "payedInfo",
-        header: "PayedInfo",
-        cell: ({ row }) => (
-            <div className="capitalize font-bold">{row.getValue("payedInfo") ? "True" : "False"}</div>
-        ),
-    },
-]
-
-export function AllStudents() {
-    const [sorting, setSorting] = React.useState<SortingState>(() => {
-        const savedSorting = localStorage.getItem('sortingStudents');
-        return savedSorting ? JSON.parse(savedSorting) : [];
-    });
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(() => {
-        const savedFilters = localStorage.getItem('columnFilterStudents');
-        return savedFilters ? JSON.parse(savedFilters) : [];
-    });
-    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>(() => {
-        const savedVisibility = localStorage.getItem('columnVisibilityStudents');
-        return savedVisibility ? JSON.parse(savedVisibility) : {};
-    });
-    const [rowSelection, setRowSelection] = React.useState(() => {
-        const savedSelection = localStorage.getItem('rowSelection');
-        return savedSelection ? JSON.parse(savedSelection) : {};
-    });
-    const [oneRowSelection, setOneRowSelection] = React.useState(() => {
-        const savedSelection = localStorage.getItem('oneRowSelection');
-        return savedSelection ? JSON.parse(savedSelection) : null;
-    });
-    const [studentInfo, setStudentInfo] = React.useState(false)
-
-    React.useEffect(() => {
-        localStorage.setItem('sortingStudents', JSON.stringify(sorting));
-    }, [sorting]);
-
-    React.useEffect(() => {
-        localStorage.setItem('columnFilterStudents', JSON.stringify(columnFilters));
-    }, [columnFilters]);
-
-    React.useEffect(() => {
-        localStorage.setItem('columnVisibilityStudents', JSON.stringify(columnVisibility));
-    }, [columnVisibility]);
-
-    const { user, isLoading } = useAuthStore()
-    const { getAllStudents, AllStudents } = useAllStudents()
-    const { student, getStudent, updateStudent } = useLeaderStore()
-    const [pageSizeSet, setPageSizeSet] = React.useState(10)
-    const [pagination, setPagination] = React.useState(0)
-
-    React.useEffect(() => {
-        getAllStudents()
-        if (oneRowSelection) {
-            getStudent(oneRowSelection.leaderId, oneRowSelection._id)
-        }
-    }, [oneRowSelection, user?.user?._id, getStudent, getAllStudents])
-    const table = useReactTable({
-        data: AllStudents.sort((a, b) => a.group < b.group ? 1 : -1),
-        columns,
-        onSortingChange: setSorting,
-        onColumnFiltersChange: setColumnFilters,
-        getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-        getFilteredRowModel: getFilteredRowModel(),
-        onColumnVisibilityChange: setColumnVisibility,
-        onRowSelectionChange: setRowSelection,
-        state: {
-            sorting,
-            columnFilters,
-            columnVisibility,
-            rowSelection,
-            pagination: {
-                pageIndex: pagination,
-                pageSize: pageSizeSet,
-            }
-        },
-    });
-    const form = useForm<Student>({
-        resolver: zodResolver(userSchema),
-        defaultValues: defaultStudentValues,
-    });
-
-    React.useEffect(() => {
-        if (student) {
-            form.reset(student);
-        }
-    }, [form, student]);
-    // console.log(AllStudents)
-    const formRender = (typeMain: string, minNum: number, maxNum: number, id: string, label: string, roles: string[], row: string) => {
-        <Separator />
-        if (typeMain === 'number') {
-            return (
-                <FormField
-                    control={form.control}
-                    name={id as keyof Student}
-                    render={({ field, fieldState: { error } }) => (
-                        <FormItem className="grid grid-cols-4 items-center w-full justify-start gap-2">
-                            <FormLabel className="grid-cols-2 capitalize">{label}</FormLabel>
-                            <FormControl>
-                                <Input
-                                    type={typeMain}
-                                    className="col-span-3"
-                                    placeholder={`Enter ${label}`}
-                                    min={minNum}
-                                    max={maxNum}
-                                    {...field}
-                                    value={typeof field.value === 'boolean' || typeof field.value === 'object' ? '' : field.value}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                        const value = e.target.value === '' ? '' : Number(e.target.value);
-                                        const numericValue = Number(value);
-                                        if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= 99) {
-                                            field.onChange(value);
-                                            handleInputChange(oneRowSelection, id, value);
-                                        }
-                                    }}
-                                />
-                            </FormControl>
-                            <FormMessage className="col-span-3">{error?.message}</FormMessage>
-                        </FormItem>
-                    )}
-                />
-            )
-        } else if (typeMain === 'string') {
-            return (
-                <FormField
-                    control={form.control}
-                    name={id as keyof Student}
-                    render={({ field, fieldState: { error } }) => (
-                        <FormItem className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                            <FormLabel className="grid-cols-2">{label}</FormLabel>
-                            <FormControl>
-                                <Input
-                                    className="col-span-3"
-                                    placeholder={`Enter ${label}`}
-                                    {...field}
-                                    value={typeof field.value === 'boolean' || typeof field.value === 'object' ? '' : field.value}
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                        handleInputChange(oneRowSelection, id, e.target.value);
-                                    }}
-                                />
-                            </FormControl>
-                            <FormMessage className="col-span-3">{error?.message}</FormMessage>
-                        </FormItem>
-                    )}
-                />
-            )
-        } else if (typeMain === 'role') {
-            return (
-                <FormField
-                    control={form.control}
-                    name={id as keyof Student}
-                    render={({ fieldState: { error } }) => (
-                        <FormItem className="grid grid-cols-4 items-center w-full justify-start gap-2">
-                            <FormLabel className="grid-cols-2">Role</FormLabel>
-                            <FormField
-                                control={form.control}
-                                name={id as keyof Student}
-                                render={({ field, fieldState: { error } }) => (
-                                    <FormItem className="col-span-3">
-                                        <Select onValueChange={field.onChange} defaultValue={typeof field.value === 'string' ? field.value : undefined}>
-                                            <SelectTrigger >
-                                                <SelectValue placeholder="Select a fruit" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectGroup>
-                                                    {roles.map((role, index) => (
-                                                        <SelectItem key={index} value={role}>
-                                                            {role}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectGroup>
-                                            </SelectContent>
-                                        </Select>
-                                        <FormMessage className="col-span-3">{error?.message}</FormMessage>
-                                    </FormItem>
-                                )}
-                            />
-                        </FormItem>
-                    )}
-                />
-            )
-        }
-    }
-    const handleInputChange = (row: any, field: string, value: string | number) => {
-        if (row && row.original) {
-            row.original[field] = value;
-            setRowSelection({ ...rowSelection });
-        }
-    }
-    const onSubmit: SubmitHandler<Student> = (data) => {
-        setOneRowSelection((prev: Student) => ({ ...prev, leaderId: data.leaderId }));
-        updateStudent(student.leaderId, student._id, data);
-        console.log("sss")
-        if (!isLoading) {
-            setStudentInfo(false);
-        }
-    };
+export default function DataTable({
+    title,
+    table,
+    setOneRowSelection,
+    studentInfo,
+    setStudentInfo,
+    isLoading,
+    form,
+    onSubmit,
+    user,
+    formRender,
+    student,
+    pageSizeSet,
+    pagination,
+    setPagination,
+    paginationAllStudents,
+    setPageSizeSet,
+}: {
+    title: string,
+    table: any,
+    setOneRowSelection: any,
+    studentInfo: any,
+    setStudentInfo: any,
+    isLoading: any,
+    form: any,
+    onSubmit: any,
+    user: any,
+    formRender: any,
+    student: Student,
+    pageSizeSet: any,
+    pagination: any,
+    setPagination: any,
+    setPageSizeSet: any,
+    paginationAllStudents: any,
+}) 
+{
     return (
-        <>
-            <div
-                className={`bg-[var(--background)] grid auto-rows-min overflow-hidden gap-4 grid-cols-1 px-2`}>
+        <div className={`bg-[var(--background)] grid auto-rows-min overflow-hidden gap-4 grid-cols-1 px-2`}>
+            <div>
                 <div className="flex items-center py-4">
                     <Input
                         placeholder="Student name..."
@@ -483,13 +98,13 @@ export function AllStudents() {
                         <DropdownMenuContent align="end">
                             {table
                                 .getAllColumns()
-                                .filter((column) => column.getCanHide())
-                                .map((column) => {
+                                .filter((column: { getCanHide: () => any }) => column.getCanHide())
+                                .map((column: { id: boolean | React.Key | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined; getIsVisible: () => string | boolean | undefined; toggleVisibility: (arg0: boolean) => void }) => {
                                     return (
                                         <DropdownMenuCheckboxItem
-                                            key={column.id}
+                                            key={String(column.id)}
                                             className="capitalize text-center"
-                                            checked={column.getIsVisible()}
+                                            checked={!!column.getIsVisible()}
                                             onCheckedChange={(value) =>
                                                 column.toggleVisibility(!!value)
                                             }
@@ -501,11 +116,13 @@ export function AllStudents() {
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
-                <ScrollArea >
+                <span className="font-bold text-xl"> {title}</span>
+
+                <ScrollArea className="mt-2">
                     <div className="rounded-md border">
                         <Table>
                             <TableHeader>
-                                {table.getHeaderGroups().map((headerGroup) => (
+                                {table.getHeaderGroups().map((headerGroup: { id: React.Key | null | undefined; headers: any[] }) => (
                                     <TableRow key={headerGroup.id}>
                                         {headerGroup.headers.map((header) => {
                                             return (
@@ -524,7 +141,7 @@ export function AllStudents() {
                             </TableHeader>
                             <TableBody >
                                 {table.getRowModel().rows?.length ? (
-                                    table.getRowModel().rows.map((row) => (
+                                    table.getRowModel().rows.map((row: { id: React.Key | null | undefined; original: any; getIsSelected: () => any; getVisibleCells: () => any[] }) => (
 
                                         <Sheet key={row.id}>
                                             <SheetTrigger asChild onClick={() => { setOneRowSelection(row.original) }}>
@@ -543,7 +160,7 @@ export function AllStudents() {
                                             </SheetTrigger>
                                             <SheetContent>
                                                 <SheetHeader className="shadow-sm pb-2">
-                                                    <SheetTitle><span >{studentInfo ? "Edit Student" : "Info Student"}</span> <span className="text-black/50">{student.name}</span></SheetTitle>
+                                                    <SheetTitle><span >{studentInfo ? "Edit Student" : "Info Student"}</span> <span className="dark:text-green-500 text-green-400">{student.name}</span></SheetTitle>
                                                     <SheetDescription className="flex items-center justify-between">
                                                         <span>{studentInfo ? "Make changes to your profile here. Click save when you're done." : "Get Student information here."}</span>
                                                         <Button
@@ -556,13 +173,13 @@ export function AllStudents() {
                                                         {(studentInfo && !isLoading) ? (<Form {...form}>
                                                             <form onSubmit={form.handleSubmit(onSubmit)}>
                                                                 <div className="grid gap-4 py-4">
-                                                                    <p className="font-bold leading-[5px] text-slate-400">leader edit</p>
                                                                     {/* // ? leader id */}
 
                                                                     {
                                                                         (user?.user?.role.includes("leaderController") ||
                                                                             (user?.user?.role.includes("admin"))) && (
                                                                             <>
+                                                                                <p className="font-bold leading-[5px] text-slate-400">leader edit</p>
                                                                                 {formRender('string', 0, 0, 'leaderId', 'Leader ID', [], '')}
                                                                                 <Separator />
                                                                             </>
@@ -587,7 +204,7 @@ export function AllStudents() {
                                                                             {formRender('string', 0, 0, 'email', 'Email', [], '')}
                                                                             <Separator />
                                                                             {/* // ? github */}
-                                                                            {formRender('string', 0, 0, 'github', 'Github', [], '')}
+                                                                            {formRender('string', 0, 0, 'githubLink', 'Github', [], '')}
                                                                             <Separator />
                                                                             {/* // ? parent facebook link */}
                                                                             {formRender('string', 0, 0, 'parentFbLink', 'Parent Facebook', [], '')}
@@ -604,6 +221,7 @@ export function AllStudents() {
                                                                         (
                                                                             user?.user?.role.includes("leaderController") ||
                                                                             user?.user?.role.includes("mentorAssistant") ||
+                                                                            user?.user?.role.includes("mentor") ||
                                                                             user?.user?.role.includes("admin")) && (
                                                                             <>
                                                                                 {formRender('number', 0, 4, 'speed', 'Speed', [], '')}
@@ -614,7 +232,7 @@ export function AllStudents() {
 
                                                                     {/* // ? role */}
 
-                                                                    {(!user?.user?.role?.includes("miniLeader") || (user?.user?.role?.includes("leader"))) && (
+                                                                    {user?.user?._id == student?.leaderId && (
                                                                         <>
                                                                             {formRender('role', 0, 0, 'role', 'Role', ['student', 'miniLeader'], "")}
                                                                             <Separator />
@@ -629,35 +247,34 @@ export function AllStudents() {
                                                                             user?.user?.role.includes("admin")) && (
                                                                             <>
                                                                                 {formRender('number', 0, 99, 'group', 'Group', [], '')}
-                                                                                <Separator />
                                                                             </>
                                                                         )
                                                                     }
 
-                                                                    <p className="capitalize font-bold leading-[1px] text-md text-slate-400">Fines</p>
                                                                     {/* // ? github fine */}
                                                                     {(user?.user?.role.includes("githubController") ||
                                                                         (user?.user?.role.includes("miniLeaderController")) ||
                                                                         (user?.user?.role.includes("miniMentorController")) ||
                                                                         (user?.user?.role.includes("admin"))) && (
                                                                             <>
+                                                                                <p className="capitalize font-bold leading-[1px] text-md text-slate-400">Fines</p>
+
                                                                                 {formRender('number', 0, 99, 'fines.githubFine', 'Github Fine', [], '')}
                                                                                 <Separator />
                                                                                 {/* // ? mini leader fine */}
                                                                                 {formRender('number', 0, 99, 'fines.miniLeaderFine', 'Mini Leader Fine', [], '')}
                                                                                 <Separator />
                                                                                 {/* // ? mini student fine */}
-                                                                                "xlsx": "^0.18.5"
                                                                                 {formRender('number', 0, 99, 'fines.miniStudentFine', 'Mini Student Fine', [], '')}
                                                                             </>
                                                                         )}
-                                                                    <Separator />
-                                                                    <p className="capitalize font-bold leading-[5px] text-slate-400">Mentor Section</p>
+
                                                                     {(
                                                                         user?.user?.role.includes("admin") ||
-                                                                        user?.user?.role.includes("mentorAssistant") ||
                                                                         user?.user?.role.includes("mentor")) && (
                                                                             <>
+                                                                                <Separator />
+                                                                                <p className="capitalize font-bold leading-[5px] text-slate-400">Mentor Section</p>
                                                                                 {/* // ? aura classwork */}
                                                                                 {formRender('number', 0, 999999, 'aura.classwork', 'Classwork', [], '')}
                                                                                 <Separator />
@@ -676,13 +293,16 @@ export function AllStudents() {
                                                                                 {formRender('boolean', 0, 0, 'payedInfo', 'Payed Info', [], '')}
                                                                                 {/* // ? leader comment */}
                                                                             </>)}
-                                                                    <Separator />
-                                                                    <p className="capitalize font-bold leading-[5px] text-slate-400">Leader Comment</p>
-                                                                    {(user?.user?.role.includes("admin") ||
+
+                                                                    {formRender('string', 0, 0, 'comment.miniLeaderComment', 'Mini Leader Comment', [], '')}
+                                                                    {(
+                                                                        user?.user?.role.includes("admin") ||
                                                                         (user?.user?.role.includes("leader") && (student.leaderId == user?.user?._id)) ||
                                                                         user?.user?.role.includes("admin")
                                                                     ) && (
                                                                             <>
+                                                                                <Separator />
+                                                                                <p className="capitalize font-bold leading-[5px] text-slate-400">Leader Comment</p>
                                                                                 {formRender('string', 0, 0, 'comment.leaderComment', 'Leader Comment', [], '')}
                                                                                 <Separator />
                                                                                 {/* // ? leader proof */}
@@ -690,8 +310,7 @@ export function AllStudents() {
                                                                                 {/* // ? mini leader controller */}
                                                                             </>
                                                                         )}
-                                                                    <Separator />
-                                                                    <p className="capitalize font-bold leading-[5px] text-slate-400">Control comment</p>
+
                                                                     {(
                                                                         user?.user?.role.includes("miniLeaderController") ||
                                                                         user?.user?.role.includes("githubController") ||
@@ -699,6 +318,8 @@ export function AllStudents() {
                                                                     ) &&
                                                                         (
                                                                             <>
+                                                                                <Separator />
+                                                                                <p className="capitalize font-bold leading-[5px] text-slate-400">Control comment</p>
                                                                                 {formRender('string', 0, 0, 'comment.controller.miniLeaderController', 'Mini Leader Controller', [], '')}
                                                                                 <Separator />
                                                                                 {/* // ? leader controller */}
@@ -712,8 +333,8 @@ export function AllStudents() {
                                                                             toast("Student has been updated", {
                                                                                 description: `${student.updatedAt}`,
                                                                                 action: {
-                                                                                    label: "Undo",
-                                                                                    onClick: () => console.log("Undo"),
+                                                                                    label: "Close",
+                                                                                    onClick: () => console.log("Close"),
                                                                                 }
                                                                             })}
 
@@ -853,27 +474,27 @@ export function AllStudents() {
 
                                                                         <p className="font-bold leading-[5px] text-slate-400 capitalize"><b>Comments</b></p>
                                                                         <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                                                            <span className="col-span-2 font-bold">Leader Comment</span>
-                                                                            <span className="col-start-3 font-bold">{student?.comment?.leaderComment}</span>
+                                                                            <span className="col-span-2 font-bold ">Mini Leader Comment</span>
+                                                                            <span className="col-span-3 text-black/60">{student?.comment?.miniLeaderComment}</span>
                                                                         </div>
                                                                         <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                                                            <span className="col-span-2 font-bold">Mini Leader Comment</span>
-                                                                            <span className="col-start-3 font-bold">{student?.comment?.miniLeaderComment}</span>
-                                                                        </div>
-                                                                        <Separator />
-                                                                        <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                                                            <span className="col-span-2 font-bold">Leader Poof</span>
-                                                                            <Link className="col-start-3 font-bold" to={student?.comment?.leaderProof} target="_blank"><Button variant={"link"} className="m-0 p-0 text-blue-500 pl-0">Proof</Button></Link>
+                                                                            <span className="col-span-2 font-bold ">Leader Comment</span>
+                                                                            <span className="col-span-3 text-black/60">{student?.comment?.leaderComment}</span>
                                                                         </div>
                                                                         <Separator />
                                                                         <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                                                            <span className="col-span-2 font-bold">Mini Leader Controller</span>
-                                                                            <span className="col-start-3 font-bold" >{student?.comment?.controller.miniLeaderController}</span>
+                                                                            <span className="col-span-2 font-bold ">Leader Poof</span>
+                                                                            <Link className="col-span-3 text-black/60" to={student?.comment?.leaderProof} target="_blank"><Button variant={"link"} className="m-0 p-0 text-blue-500 pl-0">Proof</Button></Link>
                                                                         </div>
                                                                         <Separator />
                                                                         <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                                                                            <span className="col-span-2 font-bold">Github Controller</span>
-                                                                            <span className="col-start-3 font-bold" >{student?.comment?.controller.githubController}</span>
+                                                                            <span className="col-span-2 font-bold ">Mini Leader Controller</span>
+                                                                            <span className="col-span-3 text-black/60" >{student?.comment?.controller.miniLeaderController}</span>
+                                                                        </div>
+                                                                        <Separator />
+                                                                        <div className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                                                            <span className="col-span-2 font-bold ">Github Controller</span>
+                                                                            <span className="col-span-3 text-black/60" >{student?.comment?.controller.githubController}</span>
                                                                         </div>
                                                                         <Separator />
                                                                     </div>
@@ -898,47 +519,48 @@ export function AllStudents() {
 
                     <ScrollBar orientation="horizontal" />
                 </ScrollArea >
-                <div className="flex space-x-2 py-4">
-                    <div className="flex-1 text-sm text-muted-foreground">
-                        {table.getFilteredSelectedRowModel().rows.length} of{" "}
-                        {table.getFilteredRowModel().rows.length} row(s) selected.
+            </div>
+            <p></p>
+            <div className="flex space-x-2 py-4">
+                <div className="flex-1 text-sm text-muted-foreground">
+                    {table.getFilteredSelectedRowModel().rows.length} of{" "}
+                    {table.getFilteredRowModel().rows.length} row(s) selected.
+                </div>
+                <div className="flex gap-2">
+                    <div className="space-x-10">
+                        <Select value={pageSizeSet.toString()} onValueChange={(value) => setPageSizeSet(Number(value))}>
+                            <SelectTrigger>{pageSizeSet}</SelectTrigger>
+                            <SelectContent >
+                                <SelectGroup>
+                                    <SelectLabel>Rows per page</SelectLabel>
+                                    <SelectItem value="10">10</SelectItem>
+                                    <SelectItem value="20">20</SelectItem>
+                                    <SelectItem value="30">30</SelectItem>
+                                    <SelectItem value="9999">all</SelectItem>
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
                     </div>
                     <div className="flex gap-2">
-                        <div className="space-x-10">
-                            <Select value={pageSizeSet.toString()} onValueChange={(value) => setPageSizeSet(Number(value))}>
-                                <SelectTrigger>{pageSizeSet}</SelectTrigger>
-                                <SelectContent >
-                                    <SelectGroup>
-                                        <SelectLabel>Rows per page</SelectLabel>
-                                        <SelectItem value="10">10</SelectItem>
-                                        <SelectItem value="20">20</SelectItem>
-                                        <SelectItem value="30">30</SelectItem>
-                                        <SelectItem value="9999">all</SelectItem>
-                                    </SelectGroup>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                        <div className="flex gap-2">
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => setPagination(pagination - 1)}
-                                disabled={pagination === 0}
-                            >
-                                Previous
-                            </Button>
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => setPagination(pagination + 1)}
-                                disabled={pagination === Math.ceil(AllStudents.length / pageSizeSet) - 1}
-                            >
-                                Next
-                            </Button>
-                        </div>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setPagination(pagination - 1)}
+                            disabled={pagination === 0}
+                        >
+                            Previous
+                        </Button>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setPagination(pagination + 1)}
+                            disabled={pagination === Math.ceil(paginationAllStudents.length / pageSizeSet) - 1}
+                        >
+                            Next
+                        </Button>
                     </div>
                 </div>
-            </div >
-        </>
-    );
+            </div>
+        </div>
+    )
 }

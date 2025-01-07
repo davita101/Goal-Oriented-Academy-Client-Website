@@ -19,7 +19,7 @@ import ToggleDarkMode from "./components/ui/togle-dark-mode";
 
 import { Route, Routes, useNavigate } from "react-router-dom";
 import NotFound from "./page/NotFound";
-import { RedirectAuthenticatedUser } from "./utils/protected-routes";
+import { RedirectAuthenticatedUser } from "./utils/(route)/protected-routes";
 import Login from "./page/Login";
 import { useAuthStore } from "./store/authStore";
 import DashboardRoutes from "./routes/dashboard-routes";
