@@ -41,7 +41,7 @@ import {
 import { Link, useParams } from "react-router-dom"
 import { ScrollArea, ScrollBar } from "../../components/ui/scroll-area"
 import { Separator } from "../../components/ui/separator"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../../components/ui/select"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../../components/ui/form"
@@ -204,6 +204,8 @@ export function MentorGroup() {
         return savedSelection ? JSON.parse(savedSelection) : null;
     });
     const [studentInfo, setStudentInfo] = React.useState(true)
+    const [pageSizeSet, setPageSizeSet] = React.useState(10)
+    const [pagination, setPagination] = React.useState(0)
 
     React.useEffect(() => {
         localStorage.setItem('sorting', JSON.stringify(sorting));
@@ -221,7 +223,7 @@ export function MentorGroup() {
     const { student, getStudent, updateStudent, getLeaderStudents, leaderStudents } = useLeaderStore()
     const { getGroup, group } = useMentorStore()
     const { groupId } = useParams()
-    
+
     React.useEffect(() => {
         getGroup(groupId as string)
         if (oneRowSelection) {
@@ -245,6 +247,10 @@ export function MentorGroup() {
             columnFilters,
             columnVisibility,
             rowSelection,
+            pagination: {
+                pageIndex: pagination,
+                pageSize: pageSizeSet,
+            }
         },
     });
     const form = useForm<Student>({
@@ -742,28 +748,44 @@ export function MentorGroup() {
 
                     <ScrollBar orientation="horizontal" />
                 </ScrollArea >
-                <div className=" flex items-center justify-end space-x-2 py-4">
+                <div className="flex space-x-2 py-4">
                     <div className="flex-1 text-sm text-muted-foreground">
                         {table.getFilteredSelectedRowModel().rows.length} of{" "}
                         {table.getFilteredRowModel().rows.length} row(s) selected.
                     </div>
-                    <div className="space-x-2">
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => table.previousPage()}
-                            disabled={!table.getCanPreviousPage()}
-                        >
-                            Previous
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => table.nextPage()}
-                            disabled={!table.getCanNextPage()}
-                        >
-                            Next
-                        </Button>
+                    <div className="flex gap-2">
+                        <div className="space-x-10">
+                            <Select value={pageSizeSet.toString()} onValueChange={(value) => setPageSizeSet(Number(value))}>
+                                <SelectTrigger>{pageSizeSet}</SelectTrigger>
+                                <SelectContent >
+                                    <SelectGroup>
+                                        <SelectLabel>Rows per page</SelectLabel>
+                                        <SelectItem value="10">10</SelectItem>
+                                        <SelectItem value="20">20</SelectItem>
+                                        <SelectItem value="30">30</SelectItem>
+                                        <SelectItem value="9999">all</SelectItem>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="flex gap-2">
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setPagination(pagination - 1)}
+                                disabled={pagination === 0}
+                            >
+                                Previous
+                            </Button>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setPagination(pagination + 1)}
+                                disabled={pagination === Math.ceil(group.length / pageSizeSet) - 1}
+                            >
+                                Next
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </div >
