@@ -48,5 +48,3 @@ VITE_API_URL= http://localhost:5000
 GOOGLE_APPLICATION_CREDENTIALS = ./secret.json
 SHEET_ID = 4444444444444444444444444444  
 ```
-
-what can i add to this ??

@@ -637,7 +637,7 @@ export function Default() {
                                         {formRender('string', 0, 0, 'email', 'Email', [], '')}
                                         <Separator />
                                         {/* // ? github */}
-                                        {formRender('string', 0, 0, 'github', 'Github', [], '')}
+                                        {formRender('string', 0, 0, 'githubLink', 'Github', [], '')}
                                         <Separator />
                                         {/* // ? parent facebook link */}
                                         {formRender('string', 0, 0, 'parentFbLink', 'Parent Facebook', [], '')}

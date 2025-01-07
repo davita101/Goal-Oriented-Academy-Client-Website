@@ -52,11 +52,11 @@ export function NavigationMenuNotification() {
   return (
     <NavigationMenu>
       <NavigationMenuList>
-        <NavigationMenuItem className="ml-[10.5rem]">
+        <NavigationMenuItem   >
           <NavigationMenuTrigger>Notification</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ScrollArea className="h-72 rounded-md border">
-              <ul className="grid w-[300px] gap-3 p-4 md:w-[300px] md:grid-cols-1 lg:w-[300px] z-[999] ">
+              <ul className="grid w-[120px] gap-3 md:grid-cols-1 z-[999] ">
                 {components.map((component) => (
                   <ListItem
                     key={component.title}

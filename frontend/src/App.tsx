@@ -88,7 +88,7 @@ export default function AppRoutes() {
                   <BreadcrumbItem className="hidden md:block">
                     <BreadcrumbLink href={`/dashboard`}>{t("home")}</BreadcrumbLink>
                   </BreadcrumbItem>
-                  {isLogin&&(
+                  {isLogin && (
                     <>
                       <BreadcrumbSeparator className="hidden md:block" />
                       {path.includes(`/dashboard`) && BreadRender("dashboard")}
@@ -101,12 +101,12 @@ export default function AppRoutes() {
                 </BreadcrumbList>
               </div>
               <div className="flex gap-2">
-                {isLogin && (
-                  <>
+                {user?.success && (
+                  <div className="flex gap-4">
                     <LanguageSwitcher />
 
                     <NavigationMenuNotification />
-                  </>
+                  </div>
                 )}
                 <ToggleDarkMode />
               </div>

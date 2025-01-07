@@ -37,7 +37,7 @@ const useAuthStore = create<AuthState>((set) => ({
   },
 
   login: async (email: string) => {
-    set({ isLoading: true });
+    set({ isLoading: true, isLogin: false });
     try {
       console.log('Attempting to log in with email:', email);
       const response = await axios.post(`${API_URL}/api/auth/login`, { email }, {
