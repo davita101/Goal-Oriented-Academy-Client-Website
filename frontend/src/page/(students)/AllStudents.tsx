@@ -465,8 +465,11 @@ export function AllStudents() {
     return (
         <>
             <DataTable
-                title={`All Students`}
+                title={`all students`}
                 table={table}
+                oneRowSelection={oneRowSelection}
+                setRowSelection={setRowSelection}
+                rowSelection={rowSelection}
                 setOneRowSelection={setOneRowSelection}
                 studentInfo={studentInfo}
                 setStudentInfo={setStudentInfo}
@@ -474,7 +477,6 @@ export function AllStudents() {
                 form={form}
                 onSubmit={onSubmit}
                 user={user}
-                formRender={formRender}
                 student={student}
                 pageSizeSet={pageSizeSet}
                 pagination={pagination}

@@ -127,7 +127,37 @@ export const login = [
       }
 
       const now = Date.now()
+      // * development mode
+      if (process.env.NODE_ENV === 'development') {
 
+        // Update last login and generate a new clientId
+        user.lastLogin = now
+        const clientId = generateVerificationToken() // Replace with a better clientId generation method if needed
+        user.clientId = clientId
+        user.isVerified = true
+        await user.save()
+
+        // Set cookies and respond with success
+        res.cookie('clientId', clientId, {
+          httpOnly: true,
+          maxAge: TIME_PER_LOGIN
+        })
+        generateTokenAndSetCookie(res, user._id)
+        res.cookie('goa_auth_is_verified', user.isVerified, {
+          httpOnly: true,
+          maxAge: ONE_HOUR
+        })
+        res.status(200).json({
+          success: true,
+          message: 'Login successful',
+          user: {
+            ...user._doc
+          }
+        })
+        console.log('User login successful')
+
+        return
+      }
       // Check if last login was more than 7 days ago
       if (user.lastLogin && now - user.lastLogin.getTime() > TIME_PER_LOGIN) {
         user.lastLogin = undefined
@@ -166,7 +196,6 @@ export const login = [
         )
         return
       }
-
       // Update last login and generate a new clientId
       user.lastLogin = now
       const clientId = generateVerificationToken() // Replace with a better clientId generation method if needed

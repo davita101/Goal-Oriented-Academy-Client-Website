@@ -24,6 +24,8 @@
   "github": "Github",
   "parent_facebook": "მშობლის Facebook",
   "student_facebook": "სტუდენტის Facebook",
+  "student":"სტუდენტი",
+  "student name":"სტუდენტის სახელი",
   "finally": "საბოლოოდ",
   "github_fine": "Github ჯარიმა",
   "mini_leader_fine": "მინი ლიდერის ჯარიმა",
@@ -35,21 +37,20 @@
   "leader_proof": "ლიდერის მტკიცებულება",
   "mini_leader_controller": "მინი ლიდერის კონტროლერი",
   "github_controller": "Github კონტროლერი",
-
   "Not Found": "ვერ მოიძებნა",
-
   "aura": "აურა",
-
   "leader": "ლიდერი",
   "mentor": "მენტორი",
+  "groups": "ჯგუფები",
   "admin": "ჩადი",
   "mentorAssistant": "მენტორის დამხმარე",
   "cards": "ბარათები",
-
   "squad member":"რაზმელი",
+  "squad":"რაზმი",
+  "all":"ყველა",
+  "students":"სტუდენტი",
   "member":"წევრი",
   "mini": "მინი",
-
   "salary:":"ხელფასი",
   "log out":"გასვლა"
 }

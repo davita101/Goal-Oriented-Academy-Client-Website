@@ -18,7 +18,7 @@ const useAuthStore = create<AuthState>((set) => ({
     set({ isLoading: true });
     try {
       const token = localStorage.getItem('authToken'); // Assuming the token is stored in localStorage
-      const response = await axios.get(`${API_URL}/api/auth/check-auth`, {
+      const response = await axios.get(`${API_URL}/auth/check-auth`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
@@ -41,7 +41,7 @@ const useAuthStore = create<AuthState>((set) => ({
     set({ isLoading: true, isLogin: false });
     try {
       console.log('Attempting to log in with email:', email);
-      const response = await axios.post(`${API_URL}/api/auth/login`, { email }, {
+      const response = await axios.post(`${API_URL}/auth/login`, { email }, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -63,7 +63,7 @@ const useAuthStore = create<AuthState>((set) => ({
     localStorage.setItem('authLogin', "false")
     try {
       const token = localStorage.getItem('authToken'); // Assuming the token is stored in localStorage
-      const response = await axios.post(`${API_URL}/api/auth/logout`, { email }, {
+      const response = await axios.post(`${API_URL}/auth/logout`, { email }, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,

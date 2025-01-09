@@ -80,15 +80,15 @@ export default function AppRoutes() {
 
         <SidebarInset>
           {(<header className="sticky top-0 left-0 flex shrink-0 items-center gap-2 border-b bg-background p-4 z-[2]">
-            <SidebarTrigger className="-ml-1" />
+            {user?.success && (<SidebarTrigger className="-ml-1" />)}
             <Separator orientation="vertical" className="mr-2 h-4" />
             <Breadcrumb className="flex-1 flex justify-between items-center">
               <div>
-                <BreadcrumbList>
-                  <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbLink href={`/dashboard`}>{t("home")}</BreadcrumbLink>
-                  </BreadcrumbItem>
-                  {isLogin && (
+                {user?.success &&(
+                  <BreadcrumbList>
+                    <BreadcrumbItem className="hidden md:block">
+                      <BreadcrumbLink href={`/dashboard`}>{t("home")}</BreadcrumbLink>
+                    </BreadcrumbItem>
                     <>
                       <BreadcrumbSeparator className="hidden md:block" />
                       {path.includes(`/dashboard`) && BreadRender("dashboard")}
@@ -97,8 +97,8 @@ export default function AppRoutes() {
                       {path.includes(`/controls`) && BreadRender("controls")}
                       {path.includes(`/mentor`) && BreadRender("mentor/group")}
                     </>
-                  )}
-                </BreadcrumbList>
+                  </BreadcrumbList>
+                )}
               </div>
               <div className="flex gap-2">
                 {user?.success && (

@@ -54,6 +54,8 @@ import { useMentorStore } from "../../store/mentorStore"
 import { Student } from "../../utils/(student)/student"
 import { userSchema } from "../../utils/(student)/form"
 import DataTable from "../../hooks/use-data-table"
+import { t } from "i18next"
+import { BreadcrumbSeparator } from "../../components/ui/breadcrumb"
 
 
 export const columns: ColumnDef<Student>[] = [
@@ -66,7 +68,7 @@ export const columns: ColumnDef<Student>[] = [
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    Name
+                    {t("name")}
                     <ArrowUpDown />
                 </Button>
             )
@@ -86,7 +88,7 @@ export const columns: ColumnDef<Student>[] = [
                     className="m-0 p-0"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    Points
+                    {t("aura")}
                     <ArrowUpDown />
                 </Button>
             )
@@ -103,7 +105,8 @@ export const columns: ColumnDef<Student>[] = [
         ),
     },
     {
-        header: "Classwork",
+        accessorKey: "classwork",
+        header: () => t("classwork"),
         cell: ({ row }) => (
             <div key={(row.getValue("aura") as Student["aura"]).classwork} className="capitalize font-bold">
                 {(row.getValue("aura") as { classwork: number }).classwork}
@@ -111,7 +114,8 @@ export const columns: ColumnDef<Student>[] = [
         ),
     },
     {
-        header: "Answers",
+        accessorKey: "answers",
+        header: () => t("answers"),
         cell: ({ row }) => (
             <div key={(row.getValue("aura") as Student["aura"]).answers} className="capitalize font-bold">
                 {(row.getValue("aura") as Student["aura"]).answers}
@@ -119,7 +123,8 @@ export const columns: ColumnDef<Student>[] = [
         ),
     },
     {
-        header: "Attendance",
+        accessorKey: "attendance",
+        header: () => t("attendance"),
         cell: ({ row }) => (
             <div key={(row.getValue("aura") as Student["aura"]).attendance} className="capitalize font-bold">
                 {(row.getValue("aura") as Student["aura"]).attendance}
@@ -127,7 +132,8 @@ export const columns: ColumnDef<Student>[] = [
         ),
     },
     {
-        header: "Camera",
+        accessorKey: "camera",
+        header: () => t("camera"),
         cell: ({ row }) => (
             <div key={(row.getValue("aura") as Student["aura"]).camera} className="capitalize font-bold">
                 {(row.getValue("aura") as Student["aura"]).camera}
@@ -135,49 +141,11 @@ export const columns: ColumnDef<Student>[] = [
         ),
     },
     {
-        header: "Help",
+        accessorKey: "help",
+        header:() => t("help"),
         cell: ({ row }) => (
             <div key={(row.getValue("aura") as Student["aura"]).help} className="capitalize font-bold">
                 {(row.getValue("aura") as Student["aura"]).help}
-            </div>
-        ),
-    },
-    {
-        accessorKey: "speed",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Speed
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
-        cell: ({ row }) => (
-
-            <div className="capitalize font-bold">
-                {row.getValue("speed") as Student["speed"]}
-            </div>
-        ),
-    },
-    {
-        accessorKey: "group",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    group
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
-        cell: ({ row }) => (
-            <div className="capitalize font-bold">
-                {row.getValue("group") as Student["group"]}
             </div>
         ),
     },
@@ -307,110 +275,7 @@ export function MentorGroup() {
             });
         }
     }, [form, student]);
-    const formRender = (typeMain: string, minNum: number, maxNum: number, id: string, label: string, roles: string[], row: string) => {
-        <Separator />
 
-        if (typeMain === 'number') {
-            return (
-                <FormField
-                    control={form.control}
-                    name={id as keyof Student}
-                    render={({ field, fieldState: { error } }) => (
-                        <FormItem className="grid grid-cols-4 items-center w-full justify-start gap-2">
-                            <FormLabel className="grid-cols-2 capitalize">{label}</FormLabel>
-                            <FormControl>
-                                <Input
-                                    type={typeMain}
-                                    className="col-span-3"
-                                    placeholder={`Enter ${label}`}
-                                    min={minNum}
-                                    max={maxNum}
-                                    {...field}
-                                    value={typeof field.value === 'boolean' || typeof field.value === 'object' ? '' : field.value}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                        const value = e.target.value === '' ? '' : Number(e.target.value);
-                                        const numericValue = Number(value);
-                                        if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= maxNum) {
-                                            field.onChange(value);
-                                            handleInputChange(oneRowSelection, id, value);
-                                        }
-                                    }}
-                                />
-                            </FormControl>
-                            <FormMessage className="col-span-3">{error?.message}</FormMessage>
-                        </FormItem>
-                    )}
-                />
-            )
-        } else if (typeMain === 'string') {
-            return (
-                <FormField
-                    control={form.control}
-                    name={id as keyof Student}
-
-                    render={({ field, fieldState: { error } }) => (
-                        <FormItem className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                            <FormLabel className="grid-cols-2">{label}</FormLabel>
-                            <FormControl>
-                                <Input
-                                    className="col-span-3"
-                                    placeholder={`Enter ${label}`}
-                                    {...field}
-                                    value={typeof field.value === 'boolean' || typeof field.value === 'object' ? '' : field.value}
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                        handleInputChange(oneRowSelection, id, e.target.value);
-                                    }}
-                                />
-                            </FormControl>
-                            <FormMessage className="col-span-3">{error?.message}</FormMessage>
-                        </FormItem>
-                    )}
-                />
-            )
-        } else if (typeMain === 'role') {
-            return (
-                <FormField
-                    control={form.control}
-                    name={id as keyof Student}
-                    render={({ fieldState: { error } }) => (
-                        <FormItem className="grid grid-cols-4 items-center w-full justify-start gap-2">
-                            <FormLabel className="grid-cols-2">Role</FormLabel>
-                            <FormField
-                                control={form.control}
-                                name={id as keyof Student}
-                                render={({ field, fieldState: { error } }) => (
-                                    <FormItem className="col-span-3">
-                                        <Select onValueChange={field.onChange} defaultValue={typeof field.value === 'string' ? field.value : undefined}>
-                                            <SelectTrigger >
-                                                <SelectValue placeholder="Select a fruit" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectGroup>
-                                                    {roles.map((role, index) => (
-                                                        <SelectItem key={index} value={role}>
-                                                            {role}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectGroup>
-                                            </SelectContent>
-                                        </Select>
-                                        <FormMessage className="col-span-3">{error?.message}</FormMessage>
-                                    </FormItem>
-                                )}
-                            />
-                        </FormItem>
-                    )}
-                />
-            )
-        }
-    }
-    const handleInputChange = (row: any, field: string, value: string | number) => {
-        if (row && row.original) {
-            row.original[field] = value;
-            setRowSelection({ ...rowSelection });
-        }
-    }
     const onSubmit: SubmitHandler<Student> = (data) => {
         data.aura.points = (data.aura.answers || 0) + (data.aura.attendance || 0) + (data.aura.camera || 0) + (data.aura.classwork || 0) + (data.aura.help || 0);
         setOneRowSelection((prev: Student) => ({ ...prev, leaderId: data.leaderId }));
@@ -422,8 +287,11 @@ export function MentorGroup() {
     return (
         <>
             <DataTable
-                title={`Mentor Group ${groupId}`}
+                title={`${t("groups")} ${t("mentor")} ${t("group")} ${groupId}`}
                 table={table}
+                oneRowSelection={oneRowSelection}
+                setRowSelection={setRowSelection}
+                rowSelection={rowSelection}
                 setOneRowSelection={setOneRowSelection}
                 studentInfo={studentInfo}
                 setStudentInfo={setStudentInfo}
@@ -431,7 +299,6 @@ export function MentorGroup() {
                 form={form}
                 onSubmit={onSubmit}
                 user={user}
-                formRender={formRender}
                 student={student}
                 pageSizeSet={pageSizeSet}
                 pagination={pagination}

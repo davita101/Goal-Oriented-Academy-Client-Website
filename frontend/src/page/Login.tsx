@@ -40,7 +40,6 @@ export default function Login() {
       console.error("Error logging in:", error);
     }
   };
-  console.log("Logg", isLogin)
   React.useEffect(() => {
     if (isLogin) {
       setSendInfo(false)
@@ -102,9 +101,9 @@ export default function Login() {
           ) : (
             <div className="p-2 w-full">
               <MoveLeft onClick={() => setSendInfo(true)} className="mr-auto cursor-pointer w-[30px] h-[30px] mb-2 dark:bg-slate-500 bg-slate-300 dark:hover:bg-slate-600  rounded-full p-2" />
-              <div className="w-full mb-8 dark:bg-green-300 bg-green-100 rounded-sm p-2">
+              <div className="w-full mb-4 mt-4 dark:bg-green-300/90  bg-green-100 rounded-sm p-2">
                 <div className="flex items-start space-x-3">
-                  <div className="  flex items-center justify-center w-4 h-4 p-[1px] bg-green-500 text-white rounded-full">
+                  <div className="flex items-center justify-center w-4 h-4 p-[1px] bg-green-500  text-white rounded-full">
                     <Check className="text-white" />
                   </div>
                   <p className="text-sm text-gray-700 dark:text-black">
@@ -118,7 +117,7 @@ export default function Login() {
               >
                 <Button
                   type="submit"
-                  className={`w-full py-6 dark:bg-green-400 dark:text-black bg-green-300 hover:bg-green-300 cursor-not-allowed"}`}
+                  className={`w-full py-6 dark:bg-green-400 dark:hover:bg-green-500  dark:text-black bg-green-300 hover:bg-green-400 cursor-not-allowed"}`}
                 >
                   Click to go to email <MailCheck/>
                 </Button>

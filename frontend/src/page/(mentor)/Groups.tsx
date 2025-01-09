@@ -11,7 +11,7 @@ import {
     CommandItem,
     CommandList,
 } from "../../components/ui/command"
-import { Popover, PopoverContent, PopoverTrigger } from "../../components/ui/ui/popover"
+import { Popover, PopoverContent, PopoverTrigger } from "../../components/ui/popover"
 
 const numbers = [
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
@@ -32,50 +32,53 @@ export default function Groups() {
 
     return (
         <div className="absolute top-0 left-0 right-0 flex justify-center items-center h-screen">
-            <Popover open={open} onOpenChange={setOpen}>
-                <PopoverTrigger asChild>
-                    <Button
-                        variant="outline"
-                        role="combobox"
-                        aria-expanded={open}
-                        className=" lg:w-[800px] w-[300px]  justify-between"
-                    >
-                        {value !== null
-                            ? numbers.find((number) => number === value)
-                            : "Select Group..."}
-                        <ChevronsUpDown className="opacity-50" />
-                    </Button>
-                </PopoverTrigger>
-                <PopoverContent className="lg:w-[800px] w-[300px] p-0">
-                    <Command>
-                        <CommandInput placeholder="Search Group..." className="h-9" />
-                        <CommandList>
-                            <CommandEmpty>No framework found.</CommandEmpty>
-                            <CommandGroup>
-                                {numbers.map((framework) => (
-                                    <CommandItem
-                                        key={framework}
-                                        value={framework.toString()}
-                                        onSelect={(currentValue) => {
-                                            setValue(currentValue === value?.toString() ? null : Number(currentValue))
-                                            setOpen(false)
-                                            window.location.href = `group/${currentValue}`
-                                        }}
-                                    >
-                                        {framework}
-                                        <Check
-                                            className={cn(
-                                                "ml-auto",
-                                                value === framework ? "opacity-100" : "opacity-0"
-                                            )}
-                                        />
-                                    </CommandItem>
-                                ))}
-                            </CommandGroup>
-                        </CommandList>
-                    </Command>
-                </PopoverContent>
-            </Popover>
+            <div className="flex flex-col gap-2">
+                <span className="font-bold text-xl">Groups</span>
+                <Popover open={open} onOpenChange={setOpen}>
+                    <PopoverTrigger asChild>
+                        <Button
+                            variant="outline"
+                            role="combobox"
+                            aria-expanded={open}
+                            className=" lg:w-[800px] w-[300px]  justify-between"
+                        >
+                            {value !== null
+                                ? numbers.find((number) => number === value)
+                                : "Select Group..."}
+                            <ChevronsUpDown className="opacity-50" />
+                        </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="lg:w-[800px] w-[300px] p-0">
+                        <Command>
+                            <CommandInput placeholder="Search Group..." className="h-9" />
+                            <CommandList>
+                                <CommandEmpty>No framework found.</CommandEmpty>
+                                <CommandGroup>
+                                    {numbers.map((framework) => (
+                                        <CommandItem
+                                            key={framework}
+                                            value={framework.toString()}
+                                            onSelect={(currentValue) => {
+                                                setValue(currentValue === value?.toString() ? null : Number(currentValue))
+                                                setOpen(false)
+                                                window.location.href = `group/${currentValue}`
+                                            }}
+                                        >
+                                            {framework}
+                                            <Check
+                                                className={cn(
+                                                    "ml-auto",
+                                                    value === framework ? "opacity-100" : "opacity-0"
+                                                )}
+                                            />
+                                        </CommandItem>
+                                    ))}
+                                </CommandGroup>
+                            </CommandList>
+                        </Command>
+                    </PopoverContent>
+                </Popover>
+            </div>
         </div>
     )
 }
