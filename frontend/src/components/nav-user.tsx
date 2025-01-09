@@ -1,8 +1,10 @@
 import {
   BadgePercent,
   Bolt,
+  Check,
   ChevronsUpDown,
   ClipboardX,
+  CopyCheck,
   LogOut,
   X,
 } from "lucide-react"
@@ -37,15 +39,27 @@ import { useTranslation } from "react-i18next"
 export function NavUser() {
   const { isMobile } = useSidebar()
   const { user, logout } = useAuthStore()
-  const {getLeaderStudents, leaderStudents } = useLeaderStore()
+  const { getLeaderStudents, leaderStudents } = useLeaderStore()
   const { t } = useTranslation()
+
+  const [check, setCheck] = React.useState(false)
 
   const handleLogout = () => {
     logout(user.user?.email)
   }
+
   React.useEffect(() => {
     getLeaderStudents(user?.user?._id)
   }, [user?.user._id, getLeaderStudents])
+
+  const handleCheck = () => {
+    navigator.clipboard.writeText(user?.user?._id)
+    setCheck(true)
+    setTimeout(() => {
+      setCheck(false)
+    }, 600)
+
+  }
   return (
     <SidebarMenu className="mt-[-.5rem]">
       <SidebarMenuItem >
@@ -81,6 +95,10 @@ export function NavUser() {
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">{user?.user?.name}</span>
                   <span className="truncate text-xs">{user?.user?.email}</span>
+                </div>
+                <div className="relative" onClick={() => handleCheck()}>
+                  {!check && (<CopyCheck className="absolute top-[-.5rem] cursor-pointer right-0" />)}
+                  {check && (<Check className="absolute top-[-.5rem] cursor-pointer right-0" />)}
                 </div>
               </div>
             </DropdownMenuLabel>

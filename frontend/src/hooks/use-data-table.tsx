@@ -297,7 +297,9 @@ export default function DataTable({
                                                                             {/* // ? leader id */}
 
                                                                             {
-                                                                                (user?.user?.role.includes("leaderController") ||
+                                                                                (
+                                                                                    user?.user?.role.includes("leaderController") ||
+                                                                                    user?.user?.role.includes("leader") ||
                                                                                     (user?.user?.role.includes("admin"))) && (
                                                                                     <>
                                                                                         <p className="font-bold leading-[5px] text-slate-400">leader edit</p>
@@ -309,7 +311,7 @@ export default function DataTable({
                                                                             {
 
                                                                                 (user?.user?.role.includes("leaderController") ||
-                                                                                    user?.user?.role.includes("leader") ||
+                                                                                    ((user?.user?._id == student?.leaderId)) ||
                                                                                     user?.user?.role.includes("admin")) &&
                                                                                 (<>
                                                                                     {/* // ? name */}

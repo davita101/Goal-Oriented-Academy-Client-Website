@@ -33,6 +33,7 @@ import { Button } from "../../components/ui/button"
 import { useAllStudents } from "../../store/allStudentStore"
 import { defaultStudentValues } from "../../utils/(student)/form-values"
 import DataTable from "../../hooks/use-data-table"
+import { t } from "i18next"
 
 
 export const columns: ColumnDef<Student>[] = [
@@ -66,7 +67,7 @@ export const columns: ColumnDef<Student>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Role
+          {t("role")}
           <ArrowUpDown />
         </Button>
       )
@@ -85,7 +86,7 @@ export const columns: ColumnDef<Student>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Name
+          {t("name")}
           <ArrowUpDown />
         </Button>
       )
@@ -98,19 +99,19 @@ export const columns: ColumnDef<Student>[] = [
   },
   {
     accessorKey: "age",
-    header: "Age",
+    header: () => { t("age") },
     cell: ({ row }) => (
       <div className="capitalize font-bold"><Badge variant="outline" className="font-b">{row.getValue("age")}</Badge></div>
     ),
   },
   {
     accessorKey: "email",
-    header: "Email",
+    header: () => { t("email") },
     cell: ({ row }) => <div className="font-bold">{row.getValue("email")}</div>,
   },
   {
     accessorKey: "studentFbLink",
-    header: "Student FB",
+    header: () => (t("studenFB")),
     cell: ({ row }) => (
       <div className="capitalize font-bold"><Link target="_blank" to={row.getValue("studentFbLink")}><Button className="text-blue-400 pl-0" variant="link">Facebook</Button></Link></div>
     ),
@@ -124,7 +125,7 @@ export const columns: ColumnDef<Student>[] = [
           className="pl-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Last Update
+          {t("Last Update")}
           <ArrowUpDown />
         </Button>
       )
@@ -135,14 +136,14 @@ export const columns: ColumnDef<Student>[] = [
   },
   {
     accessorKey: "githubLink",
-    header: "Github",
+    header: () => { t("github") },
     cell: ({ row }) => (
       <div className="capitalize font-bold"><Link target="_blank" to={row.getValue("githubLink")}><Button className="text-blue-400 pl-0" variant="link">github Link</Button></Link></div>
     ),
   },
   {
     accessorKey: "comment",
-    header: "comment",
+    header: () => { t("comment") },
     cell: ({ row }) => (
       <div className="capitalize font-bold">
         <HoverCard>
@@ -173,7 +174,7 @@ export const columns: ColumnDef<Student>[] = [
           className="pl-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Speed
+          {t("speed")}
           <ArrowUpDown />
         </Button>
       )
@@ -192,7 +193,7 @@ export const columns: ColumnDef<Student>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Group
+          {t("group")}
           <ArrowUpDown />
         </Button>
       )
@@ -203,7 +204,7 @@ export const columns: ColumnDef<Student>[] = [
   },
   {
     accessorKey: "leaderId",
-    header: "LeaderId",
+    header: () => { t("leaderID") },
     cell: ({ row }) => (
       <div className="capitalize font-bold"><Link target="_blank" to={row.getValue("leaderId")}><Button className="text-blue-400 pl-0" variant="link">leaderID</Button></Link></div>
     ),
@@ -339,7 +340,7 @@ export function Default() {
       getLeaderStudents(user?.user?.miniLeaderId)
       getStudent(oneRowSelection.leaderId, oneRowSelection._id)
     }
-  }, [oneRowSelection, getStudent, getAllStudents, getLeaderStudents])
+  }, [oneRowSelection, getStudent, getAllStudents, getLeaderStudents, leaderStudents])
 
   const table = useReactTable({
     data: leaderStudents.sort((a, b) => a.group < b.group ? 1 : -1),
@@ -401,7 +402,7 @@ export function Default() {
         pagination={pagination}
         setPagination={setPagination}
         setPageSizeSet={setPageSizeSet}
-        paginationAllStudents={AllStudents} />
+        paginationAllStudents={leaderStudents} />
     </>
   );
 }
