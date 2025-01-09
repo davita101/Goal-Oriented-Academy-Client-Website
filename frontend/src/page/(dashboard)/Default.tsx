@@ -33,7 +33,6 @@ import { Button } from "../../components/ui/button"
 import { useAllStudents } from "../../store/allStudentStore"
 import { defaultStudentValues } from "../../utils/(student)/form-values"
 import DataTable from "../../hooks/use-data-table"
-import { t } from "i18next"
 
 
 export const columns: ColumnDef<Student>[] = [
@@ -67,7 +66,7 @@ export const columns: ColumnDef<Student>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          {t("role")}
+          Role
           <ArrowUpDown />
         </Button>
       )
@@ -86,7 +85,7 @@ export const columns: ColumnDef<Student>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          {t("name")}
+          Name
           <ArrowUpDown />
         </Button>
       )
@@ -99,19 +98,19 @@ export const columns: ColumnDef<Student>[] = [
   },
   {
     accessorKey: "age",
-    header: () => { t("age") },
+    header: "Age",
     cell: ({ row }) => (
       <div className="capitalize font-bold"><Badge variant="outline" className="font-b">{row.getValue("age")}</Badge></div>
     ),
   },
   {
     accessorKey: "email",
-    header: () => { t("email") },
+    header: "Email",
     cell: ({ row }) => <div className="font-bold">{row.getValue("email")}</div>,
   },
   {
     accessorKey: "studentFbLink",
-    header: () => (t("studenFB")),
+    header: "Student FB",
     cell: ({ row }) => (
       <div className="capitalize font-bold"><Link target="_blank" to={row.getValue("studentFbLink")}><Button className="text-blue-400 pl-0" variant="link">Facebook</Button></Link></div>
     ),
@@ -125,7 +124,7 @@ export const columns: ColumnDef<Student>[] = [
           className="pl-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          {t("Last Update")}
+          Last Update
           <ArrowUpDown />
         </Button>
       )
@@ -136,14 +135,14 @@ export const columns: ColumnDef<Student>[] = [
   },
   {
     accessorKey: "githubLink",
-    header: () => { t("github") },
+    header: "Github",
     cell: ({ row }) => (
       <div className="capitalize font-bold"><Link target="_blank" to={row.getValue("githubLink")}><Button className="text-blue-400 pl-0" variant="link">github Link</Button></Link></div>
     ),
   },
   {
     accessorKey: "comment",
-    header: () => { t("comment") },
+    header: "comment",
     cell: ({ row }) => (
       <div className="capitalize font-bold">
         <HoverCard>
@@ -174,7 +173,7 @@ export const columns: ColumnDef<Student>[] = [
           className="pl-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          {t("speed")}
+          Speed
           <ArrowUpDown />
         </Button>
       )
@@ -193,7 +192,7 @@ export const columns: ColumnDef<Student>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          {t("group")}
+          Group
           <ArrowUpDown />
         </Button>
       )
@@ -204,7 +203,7 @@ export const columns: ColumnDef<Student>[] = [
   },
   {
     accessorKey: "leaderId",
-    header: () => { t("leaderID") },
+    header: "LeaderId",
     cell: ({ row }) => (
       <div className="capitalize font-bold"><Link target="_blank" to={row.getValue("leaderId")}><Button className="text-blue-400 pl-0" variant="link">leaderID</Button></Link></div>
     ),
@@ -340,7 +339,7 @@ export function Default() {
       getLeaderStudents(user?.user?.miniLeaderId)
       getStudent(oneRowSelection.leaderId, oneRowSelection._id)
     }
-  }, [oneRowSelection, getStudent, getAllStudents, getLeaderStudents, leaderStudents])
+  }, [oneRowSelection, getStudent, getAllStudents, getLeaderStudents])
 
   const table = useReactTable({
     data: leaderStudents.sort((a, b) => a.group < b.group ? 1 : -1),

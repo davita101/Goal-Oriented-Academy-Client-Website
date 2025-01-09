@@ -192,7 +192,7 @@ export default function DataTable({
         <div className={`bg-[var(--background)] grid auto-rows-min overflow-hidden gap-4 grid-cols-1 px-2`}>
             <ResizablePanelGroup direction="horizontal" >
                 <ResizablePanel defaultSize={100}>
-                    <div>
+                    <div className="">
                         <div className="flex items-center py-4">
                             <Input
                                 placeholder={`${t("student")} name...`}
@@ -200,7 +200,7 @@ export default function DataTable({
                                 onChange={(event) =>
                                     table.getColumn("name")?.setFilterValue(event.target.value)
                                 }
-                                className="max-w-sm"
+                                className="max-w-sm mx-1"
                             />
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
@@ -361,7 +361,6 @@ export default function DataTable({
                                                                                     <Separator />
                                                                                 </>
                                                                             )}
-
                                                                             {/* // ? group */}
                                                                             {
                                                                                 (user?.user?.role.includes("leaderController") ||
