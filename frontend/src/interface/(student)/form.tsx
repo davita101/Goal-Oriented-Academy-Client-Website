@@ -16,10 +16,17 @@ export const userSchema = z.object({
         .min(0, "Speed must be at least 0")
         .max(4, "Speed must be at least 5"),
     role: z.string().min(2, "Role must be at one "),
+    parentName: z.string().min(0, "Parent Name must be at least 0 characters "),
     parentFbLink: z.string().url({ message: "You must enter correct URL" }),
     group: z.number().min(0, "Group must be 0"),
     githubToken: z.string().min(2, "Github Token must be at least 2 characters "),
     githubLastUpdate: z.string().min(2, "Github Last Update must be at least 2 characters "),
+    studentPersonalInfo: z.object({
+        studentId: z.string().min(0, "Student ID must be at least 0 characters"),
+        studentRegion: z.string().min(0, "Student Region must be at least 0 characters"),
+        studentCity: z.string().min(0, "Student City must be at least 0 characters"),
+        studentStreet: z.string().min(0, "Student Street must be at least 0 characters"),
+    }),
     fines: z.object({
         githubFine: z.number().min(0, "Github Fine must be at least 0").max(1000, "Github Fine must be at most 1000"),
         miniLeaderFine: z.number().min(0, "Mini Leader Fine must be at least 0").max(100, "Mini Leader Fine must be at most 100"),
@@ -34,6 +41,7 @@ export const userSchema = z.object({
         answers: z.number(),
     }),
     payedInfo: z.boolean(),
+
     comment: z.object({
         leaderComment: z.string().min(0, "Leader Comment must be at least 0 characters"),
         miniLeaderComment: z.string().min(0, "Mini Leader Comment must be at least 0 characters"),

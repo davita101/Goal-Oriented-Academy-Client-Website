@@ -9,10 +9,17 @@ export type Student = {
     group: number
     leaderId: string
     role: string
+    parentName: string
     parentFbLink: string
     githubToken: string
     githubLastUpdate: string
     updatedAt: string
+    studentPersonalInfo: {
+        studentId: string
+        studentRegion: string
+        studentCity: string
+        studentStreet: string
+    },
     fines: {
         githubFine: number
         miniLeaderFine: number

@@ -22,7 +22,6 @@ const useLeaderStore = create<LeaderState>((set) => ({
                 },
                 withCredentials: true, // Include cookies in the request
             });
-            console.log(response.data);
             set({ leaderStudents: response.data, isLoading: false });
         } catch (error) {
             console.error('Error checking auth:', error);

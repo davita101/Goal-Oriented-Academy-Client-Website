@@ -12,4 +12,6 @@ export const groups = [
 ]
 // ! 
 export const speed_1 = [5]
-export const speed_2 = [6, 38, 47,48]
+export const speed_2 = [6, 38, 47, 48]
+
+export const stepArr = [1, 2, 4, 5, 10, 15, 20, 30, 40, 50, 100]

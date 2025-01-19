@@ -1,115 +1,127 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const StudentSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: true
     },
     age: {
       type: Number,
-      required: true,
+      required: true
     },
     studentFbLink: {
       type: String,
-      required: true,
+      required: true
     },
     email: {
       type: String,
-      required: true,
+      required: true
     },
     githubLink: {
       type: String,
-      required: true,
+      required: true
     },
     speed: {
       type: Number,
-      required: true,
+      required: true
     },
     group: {
       type: Number,
-      required: true,
+      required: true
     },
     leaderId: {
       type: String,
-      required: true,
+      required: true
     },
     role: {
       type: String,
-      required: true,
+      required: true
+    },
+    // ! new fields
+    parentName: {
+      type: String
     },
     parentFbLink: {
-      type: String,
+      type: String
     },
     githubToken: {
-      type: String,
+      type: String
     },
     githubLastUpdate: {
-      type: String,
+      type: String
     },
+
     fines: {
       githubFine: {
-        type: Number,
+        type: Number
       },
       miniLeaderFine: {
-        type: Number,
+        type: Number
       },
       miniStudentFine: {
-        type: Number,
-      },
+        type: Number
+      }
     },
     aura: {
       points: {
-        type: Number,
+        type: Number
       },
       classwork: {
-        type: Number,
+        type: Number
       },
       attendance: {
-        type: Number,
+        type: Number
       },
       help: {
-        type: Number,
+        type: Number
       },
       camera: {
-        type: Number,
+        type: Number
       },
       answers: {
-        type: Number,
-      },
+        type: Number
+      }
+    },
+    // ! new fields
+    studentPersonalInfo: {
+      studentId: String,
+      studentRegion: String,
+      studentCity: String,
+      studentStreet: String
     },
     payedInfo: {
       type: Boolean,
-      required: true,
+      required: true
     },
     comment: {
       leaderComment: {
-        type: String,
+        type: String
       },
       miniLeaderComment: {
-        type: String,
+        type: String
       },
       leaderProof: {
-        type: String,
+        type: String
       },
       controller: {
         miniLeaderController: {
-          type: String,
+          type: String
         },
         githubController: {
-          type: String,
-        },
-      },
-    },
+          type: String
+        }
+      }
+    }
   },
   { timestamps: true }
-);
+)
 // Method to filter out payedInfo for non-admin users
 StudentSchema.methods.toJSONForUser = function (userRole) {
-  const studentObject = this.toObject();
+  const studentObject = this.toObject()
   if (userRole !== 'admin') {
-    delete studentObject.payedInfo;
+    delete studentObject.payedInfo
   }
-  return studentObject;
-};
-export const StudentModel = mongoose.model("Student", StudentSchema);
+  return studentObject
+}
+export const StudentModel = mongoose.model('Student', StudentSchema)
