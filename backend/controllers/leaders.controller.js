@@ -15,80 +15,18 @@ export const getAllLeaders = async (req, res) => {
 }
 export const updateLeaderById = async (req, res) => {
   try {
-    let updateData = {};
+
     const leaderId = req.params.leaderId;
-
-    if (req.user.role.includes("leaderController")) {
-      updateData = {
-        ...updateData,
-        "controllers": {
-          ...updateData.controllers,
-          "leaderController": req.body?.controllers?.leaderController
-        },
-        "rating": {
-          ...updateData.rating,
-          "cards": {
-            "black": req.body?.rating?.cards?.black,
-            "green": req.body?.rating?.cards?.green,
-            "yellow": req.body?.rating?.cards?.yellow,
-            "purple": req.body?.rating?.cards?.purple
-          },
-          "examResults": {
-            "firstCheck": req.body?.rating?.examResults?.firstCheck,
-            "secondCheck": req.body?.rating?.examResults?.secondCheck
-          },
-          "codewarsResult": req.body?.rating?.codewarsResult,
-          "leaderGithubCheck": req.body?.rating?.leaderGithubCheck,
-          "parentRating": req.body?.rating?.parentRating,
-          "projectResults": req.body?.rating?.projectResults
-        },
-        "email": req.body.email,
-        "name": req.body.name,
-      };
-    }
-
-    if (req.user.role.includes("miniLeaderController")) {
-      updateData = {
-        ...updateData,
-        "controllers": {
-          ...updateData.controllers,
-          "miniLeaderController": req.body?.controllers?.miniLeaderController
-        },
-        "rating": {
-          ...updateData.rating,
-          "miniLeaderGithubCheck": {
-            "firstCheck": req.body?.rating?.miniLeaderGithubCheck?.firstCheck,
-            "secondCheck": req.body?.rating?.miniLeaderGithubCheck?.secondCheck
-          }
-        }
-      };
-    }
-
-    if (req.user.role.includes("githubController")) {
-      updateData = {
-        ...updateData,
-        "controllers": {
-          ...updateData.controllers,
-          "githubController": req.body?.controllers?.githubController
-        },
-        "rating": {
-          ...updateData.rating,
-          "githubCheck": {
-            "firstCheck": req.body?.rating?.githubCheck?.firstCheck,
-            "secondCheck": req.body?.rating?.githubCheck?.secondCheck
-          }
-        }
-      };
-    }
+    
+    //! FIND AND UPDATE LEADER
     const leader = await UserModel.findByIdAndUpdate(
       leaderId,
-      updateData,
+      req.body,
       { new: true }
     );
     if (!leader) {
       return res.status(404).json({ error: 'Leader not found or no updates made' });
     }
-
     res.status(200).json(leader);
   } catch (error) {
     console.log(error);

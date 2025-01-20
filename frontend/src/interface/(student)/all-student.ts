@@ -1,4 +1,4 @@
-import { Student } from "./interface/(student)/student";
+import { Student } from "./student-Inteface";
 
 export interface AllStudentState {
     AllStudents: Student[];

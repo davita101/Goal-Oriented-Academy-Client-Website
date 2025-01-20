@@ -1,62 +1,36 @@
 import * as React from "react"
 import {
-    Sheet,
-    SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from "../../components/ui/sheet"
-
-import {
     ColumnDef,
     ColumnFiltersState,
     SortingState,
     VisibilityState,
-    flexRender,
     getCoreRowModel,
     getFilteredRowModel,
     getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, } from "lucide-react"
+import { ArrowUpDown, } from "lucide-react"
 import { Row } from "@tanstack/react-table"
 
-import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuTrigger,
-} from "../../components/ui/dropdown-menu"
+
 import { Input } from "../../components/ui/input"
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "../../components/ui/table"
+
 import { Link } from "react-router-dom"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "../../components/ui/hover-card"
 import { Badge } from "../../components/ui/badge"
-import { ScrollArea, ScrollBar } from "../../components/ui/scroll-area"
 import { Separator } from "../../components/ui/separator"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../../components/ui/select"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { userSchema } from "../../utils/(student)/form"
+import { userSchema } from "../../interface/(student)/form"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../../components/ui/form"
 import { useAuthStore } from "../../store/authStore"
-import Loading from "../../components/loading"
-import { toast } from "sonner"
-import { Checkbox } from "../../components/ui/checkbox"
-import { useLeaderStore } from "../../store/leaderStore"
-import { Student } from "../../utils/(student)/student"
+import { useLeaderStore } from "../../store/studentStore"
+import { Student } from "../../interface/(student)/student-Inteface"
 import { Button } from "../../components/ui/button"
 import { useAllStudents } from "../../store/allStudentStore"
-import { defaultStudentValues } from "../../utils/(student)/form-values"
+import { defaultStudentValues } from "../../interface/(student)/form-values"
 import DataTable from "../../hooks/use-data-table"
 
 
@@ -286,25 +260,25 @@ export function AllStudents() {
         return savedVisibility ? JSON.parse(savedVisibility) : {};
     });
     const [rowSelection, setRowSelection] = React.useState(() => {
-        const savedSelection = localStorage.getItem('rowSelection');
+        const savedSelection = localStorage.getItem('rowSelectionAllStudents');
         return savedSelection ? JSON.parse(savedSelection) : {};
     });
     const [oneRowSelection, setOneRowSelection] = React.useState(() => {
-        const savedSelection = localStorage.getItem('oneRowSelection');
+        const savedSelection = localStorage.getItem('oneRowSelectionAllStudents');
         return savedSelection ? JSON.parse(savedSelection) : null;
     });
     const [studentInfo, setStudentInfo] = React.useState(false)
 
     React.useEffect(() => {
-        localStorage.setItem('sortingStudents', JSON.stringify(sorting));
+        localStorage.setItem('sortingAllStudents', JSON.stringify(sorting));
     }, [sorting]);
 
     React.useEffect(() => {
-        localStorage.setItem('columnFilterStudents', JSON.stringify(columnFilters));
+        localStorage.setItem('columnFilterAllStudents', JSON.stringify(columnFilters));
     }, [columnFilters]);
 
     React.useEffect(() => {
-        localStorage.setItem('columnVisibilityStudents', JSON.stringify(columnVisibility));
+        localStorage.setItem('columnVisibilityAllStudents', JSON.stringify(columnVisibility));
     }, [columnVisibility]);
 
     const { user, isLoading } = useAuthStore()
@@ -351,109 +325,6 @@ export function AllStudents() {
             form.reset(student);
         }
     }, [form, student]);
-    // console.log(AllStudents)
-    const formRender = (typeMain: string, minNum: number, maxNum: number, id: string, label: string, roles: string[], row: string) => {
-        <Separator />
-        if (typeMain === 'number') {
-            return (
-                <FormField
-                    control={form.control}
-                    name={id as keyof Student}
-                    render={({ field, fieldState: { error } }) => (
-                        <FormItem className="grid grid-cols-4 items-center w-full justify-start gap-2">
-                            <FormLabel className="grid-cols-2 capitalize">{label}</FormLabel>
-                            <FormControl>
-                                <Input
-                                    type={typeMain}
-                                    className="col-span-3"
-                                    placeholder={`Enter ${label}`}
-                                    min={minNum}
-                                    max={maxNum}
-                                    {...field}
-                                    value={typeof field.value === 'boolean' || typeof field.value === 'object' ? '' : field.value}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                        const value = e.target.value === '' ? '' : Number(e.target.value);
-                                        const numericValue = Number(value);
-                                        if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= 99) {
-                                            field.onChange(value);
-                                            handleInputChange(oneRowSelection, id, value);
-                                        }
-                                    }}
-                                />
-                            </FormControl>
-                            <FormMessage className="col-span-3">{error?.message}</FormMessage>
-                        </FormItem>
-                    )}
-                />
-            )
-        } else if (typeMain === 'string') {
-            return (
-                <FormField
-                    control={form.control}
-                    name={id as keyof Student}
-                    render={({ field, fieldState: { error } }) => (
-                        <FormItem className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                            <FormLabel className="grid-cols-2">{label}</FormLabel>
-                            <FormControl>
-                                <Input
-                                    className="col-span-3"
-                                    placeholder={`Enter ${label}`}
-                                    {...field}
-                                    value={typeof field.value === 'boolean' || typeof field.value === 'object' ? '' : field.value}
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                        handleInputChange(oneRowSelection, id, e.target.value);
-                                    }}
-                                />
-                            </FormControl>
-                            <FormMessage className="col-span-3">{error?.message}</FormMessage>
-                        </FormItem>
-                    )}
-                />
-            )
-        } else if (typeMain === 'role') {
-            return (
-                <FormField
-                    control={form.control}
-                    name={id as keyof Student}
-                    render={({ fieldState: { error } }) => (
-                        <FormItem className="grid grid-cols-4 items-center w-full justify-start gap-2">
-                            <FormLabel className="grid-cols-2">Role</FormLabel>
-                            <FormField
-                                control={form.control}
-                                name={id as keyof Student}
-                                render={({ field, fieldState: { error } }) => (
-                                    <FormItem className="col-span-3">
-                                        <Select onValueChange={field.onChange} defaultValue={typeof field.value === 'string' ? field.value : undefined}>
-                                            <SelectTrigger >
-                                                <SelectValue placeholder="Select a fruit" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectGroup>
-                                                    {roles.map((role, index) => (
-                                                        <SelectItem key={index} value={role}>
-                                                            {role}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectGroup>
-                                            </SelectContent>
-                                        </Select>
-                                        <FormMessage className="col-span-3">{error?.message}</FormMessage>
-                                    </FormItem>
-                                )}
-                            />
-                        </FormItem>
-                    )}
-                />
-            )
-        }
-    }
-    const handleInputChange = (row: any, field: string, value: string | number) => {
-        if (row && row.original) {
-            row.original[field] = value;
-            setRowSelection({ ...rowSelection });
-        }
-    }
     const onSubmit: SubmitHandler<Student> = (data) => {
         setOneRowSelection((prev: Student) => ({ ...prev, leaderId: data.leaderId }));
         updateStudent(student.leaderId, student._id, data);

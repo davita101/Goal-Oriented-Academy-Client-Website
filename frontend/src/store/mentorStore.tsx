@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import axios from 'axios';
-import { } from '../utils/(student)/student';
-import { GroupState } from '../utils/(groups)/groups';
+import { } from '../interface/(student)/student-Inteface';
+import { GroupState } from '../interface/(groups)/groups';
 
 const API_URL = import.meta.env.MODE === "development" ? 'http://localhost:5000' : "";
 

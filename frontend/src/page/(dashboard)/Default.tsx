@@ -21,14 +21,14 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from "../../components/
 import { Badge } from "../../components/ui/badge"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { userSchema } from "../../utils/(student)/form"
+import { userSchema } from "../../interface/(student)/form"
 import { useAuthStore } from "../../store/authStore"
 import { Checkbox } from "../../components/ui/checkbox"
-import { useLeaderStore } from "../../store/leaderStore"
-import { Student } from "../../utils/(student)/student"
+import { useLeaderStore } from "../../store/studentStore"
+import { Student } from "../../interface/(student)/student-Inteface"
 import { Button } from "../../components/ui/button"
 import { useAllStudents } from "../../store/allStudentStore"
-import { defaultStudentValues } from "../../utils/(student)/form-values"
+import { defaultStudentValues } from "../../interface/(student)/form-values"
 import DataTable from "../../hooks/use-data-table"
 
 

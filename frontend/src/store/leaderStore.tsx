@@ -1,55 +1,17 @@
 import { create } from 'zustand'
 import axios from 'axios';
-import {  Student } from '../utils/(student)/student';
-import { LeaderState } from '../utils/(leader)/leader';
+import { LeaderState } from '../interface/(leader)/user-state';
+import { User } from '../interface/(user)/user';
 
 const API_URL = import.meta.env.MODE === "development" ? 'http://localhost:5000' : "";
 
 const useLeaderStore = create<LeaderState>((set) => ({
-    leaderStudents: [],
-    student: {} as Student,
     isLoading: false,
-    isCheckingAuth: true,
-
-    getLeaderStudents: async (leaderId: string) => {
-        set({ isLoading: true });
-        try {
-            const token = localStorage.getItem('authToken'); // Assuming the token is stored in localStorage
-            const response = await axios.get(`${API_URL}/api/students/all-students/${leaderId}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                withCredentials: true, // Include cookies in the request
-            });
-            set({ leaderStudents: response.data, isLoading: false });
-        } catch (error) {
-            console.error('Error checking auth:', error);
-            set({ isCheckingAuth: false });
-        }
-    },
-    getStudent: async (leaderId: string, studentId: string) => {
-        set({ isLoading: true });
-        try {
-            const token = localStorage.getItem('authToken'); // Assuming the token is stored in localStorage
-            const response = await axios.get(`${API_URL}/api/students/${leaderId}/${studentId}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                withCredentials: true, // Include cookies in the request
-            });
-            set({ student: response.data, isLoading: false });
-        } catch (error) {
-            console.error('Error fetching student data:', error);
-            set({ isCheckingAuth: false, isLoading: false });
-        }
-    },
-    updateStudent: async (leaderId: string, studentId: string, data: Student) => {
+    leaderUpdate: async (leaderId: string,  data: User) => {
         set({ isLoading: true })
         try {
             const token = localStorage.getItem('authToken');
-            await axios.put(`${API_URL}/api/students/${leaderId}/${studentId}`, data, {
+            await axios.put(`${API_URL}/api/leaders/${leaderId}`, data, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
@@ -61,7 +23,7 @@ const useLeaderStore = create<LeaderState>((set) => ({
             set({ isLoading: false })
             console.error('Error updating student:', error);
         }
-    }
+    },
 }))
 
 export { useLeaderStore }

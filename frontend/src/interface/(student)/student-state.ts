@@ -1,6 +1,6 @@
-import { Student } from "../(student)/student";
+import { Student } from "./student-Inteface";
 
-export interface LeaderState {
+export interface StudentState {
     leaderStudents: Student[];
     student: Student;
     isLoading: boolean;

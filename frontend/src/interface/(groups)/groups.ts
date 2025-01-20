@@ -1,4 +1,4 @@
-import { Student } from "../(student)/student";
+import { Student } from "../(student)/student-Inteface";
 
 export interface GroupState {
     groups: Student[];

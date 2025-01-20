@@ -385,6 +385,9 @@ export const checkAuth = async (req, res) => {
         path.join(__dirname, 'backend', 'public', 'invalid-session.html')
       )
   }
+  user.lastLogin = new Date()
+  await user.save()
+  
 
   res.status(200).json({ success: true, user })
 }

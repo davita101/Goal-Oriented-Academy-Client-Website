@@ -10,8 +10,8 @@ export const groups = [
     81, 82, 83, 84, 85, 86, 87, 88, 89, 90,
     91, 92, 93, 94, 95, 96, 97, 98, 99, 100
 ]
-// ! 
-export const speed_1 = [5]
-export const speed_2 = [6, 38, 47, 48]
-
-export const stepArr = [1, 2, 4, 5, 10, 15, 20, 30, 40, 50, 100]
+export const stepArr = [5, 10, 50, 100]
+export const accountEditArr = [
+    "profile",
+    "account",
+]

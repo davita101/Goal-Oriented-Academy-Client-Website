@@ -42,7 +42,7 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "../compone
 import { t } from "i18next"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion"
 import { stepArr } from "../utils"
-import { Student } from "../interface/(student)/student"
+import { Student } from "../interface/(student)/student-Inteface"
 
 
 export default function DataTable({
@@ -415,7 +415,7 @@ export default function DataTable({
                                                                                         <AccordionItem value="edit-student-9">
                                                                                             <AccordionTrigger className="font-bold  leading-[5px] text-slate-400">Student Personal Information</AccordionTrigger>
                                                                                             <AccordionContent className="flex flex-col gap-2">                                                                                            {/* // ? speed */}
-                                                                                                {formRender('string', 0, 0, 'parentName', 'parentName', [], '')}
+                                                                                                {formRender('string', 0, 0, 'parentName', 'parent Name', [], '')}
                                                                                                 <Separator />
                                                                                                 {formRender('string', 0, 0, 'studentPersonalInfo.studentId', 'ID', [], '')}
                                                                                                 <Separator />
@@ -641,7 +641,7 @@ export default function DataTable({
                                                                                             item.contents.map((content, index) => (
                                                                                                 <AccordionContent key={index} className="grid grid-cols-4 items-center w-full justify-start gap-2">
                                                                                                     <span className="col-span-2 font-bold capitalize">{content.label}</span>
-                                                                                                    <span className="col-start-1 text-slate-500/50 dark:text-slate-4s00 font-bold">{content.value}</span>
+                                                                                                    <span className="col-start-1 text-slate-500/50 dark:text-green-400 font-bold">{content.value}</span>
                                                                                                     <Separator className="row-start-2 col-span-4" />
                                                                                                 </AccordionContent>
                                                                                             ))
@@ -672,6 +672,7 @@ export default function DataTable({
                                             <TableRow className="flex items-center justify-center">
                                                 <TableCell>
                                                     <Loading />
+                                                    <h1 className="text-red-600">No Data</h1>
                                                 </TableCell>
                                             </TableRow>
                                         }

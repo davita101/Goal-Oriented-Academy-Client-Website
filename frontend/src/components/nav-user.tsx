@@ -33,7 +33,7 @@ import * as React from "react"
 import { useAuthStore } from "../store/authStore"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card"
 import { Button } from "./ui/button"
-import { useLeaderStore } from "../store/leaderStore"
+import { useLeaderStore } from "../store/studentStore"
 import { useTranslation } from "react-i18next"
 
 export function NavUser() {
@@ -61,7 +61,7 @@ export function NavUser() {
 
   }
   return (
-    <SidebarMenu className="mt-[-.5rem]">
+    <SidebarMenu className="mt-[-.5rem] py-2">
       <SidebarMenuItem >
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="dark:bg-[var(--background)] bg-slate-50 mt-0">
@@ -74,7 +74,7 @@ export function NavUser() {
                 <AvatarFallback className="rounded-lg capitalize">{user?.user?.name.split(/\s+/)[0].slice(0, 1)}{user?.user?.name.split(/\s+/)[1].slice(0, 1)}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user?.user?.name}</span>
+                <span className="truncate font-semibold">{user?.user?.nickname}</span>
                 <span className="truncate text-xs">{user?.user?.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
@@ -89,11 +89,11 @@ export function NavUser() {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user?.user?.avatar} alt={`Goal oriented academy user ${user?.user?.avatar}`} />
+                  <AvatarImage src={user?.user?.avatar} alt={`Goal oriented academy user ${user?.user?.name}`} />
                   <AvatarFallback className="rounded-lg capitalize">{user?.user?.name.split(/\s+/)[0].slice(0, 1)}{user?.user?.name.split(/\s+/)[1].slice(0, 1)}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user?.user?.name}</span>
+                  <span className="truncate font-semibold">{user?.user?.nickname}</span>
                   <span className="truncate text-xs">{user?.user?.email}</span>
                 </div>
                 <div className="relative" onClick={() => handleCheck()}>

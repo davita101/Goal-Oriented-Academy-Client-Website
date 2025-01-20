@@ -129,7 +129,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       },
       {
         name: "Profile",
-        url: "/applications/profile",
+        url: "/applications/profile-edit/profile",
         icon: UserRoundPen,
       },
     ],

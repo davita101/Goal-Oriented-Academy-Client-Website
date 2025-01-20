@@ -11,17 +11,17 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown,  } from "lucide-react"
+import { ArrowUpDown, } from "lucide-react"
 
-import {  useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useAuthStore } from "../../store/authStore"
-import { useLeaderStore } from "../../store/leaderStore"
+import { useLeaderStore } from "../../store/studentStore"
 import { Button } from "../../components/ui/button"
 import { useMentorStore } from "../../store/mentorStore"
-import { Student } from "../../utils/(student)/student"
-import { userSchema } from "../../utils/(student)/form"
+import { Student } from "../../interface/(student)/student-Inteface"
+import { userSchema } from "../../interface/(student)/form"
 import DataTable from "../../hooks/use-data-table"
 import { t } from "i18next"
 
@@ -110,7 +110,7 @@ export const columns: ColumnDef<Student>[] = [
     },
     {
         accessorKey: "help",
-        header:() => t("help"),
+        header: () => t("help"),
         cell: ({ row }) => (
             <div key={(row.getValue("aura") as Student["aura"]).help} className="capitalize font-bold">
                 {(row.getValue("aura") as Student["aura"]).help}
@@ -206,6 +206,8 @@ export function MentorGroup() {
             parentFbLink: '',
             githubToken: '',
             githubLastUpdate: '',
+            parentName: '',
+            studentPersonalInfo: { studentId: '', studentRegion: '', studentCity: '', studentStreet: '' },
             fines: { githubFine: 0, miniLeaderFine: 0, miniStudentFine: 0 },
             aura: {
                 points: (student?.aura?.answers || 0) + (student?.aura?.attendance || 0) + (student?.aura?.camera || 0) + (student?.aura?.classwork || 0) + (student?.aura?.help || 0),
@@ -236,6 +238,8 @@ export function MentorGroup() {
                 parentFbLink: student.parentFbLink || '',
                 githubToken: student.githubToken || '',
                 githubLastUpdate: student.githubLastUpdate || '',
+                parentName: student.parentName || '',
+                studentPersonalInfo: student.studentPersonalInfo || { studentId: '', studentRegion: '', studentCity: '', studentStreet: '' },
                 fines: student.fines || { githubFine: 0, miniLeaderFine: 0, miniStudentFine: 0 },
                 aura: student.aura || { points: 0, classwork: 0, attendance: 0, help: 0, camera: 0, answers: 0 },
                 payedInfo: student.payedInfo || false,

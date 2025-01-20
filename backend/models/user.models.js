@@ -6,6 +6,10 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true
     }, // 🟩 leaderController
+    nickname: {
+      type: String,
+      default: ''
+    }, // 🟩 leader
     avatar: {
       type: String,
       default: undefined
