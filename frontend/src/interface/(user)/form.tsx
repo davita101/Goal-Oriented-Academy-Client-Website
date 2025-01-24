@@ -10,5 +10,6 @@ export const userSchema = z.object({
         facebook: z.string().url("Invalid URL"),
         linkedin: z.string().url("Invalid URL"),
         github: z.string().url("Invalid URL"),
+        codewars: z.string().url("Invalid URL"),
     })
 })

@@ -6,13 +6,11 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { userSchema } from '../../interface/(user)/form';
 import { useAuthStore } from '../../store/authStore';
-import { t } from 'i18next';
 import { User } from '../../interface/(user)/user';
 import { useLeaderStore } from '../../store/leaderStore';
 import { Button } from '../../components/ui/button';
 import { RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
-import { ScrollArea, ScrollBar } from '../../components/ui/scroll-area';
 
 export default function Profile() {
   const { user } = useAuthStore();
@@ -30,6 +28,7 @@ export default function Profile() {
         facebook: user?.user?.social?.facebook || '',
         linkedin: user?.user?.social?.linkedin || '',
         github: user?.user?.social?.github || '',
+        codewars: user?.user?.social?.codewars || '',
       }
     }
   });
@@ -43,22 +42,17 @@ export default function Profile() {
       form.setValue('social.facebook', user?.user?.social?.facebook);
       form.setValue('social.github', user?.user?.social?.github);
       form.setValue('social.linkedin', user?.user?.social?.linkedin);
+      form.setValue('social.codewars', user?.user?.social.codewars);
       form.setValue('miniLeaderId', user?.user?.miniLeaderId);
     }
   }, [user, form]);
 
   interface FormData {
-    name: 'name' | 'avatar' | 'nickname' | "email" | "social.facebook" | "social.linkedin" | "social.github" | "miniLeaderId";
+    name: 'name' | 'avatar' | 'nickname' | "email" | "social.facebook" | "social.linkedin" | "social.codewars" | "social.github" | "miniLeaderId";
     label: string;
     type: string;
   }
-
   const data: FormData[] = [
-    {
-      name: 'miniLeaderId',
-      label: 'mini Leader Id',
-      type: 'string',
-    },
     {
       name: 'name',
       label: 'username and surname',
@@ -94,6 +88,11 @@ export default function Profile() {
       label: 'github',
       type: 'url',
     },
+    {
+      name: 'social.codewars',
+      label: 'codewars',
+      type: 'url',
+    },
 
   ]
   const onSubmit: SubmitHandler<User> = (data) => {
@@ -103,7 +102,7 @@ export default function Profile() {
 
     <div className=''>
       <div className='p-2'>
-        <h2 className='font-bold text-2xl text-green-400'>Profile</h2>
+        <h2 className='font-bold sm:text-2xl text-xl text-green-400'>Profile</h2>
         <p>This is how others will see you on the site.</p>
       </div>
       <Separator className='ml-2 bg-black dark:bg-foreground my-2' />
@@ -116,12 +115,12 @@ export default function Profile() {
                 control={form.control}
                 name={item.name}
                 render={({ field, fieldState: { error } }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-1 mb-2">
+                  <FormItem className="grid grid-cols-2 items-center gap-1 mb-2">
                     <FormLabel className="capitalize font-bold text-md">{item.label}</FormLabel>
                     <FormControl>
                       <Input
                         type={item.type}
-                        className=" col-span-3 "
+                        className=" col-span-3 sm:row-span-1 row-start-2  w-full"
                         placeholder={item.label}
                         {...field}
                         value={field.value}

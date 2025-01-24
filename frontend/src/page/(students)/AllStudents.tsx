@@ -49,8 +49,8 @@ export const columns: ColumnDef<Student>[] = [
             )
         },
         cell: ({ row }) => (
-            <div className="capitalize font-bold">
-                {<Badge>{row.getValue("role")}</Badge>}
+            <div className="capitalize w-full font-bold ">
+                {<Badge >{row.getValue("role")}</Badge>}
             </div>
         ),
     },
@@ -80,61 +80,7 @@ export const columns: ColumnDef<Student>[] = [
             <div className="capitalize font-bold"><Badge variant="outline" className="font-b">{row.getValue("age")}</Badge></div>
         ),
     },
-    {
-        accessorKey: "email",
-        header: "Email",
-        cell: ({ row }) => <div className="font-bold">{row.getValue("email")}</div>,
-    },
-    {
-        accessorKey: "studentFbLink",
-        header: "Student FB",
-        cell: ({ row }) => (
-            <div className="capitalize font-bold"><Link target="_blank" to={row.getValue("studentFbLink")}><Button className="text-blue-400 pl-0" variant="link">Facebook</Button></Link></div>
-        ),
-    },
-    {
-        accessorKey: "githubLastUpdate",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    className="pl-0"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Last Update
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
-        cell: ({ row }) => (
-            <div className="capitalize font-bold">{row.getValue("githubLastUpdate")}</div>
-        ),
-    },
-    {
-        accessorKey: "githubLink",
-        header: "Github",
-        cell: ({ row }) => (
-            <div className="capitalize font-bold"><Link target="_blank" to={row.getValue("githubLink")}><Button className="text-blue-400 pl-0" variant="link">github Link</Button></Link></div>
-        ),
-    },
-    {
-        accessorKey: "speed",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    className="pl-0"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Speed
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
-        cell: ({ row }) => (
-            <div className="capitalize "><Badge variant="outline" className="font-bold">{row.getValue("speed")}</Badge></div>
-        ),
-    },
+
     {
         accessorKey: "group",
         header: ({ column }) => {
@@ -154,96 +100,7 @@ export const columns: ColumnDef<Student>[] = [
             <div className="capitalize font-bold"><Badge className="font-bold" variant="outline">{row.getValue("group")}</Badge></div>
         ),
     },
-    {
-        accessorKey: "leaderId",
-        header: "LeaderId",
-        cell: ({ row }) => (
-            <div className="capitalize font-bold"><Link target="_blank" to={row.getValue("leaderId")}><Button className="text-blue-400 pl-0" variant="link">leaderID</Button></Link></div>
-        ),
-    },
-    {
-        accessorKey: "parentFbLink",
-        header: "Parent FB",
-        cell: ({ row }) => (
-            <div className="capitalize font-bold"><Link target="_blank" to={row.getValue("parentFbLink")}><Button className="text-blue-400 pl-0" variant="link">parenLink</Button></Link></div>
-        ),
-    },
-    {
-        accessorKey: "fines",
-        header: () => {
-            return (
-                <Button
-                    variant="ghost"
-                >
-                    Fines
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
-        cell: ({ row }: { row: Row<Student> }) => (
-            <HoverCard>
-                <HoverCardTrigger asChild>
-                    <Button variant="link" >@fines</Button>
-                </HoverCardTrigger>
-                <HoverCardContent className="w-40 duration-100">
-                    <div className="flex justify-between">
-                        <span>githubFine</span><span>{(row.getValue("fines") as Student["fines"]).githubFine}</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span>miniLeaderFine</span><span>{(row.getValue("fines") as Student["fines"]).miniLeaderFine}</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span>miniStudentFine</span><span>{(row.getValue("fines") as Student["fines"]).miniStudentFine}</span>
-                    </div>
-                </HoverCardContent>
-            </HoverCard>
-        ),
-    },
-    {
-        accessorKey: "aura",
-        header: () => {
-            return (
-                <Button
-                    variant="ghost"
-                >
-                    Aura
-                    <ArrowUpDown />
-                </Button>
-            )
-        },
-        cell: ({ row }: { row: Row<Student> }) => (
-            <HoverCard>
-                <HoverCardTrigger asChild>
-                    <Button variant="link" onTouchStart={(event) => event.preventDefault()}>@Aura</Button>
-                </HoverCardTrigger>
-                <HoverCardContent className="w-40 duration-100">
-                    <div className="flex justify-between">
-                        <span>classwork</span><span>{(row.getValue("aura") as Student["aura"]).classwork}</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span>attendance</span><span>{(row.getValue("aura") as Student["aura"]).attendance}</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span>help</span><span>{(row.getValue("aura") as Student["aura"]).help}</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span>camera</span><span>{(row.getValue("aura") as Student["aura"]).camera}</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span>answers</span><span>{(row.getValue("aura") as Student["aura"]).answers}</span>
-                    </div>
-                </HoverCardContent>
-            </HoverCard >
-        ),
-    },
 
-    {
-        accessorKey: "payedInfo",
-        header: "PayedInfo",
-        cell: ({ row }) => (
-            <div className="capitalize font-bold">{row.getValue("payedInfo") ? "True" : "False"}</div>
-        ),
-    },
 ]
 
 export function AllStudents() {

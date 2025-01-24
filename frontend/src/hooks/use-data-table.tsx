@@ -101,12 +101,12 @@ export default function DataTable({
                     name={id as keyof Student}
                     render={({ field, fieldState: { error } }) => (
                         <FormItem className="grid grid-cols-4 items-center w-full justify-start gap-2">
-                            <FormLabel className="grid-cols-2 capitalize">{label}</FormLabel>
+                            <FormLabel className="sm:col-span-1 col-span-4 row-span-1 capitalize">{label}</FormLabel>
                             <FormControl>
                                 {label == "Classwork" || label == "Attendance" || label == "Help" || label == "Camera" || label == "Answers" ? (
                                     <Input
                                         type={typeMain}
-                                        className="col-span-3"
+                                        className="sm:col-span-3 sm:row-span-1 row-span-2 w-full col-span-4"
                                         placeholder={`Enter ${label}`}
                                         min={minNum}
                                         max={maxNum}
@@ -125,7 +125,7 @@ export default function DataTable({
                                 ) : (
                                     <Input
                                         type={typeMain}
-                                        className="col-span-3"
+                                        className="sm:col-start-3 sm:col-span-3 sm:row-span-1 row-span-2 col-span-4 "
                                         placeholder={`Enter ${label}`}
                                         min={minNum}
                                         max={maxNum}
@@ -156,10 +156,10 @@ export default function DataTable({
 
                     render={({ field, fieldState: { error } }) => (
                         <FormItem className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                            <FormLabel className="grid-cols-2">{label}</FormLabel>
+                            <FormLabel className="sm:col-span-2 col-span-4">{label}</FormLabel>
                             <FormControl>
                                 <Input
-                                    className="col-span-3"
+                                    className="sm:col-span-2 col-span-4 sm:row-span-1 row-start-2"
                                     placeholder={`Enter ${label}`}
                                     {...field}
                                     value={typeof field.value === 'boolean' || typeof field.value === 'object' ? '' : field.value}
@@ -176,38 +176,42 @@ export default function DataTable({
             )
         } else if (typeMain === 'role') {
             return (
-                <FormField
-                    control={form.control}
-                    name={id as keyof Student}
-                    render={({ fieldState: { error } }) => (
-                        <FormItem className="grid grid-cols-4 items-center w-full justify-start gap-2">
-                            <FormLabel className="grid-cols-2">Role</FormLabel>
-                            <FormField
-                                control={form.control}
-                                name={id as keyof Student}
-                                render={({ field, fieldState: { error } }) => (
-                                    <FormItem className="col-span-3">
-                                        <Select onValueChange={field.onChange} defaultValue={typeof field.value === 'string' ? field.value : undefined}>
-                                            <SelectTrigger >
-                                                <SelectValue placeholder="Select a fruit" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectGroup>
-                                                    {roles.map((role, index) => (
-                                                        <SelectItem key={index} value={role}>
-                                                            {role}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectGroup>
-                                            </SelectContent>
-                                        </Select>
-                                        <FormMessage className="col-span-3">{error?.message}</FormMessage>
-                                    </FormItem>
-                                )}
-                            />
-                        </FormItem>
-                    )}
-                />
+                <>
+                    <Separator />
+                    <FormField
+                        control={form.control}
+                        name={id as keyof Student}
+                        render={({ fieldState: { error } }) => (
+                            <FormItem className="grid grid-cols-4 items-center w-full justify-start gap-2">
+                                <FormLabel className="grid-cols-2">Role</FormLabel>
+                                <FormField
+                                    control={form.control}
+                                    name={id as keyof Student}
+                                    render={({ field, fieldState: { error } }) => (
+                                        <FormItem className="max-sm:col-span-4 max-sm:row-span-2 sm:col-start-3 sm:col-end-5 ">
+                                            <Select onValueChange={field.onChange} defaultValue={typeof field.value === 'string' ? field.value : undefined}>
+                                                <SelectTrigger >
+                                                    <SelectValue placeholder="Select a fruit" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectGroup>
+                                                        {roles.map((role, index) => (
+                                                            <SelectItem key={index} value={role}>
+                                                                {role}
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectGroup>
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage className="col-span-3">{error?.message}</FormMessage>
+                                        </FormItem>
+                                    )}
+                                />
+                            </FormItem>
+                        )}
+                    />
+                </>
+
             )
         }
     }
@@ -215,7 +219,7 @@ export default function DataTable({
         {
             value: "item-0",
             title: "Student Info",
-            triggerText: "Student Personal Information",
+            triggerText: "Student ID",
             contents: [
                 { label: "Parent Name", value: student?.parentName },
                 { label: "ID", value: student?.studentPersonalInfo?.studentId },
@@ -322,7 +326,7 @@ export default function DataTable({
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         </div>
-                        <div className="font-bold text-xl capitalize flex items-center">
+                        <div className="font-bold  sm:text-xl text-sm  capitalize flex items-center">
                             {title?.split(" ").map((word, index) => (
                                 <React.Fragment key={index}>
                                     {t(word)} <ChevronRight size={20} className="mt-1.5" color="hsl(var(--primary))" />
@@ -374,12 +378,13 @@ export default function DataTable({
                                                     </SheetTrigger>
                                                     <SheetContent>
                                                         <SheetHeader className="shadow-sm pb-2">
-                                                            <SheetTitle><span >{studentInfo ? "Edit Student" : "Info Student"}</span> <span className="dark:text-green-500 text-green-400">{student.name}</span></SheetTitle>
+                                                            <SheetTitle className="text-start">
+                                                                <span >{studentInfo ? "Edit Student" : "Info Student"}</span> <br className="sm:hidden" /><span className="dark:text-green-500 text-green-400">{student.name}</span></SheetTitle>
                                                             <SheetDescription className="flex items-center justify-between">
-                                                                <span>{studentInfo ? "Make changes to your profile here. Click save when you're done." : "Get Student information here."}</span>
+                                                                <span className="max-sm:hidden">{studentInfo ? "Make changes to your profile here. Click save when you're done." : "Get Student information here."}</span>
                                                                 <Button
                                                                     onClick={() => { setStudentInfo(!studentInfo) }}
-                                                                    className="bg-green-500 text-sm px-6 py-4 hover:bg-green-400">{!studentInfo ? "Edit" : "Info"}</Button>
+                                                                    className="bg-green-500 text-sm px-6 py-4 max-sm:ml-auto hover:bg-green-400">{!studentInfo ? "Edit" : "Info"}</Button>
                                                             </SheetDescription>
                                                         </SheetHeader>
                                                         {isLoading ? <Loading /> : (
@@ -413,7 +418,7 @@ export default function DataTable({
                                                                                     user?.user?.role.includes("admin")) && (
                                                                                     <>
                                                                                         <AccordionItem value="edit-student-9">
-                                                                                            <AccordionTrigger className="font-bold  leading-[5px] text-slate-400">Student Personal Information</AccordionTrigger>
+                                                                                            <AccordionTrigger className="font-bold  leading-[5px] text-slate-400">Student ID</AccordionTrigger>
                                                                                             <AccordionContent className="flex flex-col gap-2">                                                                                            {/* // ? speed */}
                                                                                                 {formRender('string', 0, 0, 'parentName', 'parent Name', [], '')}
                                                                                                 <Separator />
@@ -496,7 +501,6 @@ export default function DataTable({
                                                                             {/* // ? github fine */}
                                                                             {(user?.user?.role.includes("githubController") ||
                                                                                 (user?.user?.role.includes("miniLeaderController")) ||
-                                                                                (user?.user?.role.includes("miniMentorController")) ||
                                                                                 (user?.user?.role.includes("admin"))) && (
                                                                                     <>
                                                                                         <AccordionItem value="edit-student-4">
@@ -575,14 +579,12 @@ export default function DataTable({
                                                                                 user?.user?.role.includes("admin")
                                                                             ) && (
                                                                                     <>
-                                                                                        <AccordionItem value="edit-student-6">
+                                                                                        <AccordionItem value="edit-student-7">
 
                                                                                             {/* // ? leader comment */}
                                                                                             <AccordionTrigger className="capitalize font-bold leading-[5px] text-slate-400">Leader Comment</AccordionTrigger>
                                                                                             <AccordionContent className="flex flex-col gap-2">
                                                                                                 {formRender('string', 0, 0, 'comment.leaderComment', 'Leader Comment', [], '')}
-                                                                                                <Separator />
-                                                                                                {formRender('string', 0, 0, 'comment.miniLeaderComment', 'Mini Leader Comment', [], '')}
                                                                                                 <Separator />
 
                                                                                                 {/* // ? leader proof */}
@@ -592,6 +594,26 @@ export default function DataTable({
                                                                                         </AccordionItem>
                                                                                     </>
                                                                                 )}
+
+                                                                            {(
+                                                                                user?.user?.role.includes("admin") ||
+                                                                                (user?.user?.role.includes("leader") && (student.leaderId == user?.user?._id)) ||
+                                                                                (user?.user?.role.includes("miniLeader") && (student.leaderId == user?.user?.miniLeaderId)) ||
+                                                                                user?.user?.role.includes("admin")
+                                                                            ) && (
+                                                                                    <>
+                                                                                        <AccordionItem value="edit-student-6">
+
+                                                                                            {/* // ? mini leader comment */}
+                                                                                            <AccordionTrigger className="capitalize font-bold  text-slate-400">Mini Leader Comment</AccordionTrigger>
+                                                                                            <AccordionContent className="flex flex-col gap-2">
+                                                                                                <Separator />
+                                                                                                {formRender('string', 0, 0, 'comment.miniLeaderComment', 'Mini Leader Comment', [], '')}
+                                                                                            </AccordionContent>
+                                                                                        </AccordionItem>
+                                                                                    </>
+                                                                                )}
+
                                                                             {(
                                                                                 user?.user?.role.includes("miniLeaderController") ||
                                                                                 user?.user?.role.includes("githubController") ||
@@ -659,6 +681,10 @@ export default function DataTable({
 
                                                                                     </AccordionItem>
                                                                                 ))}
+                                                                                <div className="flex gap-2 items-center">
+                                                                                    <h2 className="text-green-500  ">last update</h2>
+                                                                                    <p className="font-bold">{student?.githubLastUpdate}</p>
+                                                                                </div>
                                                                             </Accordion>
                                                                         </div>
                                                                     </>

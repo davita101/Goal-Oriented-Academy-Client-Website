@@ -44,7 +44,7 @@ const UserSchema = new mongoose.Schema(
       default: Date.now
     }, //  admin🟦
     miniLeaderId: {
-      type: String,
+      type: String
     }, // 🟩 miniLeader
     controllers: {
       leaderController: {
@@ -98,35 +98,21 @@ const UserSchema = new mongoose.Schema(
             }
           },
           leaderCheck: {
-            leaderGithubUrl: {
-              type: String,
-              default: ''
-            },
-            leaderGithubCheck: {
-              type: Number,
-              default: 0
-            },
-            leaderCodewarsUrl: {
-              type: String,
-              default: ''
-            },
+            //? delete leaderGithubUrl: {
+            //? delete leaderCodewarsUrl: {
             parentRating: {
               type: Number,
               default: 0
             },
+            //? update
             examResults: {
-              firstCheck: {
-                type: Number,
-                default: 0
-              },
-              secondCheck: {
-                type: Number,
-                default: 0
-              }
+              type: [Number],
+              default: []
             },
+            //? update
             codewarsResult: {
-              type: Number,
-              default: 0
+              type: [Number],
+              default: []
             },
             projectResults: {
               type: [Number],
@@ -135,25 +121,15 @@ const UserSchema = new mongoose.Schema(
           }
         },
         githubCheck: {
-          miniLeaderCheck: {
-            firstCheck: {
-              type: Number,
-              default: 0
-            },
-            secondCheck: {
-              type: Number,
-              default: 0
-            }
+          //?  update
+          miniLeaderCheck:  {
+            type: [Number],
+            default: []
           },
+          //? update
           studentCheck: {
-            firstCheck: {
-              type: Number,
-              default: 0
-            },
-            secondCheck: {
-              type: Number,
-              default: 0
-            }
+            type: [Number],
+            default: []
           }
         },
         finallyRating: {
@@ -185,15 +161,15 @@ const UserSchema = new mongoose.Schema(
               default: 0
             }
           },
+          // ? update
           exam: {
-            type: Number,
-            default: 0
+            type: [Number],
+            default: []
           },
+          // ? update
           githubCheck: {
-            firstCheck: {
-              type: Number,
-              default: 0
-            }
+            type: [Number],
+            default: []
           }
         },
         mentorControl: [
@@ -252,9 +228,13 @@ const UserSchema = new mongoose.Schema(
       github: {
         type: String,
         default: ''
+      },
+      //todo add codewars
+      codewars: {
+        type: String,
+        default: ''
       }
     },
-
     restEmailExpiredAt: Date,
     verificationToken: String,
     verificationTokenExpiresAt: Date,

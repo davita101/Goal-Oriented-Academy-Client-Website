@@ -47,10 +47,15 @@ export function NavUser() {
   const handleLogout = () => {
     logout(user.user?.email)
   }
-
-  React.useEffect(() => {
-    getLeaderStudents(user?.user?._id)
-  }, [user?.user._id, getLeaderStudents])
+  if (user?.user?.role.includes("miniLeader") && user?.user?.role.length === 1) {
+    React.useEffect(() => {
+      getLeaderStudents(user?.user?.miniLeaderId)
+    }, [user?.user.miniLeaderId, getLeaderStudents])
+  }else {
+    React.useEffect(() => {
+      getLeaderStudents(user?.user?._id)
+    }, [user?.user._id, getLeaderStudents])
+  }
 
   const handleCheck = () => {
     navigator.clipboard.writeText(user?.user?._id)
@@ -61,16 +66,16 @@ export function NavUser() {
 
   }
   return (
-    <SidebarMenu className="mt-[-.5rem] py-2">
+    <SidebarMenu className="data-[state=open]:mt-2">
       <SidebarMenuItem >
         <DropdownMenu>
-          <DropdownMenuTrigger asChild className="dark:bg-[var(--background)] bg-slate-50 mt-0">
+          <DropdownMenuTrigger asChild className="dark:bg-background bg-slate-50 mt-0">
             <SidebarMenuButton
               size="lg"
               className=" data-[state=open]:bg-gray-100 data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user?.user?.avatar} alt={`Goal oriented academy user ${user?.user?.name}`} />
+              <Avatar className="h-8 w-8 rounded-lg ">
+                <AvatarImage className="object-cover" src={user?.user?.avatar} alt={`Goal oriented academy user ${user?.user?.name}`} />
                 <AvatarFallback className="rounded-lg capitalize">{user?.user?.name.split(/\s+/)[0].slice(0, 1)}{user?.user?.name.split(/\s+/)[1].slice(0, 1)}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
@@ -89,7 +94,7 @@ export function NavUser() {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user?.user?.avatar} alt={`Goal oriented academy user ${user?.user?.name}`} />
+                  <AvatarImage className="object-cover" src={user?.user?.avatar} alt={`Goal oriented academy user ${user?.user?.name}`} />
                   <AvatarFallback className="rounded-lg capitalize">{user?.user?.name.split(/\s+/)[0].slice(0, 1)}{user?.user?.name.split(/\s+/)[1].slice(0, 1)}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">

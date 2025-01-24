@@ -8,6 +8,7 @@ export interface User {
         facebook: string;
         github: string;
         linkedin: string;
+        codewars: string;
     };
     information: {
         leaderInformation: {
@@ -20,26 +21,15 @@ export interface User {
                 };
                 leaderCheck: {
                     leaderGithubCheck: number;
-                    leaderCodewarsUrl: string;
                     parentRating: number;
-                    examResults: {
-                        firstCheck: number;
-                        secondCheck: number;
-                    };
-                    codewarsResult: number;
+                    examResults: number[]
+                    codewarsResult: number[];
                     projectResults: number[];
-                    leaderGithubUrl: string;
                 };
             };
             githubCheck: {
-                miniLeaderCheck: {
-                    firstCheck: number;
-                    secondCheck: number;
-                };
-                studentCheck: {
-                    firstCheck: number;
-                    secondCheck: number;
-                };
+                miniLeaderCheck: number[]
+                studentCheck: number[]
             };
             finallyRating: number;
             finalSalary: number;
@@ -52,10 +42,8 @@ export interface User {
                     purple: number;
                     black: number;
                 };
-                exam: number;
-                githubCheck: {
-                    firstCheck: number;
-                };
+                exam: number[];
+                githubCheck: number[];
             };
             mentorControl: {
                 mentorController: string;
