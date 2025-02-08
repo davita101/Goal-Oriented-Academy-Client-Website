@@ -84,7 +84,7 @@ export default function DataTable({
     setPageSizeSet: any,
     paginationAllStudents: any,
 }) {
-    const [stepNumber, setStep] = React.useState(1)
+    const [stepNumber, setStep] = React.useState(5)
     const handleInputChange = (row: any, field: string, value: string | number) => {
         if (row && row.original) {
             row.original[field] = value;
@@ -92,92 +92,101 @@ export default function DataTable({
         }
     }
     const formRender = (typeMain: string, minNum: number, maxNum: number, id: string, label: string, roles: string[], row: string) => {
-        <Separator />
+
+
 
         if (typeMain === 'number') {
             return (
-                <FormField
-                    control={form.control}
-                    name={id as keyof Student}
-                    render={({ field, fieldState: { error } }) => (
-                        <FormItem className="grid grid-cols-4 items-center w-full justify-start gap-2">
-                            <FormLabel className="sm:col-span-1 col-span-4 row-span-1 capitalize">{label}</FormLabel>
-                            <FormControl>
-                                {label == "Classwork" || label == "Attendance" || label == "Help" || label == "Camera" || label == "Answers" ? (
-                                    <Input
-                                        type={typeMain}
-                                        className="sm:col-span-3 sm:row-span-1 row-span-2 w-full col-span-4"
-                                        placeholder={`Enter ${label}`}
-                                        min={minNum}
-                                        max={maxNum}
-                                        step={stepNumber}
-                                        {...field}
-                                        value={typeof field.value === 'boolean' || typeof field.value === 'object' ? '' : field.value}
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                            const value = e.target.value === '' ? '' : Number(e.target.value);
-                                            const numericValue = Number(value);
-                                            if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= maxNum) {
-                                                field.onChange(value);
-                                                handleInputChange(oneRowSelection, id, value);
-                                            }
-                                        }}
-                                    />
-                                ) : (
-                                    <Input
-                                        type={typeMain}
-                                        className="sm:col-start-3 sm:col-span-3 sm:row-span-1 row-span-2 col-span-4 "
-                                        placeholder={`Enter ${label}`}
-                                        min={minNum}
-                                        max={maxNum}
-                                        // !step={stepNumber}
-                                        {...field}
-                                        value={typeof field.value === 'boolean' || typeof field.value === 'object' ? '' : field.value}
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                            const value = e.target.value === '' ? '' : Number(e.target.value);
-                                            const numericValue = Number(value);
-                                            if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= maxNum) {
-                                                field.onChange(value);
-                                                handleInputChange(oneRowSelection, id, value);
-                                            }
-                                        }}
-                                    />
-                                )}
-                            </FormControl>
-                            <FormMessage className="col-span-3">{error?.message}</FormMessage>
-                        </FormItem>
-                    )}
-                />
+                <>
+                    <Separator className="my-4" />
+
+                    <FormField
+                        control={form.control}
+                        name={id as keyof Student}
+                        render={({ field, fieldState: { error } }) => (
+                            <FormItem className="grid grid-cols-4 items-center w-full justify-start gap-2">
+                                <FormLabel className="sm:col-span-1 col-span-4 row-span-1 capitalize ">{label}</FormLabel>
+                                <FormControl>
+                                    {label == "Classwork" || label == "Attendance" || label == "Help" || label == "Camera" || label == "Answers" ? (
+                                        <Input
+                                            type={typeMain}
+                                            className="sm:col-span-3 sm:row-span-1 row-span-2 w-full col-span-4 mx-[-.1rem]"
+                                            placeholder={`Enter ${label}`}
+                                            min={minNum}
+                                            max={maxNum}
+                                            step={stepNumber}
+                                            {...field}
+                                            value={typeof field.value === 'boolean' || typeof field.value === 'object' ? '' : field.value}
+                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                                const value = e.target.value === '' ? '' : Number(e.target.value);
+                                                const numericValue = Number(value);
+                                                if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= maxNum) {
+                                                    field.onChange(value);
+                                                    handleInputChange(oneRowSelection, id, value);
+                                                }
+                                            }}
+                                        />
+                                    ) : (
+                                        <Input
+                                            type={typeMain}
+                                            className="sm:col-start-3 sm:col-span-3 sm:row-span-1 row-span-2 col-span-4 "
+                                            placeholder={`Enter ${label}`}
+                                            min={minNum}
+                                            max={maxNum}
+                                            // !step={stepNumber}
+                                            {...field}
+                                            value={typeof field.value === 'boolean' || typeof field.value === 'object' ? '' : field.value}
+                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                                const value = e.target.value === '' ? '' : Number(e.target.value);
+                                                const numericValue = Number(value);
+                                                if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= maxNum) {
+                                                    field.onChange(value);
+                                                    handleInputChange(oneRowSelection, id, value);
+                                                }
+                                            }}
+                                        />
+                                    )}
+                                </FormControl>
+                                <FormMessage className="col-span-3">{error?.message}</FormMessage>
+                            </FormItem>
+                        )}
+                    />
+                </>
+
             )
         } else if (typeMain === 'string') {
             return (
-                <FormField
-                    control={form.control}
-                    name={id as keyof Student}
+                <>
+                    <Separator className="my-4" />
+                    <FormField
+                        control={form.control}
+                        name={id as keyof Student}
+                        render={({ field, fieldState: { error } }) => (
+                            <FormItem className="grid grid-cols-4  items-center w-full justify-start gap-2">
+                                <FormLabel className="sm:col-span-2 col-span-4">{label}</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        className="sm:col-span-2 col-span-4 sm:row-span-1 row-start-2 mx-[-.1rem]"
+                                        placeholder={`Enter ${label}`}
+                                        {...field}
+                                        value={typeof field.value === 'boolean' || typeof field.value === 'object' ? '' : field.value}
+                                        onChange={(e) => {
+                                            field.onChange(e);
+                                            handleInputChange(oneRowSelection, id, e.target.value);
+                                        }}
+                                    />
+                                </FormControl>
+                                <FormMessage className="col-span-3">{error?.message}</FormMessage>
+                            </FormItem>
+                        )}
+                    />
+                </>
 
-                    render={({ field, fieldState: { error } }) => (
-                        <FormItem className="grid grid-cols-4  items-center w-full justify-start gap-2">
-                            <FormLabel className="sm:col-span-2 col-span-4">{label}</FormLabel>
-                            <FormControl>
-                                <Input
-                                    className="sm:col-span-2 col-span-4 sm:row-span-1 row-start-2"
-                                    placeholder={`Enter ${label}`}
-                                    {...field}
-                                    value={typeof field.value === 'boolean' || typeof field.value === 'object' ? '' : field.value}
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                        handleInputChange(oneRowSelection, id, e.target.value);
-                                    }}
-                                />
-                            </FormControl>
-                            <FormMessage className="col-span-3">{error?.message}</FormMessage>
-                        </FormItem>
-                    )}
-                />
             )
         } else if (typeMain === 'role') {
             return (
                 <>
-                    <Separator />
+                    <Separator className="my-4" />
                     <FormField
                         control={form.control}
                         name={id as keyof Student}
@@ -218,7 +227,7 @@ export default function DataTable({
     const accordionData = [
         {
             value: "item-0",
-            title: "Student Info",
+            title: "Student",
             triggerText: "Student ID",
             contents: [
                 { label: "Parent Name", value: student?.parentName },
@@ -230,8 +239,8 @@ export default function DataTable({
         },
         {
             value: "item-1",
-            title: "Student Info",
-            triggerText: "Student info",
+            title: "Student",
+            triggerText: "Student",
             contents: [
                 { label: "Leader ID", value: student?.leaderId },
                 { label: "Name", value: student?.name },
@@ -249,8 +258,8 @@ export default function DataTable({
         },
         {
             value: "controller-info",
-            title: "Controller Info",
-            triggerText: "Controller info",
+            title: "Controller ",
+            triggerText: "Controller ",
             contents: [
                 { label: "Finally", value: student?.fines?.githubFine + student?.fines?.miniLeaderFine + student?.fines?.miniStudentFine },
                 { label: "Github Fine", value: student?.fines?.githubFine },
@@ -260,8 +269,8 @@ export default function DataTable({
         },
         {
             value: "aura-info",
-            title: "Aura Info",
-            triggerText: "Aura info",
+            title: "Aura ",
+            triggerText: "Aura",
             contents: [
                 { label: "Finally", value: student?.aura?.answers + student?.aura?.classwork + student?.aura?.attendance + student?.aura?.camera + student?.aura?.help },
                 { label: "Classwork", value: student?.aura?.classwork },
@@ -272,8 +281,8 @@ export default function DataTable({
             ],
         },
         {
-            value: "comments-info",
-            title: "Comments Info",
+            value: "comments",
+            title: "Comments",
             triggerText: "Comments",
             contents: [
                 { label: "Mini Leader Comment", value: student?.comment?.miniLeaderComment },
@@ -289,7 +298,7 @@ export default function DataTable({
         <div className={`bg-[var(--background)] grid auto-rows-min overflow-hidden gap-4 grid-cols-1 px-2`}>
             <ResizablePanelGroup direction="horizontal" >
                 <ResizablePanel defaultSize={100}>
-                    <div className="">
+                    <div>
                         <div className="flex items-center py-4">
                             <Input
                                 placeholder={`${t("student")} name...`}
@@ -326,10 +335,23 @@ export default function DataTable({
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         </div>
-                        <div className="font-bold  sm:text-xl text-sm  capitalize flex items-center">
+                        <div className="sm:hidden  font-bold  sm:text-xl text-sm  capitalize flex items-center">
+                            {title?.split(" ").map((word, index) => (
+
+                                index > 1 && (
+                                    <React.Fragment key={index}>
+                                        <span>{t(word)}</span>
+                                        <ChevronRight size={20} color="hsl(var(--primary))" />
+                                    </React.Fragment>
+                                )
+                            ))}
+                            {user?.user?.name}
+                        </div>
+                        <div className="max-sm:hidden text-secondary font-bold  sm:text-xl text-sm  capitalize flex items-center">
                             {title?.split(" ").map((word, index) => (
                                 <React.Fragment key={index}>
-                                    {t(word)} <ChevronRight size={20} className="mt-1.5" color="hsl(var(--primary))" />
+                                    <span>{t(word)}</span>
+                                    <ChevronRight size={20} color="hsl(var(--secondary))" />
                                 </React.Fragment>
                             ))}
                             {user?.user?.name}
@@ -344,7 +366,7 @@ export default function DataTable({
                                             <TableRow key={headerGroup.id}>
                                                 {headerGroup.headers.map((header) => {
                                                     return (
-                                                        <TableHead key={header.id}>
+                                                        <TableHead key={header.id} className="my-6">
                                                             {header.isPlaceholder
                                                                 ? null
                                                                 : flexRender(
@@ -362,7 +384,7 @@ export default function DataTable({
                                             table.getRowModel().rows.map((row: { id: React.Key | null | undefined; original: any; getIsSelected: () => any; getVisibleCells: () => any[] }) => (
 
                                                 <Sheet key={row.id}>
-                                                    <SheetTrigger asChild onClick={() => { setOneRowSelection(row.original) }}>
+                                                    <SheetTrigger className="relative " asChild onClick={() => { setOneRowSelection(row.original) }} >
                                                         <TableRow
                                                             data-state={row.getIsSelected() && "selected"}
                                                         >
@@ -377,7 +399,7 @@ export default function DataTable({
                                                         </TableRow>
                                                     </SheetTrigger>
                                                     <SheetContent>
-                                                        <SheetHeader className="shadow-sm pb-2">
+                                                        <SheetHeader className="shadow-sm pb-2 p-6">
                                                             <SheetTitle className="text-start">
                                                                 <span >{studentInfo ? "Edit Student" : "Info Student"}</span> <br className="sm:hidden" /><span className="dark:text-green-500 text-green-400">{student.name}</span></SheetTitle>
                                                             <SheetDescription className="flex items-center justify-between">
@@ -388,10 +410,10 @@ export default function DataTable({
                                                             </SheetDescription>
                                                         </SheetHeader>
                                                         {isLoading ? <Loading /> : (
-                                                            <ScrollArea className="h-full p-4 pb-16">
+                                                            <ScrollArea className="h-full pb-16">
                                                                 {(studentInfo && !isLoading) ? (<Form {...form}>
-                                                                    <form onSubmit={form.handleSubmit(onSubmit)}>
-                                                                        <Accordion type="multiple" className="grid gap-4 py-4">
+                                                                    <form onSubmit={form.handleSubmit(onSubmit)} className="relative">
+                                                                        <Accordion type="multiple" className="grid gap-4 py-4 px-6">
                                                                             {/* // ? leader id */}
                                                                             {
                                                                                 (
@@ -399,7 +421,7 @@ export default function DataTable({
                                                                                     user?.user?.role.includes("leader") ||
                                                                                     (user?.user?.role.includes("admin"))) && (
                                                                                     <>
-                                                                                        <AccordionItem value="edit-student-1">
+                                                                                        <AccordionItem value="edit-student-1 p-2">
 
                                                                                             <AccordionTrigger className="font-bold leading-[5px] text-slate-400">ID</AccordionTrigger>
                                                                                             <AccordionContent>
@@ -412,8 +434,6 @@ export default function DataTable({
                                                                             {/* // ? student information */}
                                                                             {
                                                                                 (user?.user?.role.includes("leaderController") ||
-                                                                                    user?.user?.role.includes("mentor") ||
-                                                                                    user?.user?.role.includes("mentorAssistant") ||
                                                                                     user?.user?.role.includes("leader") ||
                                                                                     user?.user?.role.includes("admin")) && (
                                                                                     <>
@@ -421,13 +441,9 @@ export default function DataTable({
                                                                                             <AccordionTrigger className="font-bold  leading-[5px] text-slate-400">Student ID</AccordionTrigger>
                                                                                             <AccordionContent className="flex flex-col gap-2">                                                                                            {/* // ? speed */}
                                                                                                 {formRender('string', 0, 0, 'parentName', 'parent Name', [], '')}
-                                                                                                <Separator />
                                                                                                 {formRender('string', 0, 0, 'studentPersonalInfo.studentId', 'ID', [], '')}
-                                                                                                <Separator />
                                                                                                 {formRender('string', 0, 0, 'studentPersonalInfo.studentRegion', 'Region', [], '')}
-                                                                                                <Separator />
                                                                                                 {formRender('string', 0, 0, 'studentPersonalInfo.studentCity', 'City', [], '')}
-                                                                                                <Separator />
                                                                                                 {formRender('string', 0, 0, 'studentPersonalInfo.studentStreet', 'Street', [], '')}
                                                                                             </AccordionContent>
                                                                                         </AccordionItem>
@@ -446,26 +462,19 @@ export default function DataTable({
                                                                                         <AccordionContent className="flex flex-col gap-3">
                                                                                             {/* // ? name */}
                                                                                             {formRender('string', 0, 0, 'name', 'Name', [], '')}
-                                                                                            <Separator />
                                                                                             {/* // ? age */}
                                                                                             {formRender("number", 0, 99, "age", "Age", [], '')}
-                                                                                            <Separator />
 
                                                                                             {/* // ? email */}
                                                                                             {formRender('string', 0, 0, 'email', 'Email', [], '')}
-                                                                                            <Separator />
                                                                                             {/* // ? github */}
                                                                                             {formRender('string', 0, 0, 'githubLink', 'Github', [], '')}
-                                                                                            <Separator />
                                                                                             {/* // ? Student Facebook Link */}
                                                                                             {formRender('string', 0, 0, 'studentFbLink', 'Student Facebook', [], '')}
-                                                                                            <Separator />
                                                                                             {/* // ? parent facebook link */}
                                                                                             {formRender('string', 0, 0, 'parentFbLink', 'Parent Facebook', [], '')}
-                                                                                            <Separator />
                                                                                             {/* // ? github token */}
                                                                                             {formRender('string', 0, 0, 'githubToken', 'Github Token', [], '')}
-                                                                                            <Separator />
                                                                                             {/* // ? github last update */}
                                                                                             {formRender('string', 0, 0, 'githubLastUpdate', 'Github Last Update', [], '')}
 
@@ -490,7 +499,6 @@ export default function DataTable({
                                                                                             <AccordionTrigger className="font-bold  leading-[5px] text-slate-400">Group</AccordionTrigger>
                                                                                             <AccordionContent className="flex flex-col gap-2">                                                                                            {/* // ? speed */}
                                                                                                 {formRender('number', 0, 4, 'speed', 'Speed', [], '')}
-                                                                                                <Separator />
                                                                                                 {formRender('number', 0, 99, 'group', 'Group', [], '')}
                                                                                             </AccordionContent>
                                                                                         </AccordionItem>
@@ -508,10 +516,8 @@ export default function DataTable({
                                                                                             <AccordionTrigger className="capitalize font-bold leading-[1px] text-md text-slate-400">Fines</AccordionTrigger>
                                                                                             <AccordionContent className="flex flex-col gap-2">
                                                                                                 {formRender('number', 0, 99, 'fines.githubFine', 'Github Fine', [], '')}
-                                                                                                <Separator />
                                                                                                 {/* // ? mini leader fine */}
                                                                                                 {formRender('number', 0, 99, 'fines.miniLeaderFine', 'Mini Leader Fine', [], '')}
-                                                                                                <Separator />
                                                                                                 {/* // ? mini student fine */}
                                                                                                 {formRender('number', 0, 99, 'fines.miniStudentFine', 'Mini Student Fine', [], '')}
                                                                                             </AccordionContent>
@@ -556,16 +562,16 @@ export default function DataTable({
                                                                                                 </div>
                                                                                                 {/* // ? aura classwork */}
                                                                                                 {formRender('number', 0, 999999, 'aura.classwork', 'Classwork', [], '')}
-                                                                                                <Separator />
+
                                                                                                 {/* // ? aura attendance */}
                                                                                                 {formRender('number', 0, 999999, 'aura.attendance', 'Attendance', [], '')}
-                                                                                                <Separator />
+
                                                                                                 {/*// ? aura help */}
                                                                                                 {formRender('number', 0, 999999, 'aura.help', 'Help', [], '')}
-                                                                                                <Separator />
+
                                                                                                 {/* // ? aura camera */}
                                                                                                 {formRender('number', 0, 999999, 'aura.camera', 'Camera', [], '')}
-                                                                                                <Separator />
+
                                                                                                 {/* // ? aura answers */}
                                                                                                 {formRender('number', 0, 999999, 'aura.answers', 'Answers', [], '')}
                                                                                                 {/* // ? payed info */}
@@ -579,14 +585,12 @@ export default function DataTable({
                                                                                 user?.user?.role.includes("admin")
                                                                             ) && (
                                                                                     <>
-                                                                                        <AccordionItem value="edit-student-7">
+                                                                                        <AccordionItem value="edit-student-12">
 
                                                                                             {/* // ? leader comment */}
                                                                                             <AccordionTrigger className="capitalize font-bold leading-[5px] text-slate-400">Leader Comment</AccordionTrigger>
                                                                                             <AccordionContent className="flex flex-col gap-2">
                                                                                                 {formRender('string', 0, 0, 'comment.leaderComment', 'Leader Comment', [], '')}
-                                                                                                <Separator />
-
                                                                                                 {/* // ? leader proof */}
                                                                                                 {formRender('string', 0, 0, 'comment.leaderProof', 'Leader Proof', [], '')}
                                                                                                 {/* // ? mini leader controller */}
@@ -602,12 +606,11 @@ export default function DataTable({
                                                                                 user?.user?.role.includes("admin")
                                                                             ) && (
                                                                                     <>
-                                                                                        <AccordionItem value="edit-student-6">
+                                                                                        <AccordionItem value="edit-student-11">
 
                                                                                             {/* // ? mini leader comment */}
                                                                                             <AccordionTrigger className="capitalize font-bold  text-slate-400">Mini Leader Comment</AccordionTrigger>
                                                                                             <AccordionContent className="flex flex-col gap-2">
-                                                                                                <Separator />
                                                                                                 {formRender('string', 0, 0, 'comment.miniLeaderComment', 'Mini Leader Comment', [], '')}
                                                                                             </AccordionContent>
                                                                                         </AccordionItem>
@@ -622,11 +625,9 @@ export default function DataTable({
                                                                                 (
                                                                                     <>
                                                                                         <AccordionItem value="edit-student-7">
-
                                                                                             <AccordionTrigger className="capitalize font-bold leading-[5px] text-slate-400">Control comment</AccordionTrigger>
                                                                                             <AccordionContent className="flex flex-col gap-2">
                                                                                                 {formRender('string', 0, 0, 'comment.controller.miniLeaderController', 'Mini Leader Controller', [], '')}
-                                                                                                <Separator />
                                                                                                 {/* // ? leader controller */}
                                                                                                 {formRender('string', 0, 0, 'comment.controller.githubController', 'Github Controller', [], '')}
                                                                                             </AccordionContent>
@@ -634,7 +635,13 @@ export default function DataTable({
                                                                                     </>
                                                                                 )
                                                                             }
-                                                                            <Button type="submit" variant={"green"}
+                                                                        </Accordion>
+                                                                        <br />
+                                                                        <div className=" h- flex gap-2 sticky bottom-12 bg-background z-[9999] right-0 p-6 border-t-2">
+                                                                            <Button
+                                                                                type="submit"
+                                                                                variant={"green"}
+                                                                                className=" flex-2"
                                                                                 onClick={() =>
                                                                                     toast("Student has been updated", {
                                                                                         description: `${student.updatedAt}`,
@@ -645,25 +652,25 @@ export default function DataTable({
                                                                                     })}
 
                                                                             > Save changes</Button>
-                                                                        </Accordion>
+                                                                        </div>
                                                                     </form>
                                                                 </Form>)
 
                                                                     :
                                                                     <>
                                                                         <div>
-                                                                            <Accordion type="single" collapsible className="grid gap-4 py-4">
+                                                                            <Accordion type="single" collapsible className="grid gap-4 py-4 px-6">
                                                                                 {accordionData.map((item) => (
                                                                                     <AccordionItem key={item.value} value={item.value} title={item.title}>
-                                                                                        <AccordionTrigger className="font-bold leading-[5px] text-slate-400 capitalize">
-                                                                                            <b>{item.triggerText}</b>
+                                                                                        <AccordionTrigger className=" leading-[5px] text-foreground capitalize">
+                                                                                            <b className="text-secondary">{item.triggerText}</b>
                                                                                         </AccordionTrigger>
                                                                                         {
                                                                                             ["Student Personal Information", "Comments"].includes(item.triggerText) &&
                                                                                             item.contents.map((content, index) => (
                                                                                                 <AccordionContent key={index} className="grid grid-cols-4 items-center w-full justify-start gap-2">
-                                                                                                    <span className="col-span-2 font-bold capitalize">{content.label}</span>
-                                                                                                    <span className="col-start-1 text-slate-500/50 dark:text-green-400 font-bold">{content.value}</span>
+                                                                                                    <span className="col-span-2 font-bold capitalize  text-secondary">{content.label}</span>
+                                                                                                    <span className="col-start-1 text-secondary    font-bold">{content.value}</span>
                                                                                                     <Separator className="row-start-2 col-span-4" />
                                                                                                 </AccordionContent>
                                                                                             ))
@@ -674,7 +681,7 @@ export default function DataTable({
                                                                                                 <AccordionContent key={index} className="grid grid-cols-4 items-center w-full justify-start gap-2">
                                                                                                     <span className="col-span-2 font-bold capitalize">{content.label}</span>
                                                                                                     <span className="col-start-3 font-bold">{content.value}</span>
-                                                                                                    {<Separator className="row-start-2 col-span-4" />}
+                                                                                                    {index !== item.contents.length - 1 && (<Separator className="row-start-2 col-span-4 my-4" />)}
                                                                                                 </AccordionContent>
                                                                                             ))
                                                                                         }
@@ -682,9 +689,10 @@ export default function DataTable({
                                                                                     </AccordionItem>
                                                                                 ))}
                                                                                 <div className="flex gap-2 items-center">
-                                                                                    <h2 className="text-green-500  ">last update</h2>
+                                                                                    <h2 className="  ">last update</h2>
                                                                                     <p className="font-bold">{student?.githubLastUpdate}</p>
                                                                                 </div>
+
                                                                             </Accordion>
                                                                         </div>
                                                                     </>
@@ -709,7 +717,6 @@ export default function DataTable({
                             <ScrollBar orientation="horizontal" />
                         </ScrollArea >
                     </div>
-                    <p></p>
                     <div className="flex space-x-2 py-4">
                         <div className="flex-1 text-sm text-muted-foreground">
                             {table.getFilteredSelectedRowModel().rows.length} of{" "}
@@ -722,6 +729,7 @@ export default function DataTable({
                                     <SelectContent >
                                         <SelectGroup>
                                             <SelectLabel>Rows per page</SelectLabel>
+                                            <SelectItem value="5">5</SelectItem>
                                             <SelectItem value="10">10</SelectItem>
                                             <SelectItem value="20">20</SelectItem>
                                             <SelectItem value="30">30</SelectItem>
@@ -730,7 +738,7 @@ export default function DataTable({
                                     </SelectContent>
                                 </Select>
                             </div>
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 ">
                                 <Button
                                     variant="outline"
                                     size="sm"
