@@ -6,11 +6,12 @@ import { StudentState } from '../interface/(student)/student-state';
 const API_URL = import.meta.env.MODE === "development" ? 'http://localhost:5000' : "";
 
 const useLeaderStore = create<StudentState>((set) => ({
+    // ! default values
     leaderStudents: [],
     student: {} as Student,
-    isLoading: false,
+    isLoading: false, // [isLoading, setIsLoading] = useState(false)
     isCheckingAuth: true,
-
+// !--------------------------------------------------
     getLeaderStudents: async (leaderId: string) => {
         set({ isLoading: true });
         try {

@@ -11,7 +11,7 @@ import {
 import {
     flexRender,
 } from "@tanstack/react-table"
-import { ChevronDown, ChevronRight, } from "lucide-react"
+import { ChevronDown, ChevronRight, RefreshCw, } from "lucide-react"
 
 import {
     DropdownMenu,
@@ -98,7 +98,7 @@ export default function DataTable({
         if (typeMain === 'number') {
             return (
                 <>
-                    <Separator className="my-4" />
+                    <Separator className="my-4 bg-secondary" />
 
                     <FormField
                         control={form.control}
@@ -157,7 +157,7 @@ export default function DataTable({
         } else if (typeMain === 'string') {
             return (
                 <>
-                    <Separator className="my-4" />
+                    <Separator className="my-4 bg-secondary" />
                     <FormField
                         control={form.control}
                         name={id as keyof Student}
@@ -186,7 +186,7 @@ export default function DataTable({
         } else if (typeMain === 'role') {
             return (
                 <>
-                    <Separator className="my-4" />
+                    <Separator className="my-4 bg-secondary" />
                     <FormField
                         control={form.control}
                         name={id as keyof Student}
@@ -258,8 +258,8 @@ export default function DataTable({
         },
         {
             value: "controller-info",
-            title: "Controller ",
-            triggerText: "Controller ",
+            title: "Controller",
+            triggerText: "Controller",
             contents: [
                 { label: "Finally", value: student?.fines?.githubFine + student?.fines?.miniLeaderFine + student?.fines?.miniStudentFine },
                 { label: "Github Fine", value: student?.fines?.githubFine },
@@ -293,7 +293,11 @@ export default function DataTable({
             ],
         },
     ];
-
+    React.useEffect(() => {
+        if(!isLoading){
+            setStudentInfo(true)
+        }
+    },[isLoading])
     return (
         <div className={`bg-[var(--background)] grid auto-rows-min overflow-hidden gap-4 grid-cols-1 px-2`}>
             <ResizablePanelGroup direction="horizontal" >
@@ -335,7 +339,7 @@ export default function DataTable({
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         </div>
-                        <div className="sm:hidden  font-bold  sm:text-xl text-sm  capitalize flex items-center">
+                        <div className="sm:hidden    sm:text-xl text-sm  capitalize flex items-center">
                             {title?.split(" ").map((word, index) => (
 
                                 index > 1 && (
@@ -347,7 +351,7 @@ export default function DataTable({
                             ))}
                             {user?.user?.name}
                         </div>
-                        <div className="max-sm:hidden text-secondary font-bold  sm:text-xl text-sm  capitalize flex items-center">
+                        <div className="max-sm:hidden text-secondary   sm:text-xl text-sm  capitalize flex items-center">
                             {title?.split(" ").map((word, index) => (
                                 <React.Fragment key={index}>
                                     <span>{t(word)}</span>
@@ -401,304 +405,300 @@ export default function DataTable({
                                                     <SheetContent>
                                                         <SheetHeader className="shadow-sm pb-2 p-6">
                                                             <SheetTitle className="text-start">
-                                                                <span >{studentInfo ? "Edit Student" : "Info Student"}</span> <br className="sm:hidden" /><span className="dark:text-green-500 text-green-400">{student.name}</span></SheetTitle>
+                                                                <span >{!studentInfo ? "Edit Student" : "Info Student"}</span> <br className="sm:hidden" /><span className="dark:text-green-500 text-green-400">{student.name}</span></SheetTitle>
                                                             <SheetDescription className="flex items-center justify-between">
-                                                                <span className="max-sm:hidden">{studentInfo ? "Make changes to your profile here. Click save when you're done." : "Get Student information here."}</span>
+                                                                <span className="max-sm:hidden">{!studentInfo ? "Make changes to your profile here. Click save when you're done." : "Get Student information here."}</span>
                                                                 <Button
                                                                     onClick={() => { setStudentInfo(!studentInfo) }}
-                                                                    className="bg-green-500 text-sm px-6 py-4 max-sm:ml-auto hover:bg-green-400">{!studentInfo ? "Edit" : "Info"}</Button>
+                                                                    className="bg-green-500 text-sm px-6 py-4 max-sm:ml-auto hover:bg-green-400">{studentInfo ? "Edit" : "Info"}</Button>
                                                             </SheetDescription>
                                                         </SheetHeader>
-                                                        {isLoading ? <Loading /> : (
-                                                            <ScrollArea className="h-full pb-16">
-                                                                {(studentInfo && !isLoading) ? (<Form {...form}>
-                                                                    <form onSubmit={form.handleSubmit(onSubmit)} className="relative">
-                                                                        <Accordion type="multiple" className="grid gap-4 py-4 px-6">
-                                                                            {/* // ? leader id */}
-                                                                            {
-                                                                                (
-                                                                                    user?.user?.role.includes("leaderController") ||
-                                                                                    user?.user?.role.includes("leader") ||
-                                                                                    (user?.user?.role.includes("admin"))) && (
-                                                                                    <>
-                                                                                        <AccordionItem value="edit-student-1 p-2">
+                                                        <ScrollArea className="h-full pb-16">
+                                                            {(!studentInfo) ? (<Form {...form}>
+                                                                <form onSubmit={form.handleSubmit(onSubmit)} className="relative">
+                                                                    <Accordion type="single" collapsible className="grid gap-4 py-4 px-6">
+                                                                        {/* // ? leader id */}
+                                                                        {
+                                                                            (
+                                                                                user?.user?.role.includes("leaderController") ||
+                                                                                user?.user?.role.includes("leader") ||
+                                                                                (user?.user?.role.includes("admin"))) && (
+                                                                                <>
+                                                                                    <AccordionItem value="edit-student-1 p-2">
 
-                                                                                            <AccordionTrigger className="font-bold leading-[5px] text-slate-400">ID</AccordionTrigger>
-                                                                                            <AccordionContent>
-                                                                                                {formRender('string', 0, 0, 'leaderId', 'Leader ID', [], '')}
-                                                                                            </AccordionContent>
-                                                                                        </AccordionItem>
-                                                                                    </>
-                                                                                )
-                                                                            }
-                                                                            {/* // ? student information */}
-                                                                            {
-                                                                                (user?.user?.role.includes("leaderController") ||
-                                                                                    user?.user?.role.includes("leader") ||
-                                                                                    user?.user?.role.includes("admin")) && (
-                                                                                    <>
-                                                                                        <AccordionItem value="edit-student-9">
-                                                                                            <AccordionTrigger className="font-bold  leading-[5px] text-slate-400">Student ID</AccordionTrigger>
-                                                                                            <AccordionContent className="flex flex-col gap-2">                                                                                            {/* // ? speed */}
-                                                                                                {formRender('string', 0, 0, 'parentName', 'parent Name', [], '')}
-                                                                                                {formRender('string', 0, 0, 'studentPersonalInfo.studentId', 'ID', [], '')}
-                                                                                                {formRender('string', 0, 0, 'studentPersonalInfo.studentRegion', 'Region', [], '')}
-                                                                                                {formRender('string', 0, 0, 'studentPersonalInfo.studentCity', 'City', [], '')}
-                                                                                                {formRender('string', 0, 0, 'studentPersonalInfo.studentStreet', 'Street', [], '')}
-                                                                                            </AccordionContent>
-                                                                                        </AccordionItem>
-                                                                                    </>
-                                                                                )
-                                                                            }
-                                                                            {
+                                                                                        <AccordionTrigger className="  leading-[5px] text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar mb-2">ID</AccordionTrigger>
+                                                                                        <AccordionContent>
+                                                                                            {formRender('string', 0, 0, 'leaderId', 'Leader ID', [], '')}
+                                                                                        </AccordionContent>
+                                                                                    </AccordionItem>
+                                                                                </>
+                                                                            )
+                                                                        }
+                                                                        {/* // ? student information */}
+                                                                        {
+                                                                            (user?.user?.role.includes("leaderController") ||
+                                                                                user?.user?.role.includes("leader") ||
+                                                                                user?.user?.role.includes("admin")) && (
+                                                                                <>
+                                                                                    <AccordionItem value="edit-student-9">
+                                                                                        <AccordionTrigger className="  leading-[5px] text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar mb-2">Student ID</AccordionTrigger>
+                                                                                        <AccordionContent className="flex flex-col gap-2">                                                                                            {/* // ? speed */}
+                                                                                            {formRender('string', 0, 0, 'parentName', 'parent Name', [], '')}
+                                                                                            {formRender('string', 0, 0, 'studentPersonalInfo.studentId', 'ID', [], '')}
+                                                                                            {formRender('string', 0, 0, 'studentPersonalInfo.studentRegion', 'Region', [], '')}
+                                                                                            {formRender('string', 0, 0, 'studentPersonalInfo.studentCity', 'City', [], '')}
+                                                                                            {formRender('string', 0, 0, 'studentPersonalInfo.studentStreet', 'Street', [], '')}
+                                                                                        </AccordionContent>
+                                                                                    </AccordionItem>
+                                                                                </>
+                                                                            )
+                                                                        }
+                                                                        {
 
-                                                                                (user?.user?.role.includes("leaderController") ||
-                                                                                    ((user?.user?._id == student?.leaderId)) ||
-                                                                                    user?.user?.role.includes("admin")) &&
-                                                                                (<>
-                                                                                    <AccordionItem value="edit-student-2">
+                                                                            (user?.user?.role.includes("leaderController") ||
+                                                                                ((user?.user?._id == student?.leaderId)) ||
+                                                                                user?.user?.role.includes("admin")) &&
+                                                                            (<>
+                                                                                <AccordionItem value="edit-student-2">
 
-                                                                                        <AccordionTrigger className="font-bold leading-[5px] text-slate-400">Student Info</AccordionTrigger>
-                                                                                        <AccordionContent className="flex flex-col gap-3">
-                                                                                            {/* // ? name */}
-                                                                                            {formRender('string', 0, 0, 'name', 'Name', [], '')}
-                                                                                            {/* // ? age */}
-                                                                                            {formRender("number", 0, 99, "age", "Age", [], '')}
+                                                                                    <AccordionTrigger className=" leading-[5px] text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar mb-2">Student Info</AccordionTrigger>
+                                                                                    <AccordionContent className="flex flex-col gap-3">
+                                                                                        {/* // ? name */}
+                                                                                        {formRender('string', 0, 0, 'name', 'Name', [], '')}
+                                                                                        {/* // ? age */}
+                                                                                        {formRender("number", 0, 99, "age", "Age", [], '')}
 
-                                                                                            {/* // ? email */}
-                                                                                            {formRender('string', 0, 0, 'email', 'Email', [], '')}
-                                                                                            {/* // ? github */}
-                                                                                            {formRender('string', 0, 0, 'githubLink', 'Github', [], '')}
-                                                                                            {/* // ? Student Facebook Link */}
-                                                                                            {formRender('string', 0, 0, 'studentFbLink', 'Student Facebook', [], '')}
-                                                                                            {/* // ? parent facebook link */}
-                                                                                            {formRender('string', 0, 0, 'parentFbLink', 'Parent Facebook', [], '')}
-                                                                                            {/* // ? github token */}
-                                                                                            {formRender('string', 0, 0, 'githubToken', 'Github Token', [], '')}
-                                                                                            {/* // ? github last update */}
-                                                                                            {formRender('string', 0, 0, 'githubLastUpdate', 'Github Last Update', [], '')}
+                                                                                        {/* // ? email */}
+                                                                                        {formRender('string', 0, 0, 'email', 'Email', [], '')}
+                                                                                        {/* // ? github */}
+                                                                                        {formRender('string', 0, 0, 'githubLink', 'Github', [], '')}
+                                                                                        {/* // ? Student Facebook Link */}
+                                                                                        {formRender('string', 0, 0, 'studentFbLink', 'Student Facebook', [], '')}
+                                                                                        {/* // ? parent facebook link */}
+                                                                                        {formRender('string', 0, 0, 'parentFbLink', 'Parent Facebook', [], '')}
+                                                                                        {/* // ? github token */}
+                                                                                        {formRender('string', 0, 0, 'githubToken', 'Github Token', [], '')}
+                                                                                        {/* // ? github last update */}
+                                                                                        {formRender('string', 0, 0, 'githubLastUpdate', 'Github Last Update', [], '')}
 
-                                                                                            {/* // ? role */}
-                                                                                            <>
-                                                                                                {formRender('role', 0, 0, 'role', 'Role', ['student', 'miniLeader'], "")}
-                                                                                            </>
+                                                                                        {/* // ? role */}
+                                                                                        <>
+                                                                                            {formRender('role', 0, 0, 'role', 'Role', ['student', 'miniLeader'], "")}
+                                                                                        </>
 
+                                                                                    </AccordionContent>
+                                                                                </AccordionItem>
+                                                                            </>)}
+
+                                                                        {/* // ? group */}
+                                                                        {
+                                                                            (user?.user?.role.includes("leaderController") ||
+                                                                                user?.user?.role.includes("mentor") ||
+                                                                                user?.user?.role.includes("mentorAssistant") ||
+                                                                                user?.user?.role.includes("leader") ||
+                                                                                user?.user?.role.includes("admin")) && (
+                                                                                <>
+                                                                                    <AccordionItem value="edit-student-3">
+                                                                                        <AccordionTrigger className="  leading-[5px] text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar mb-2">Group</AccordionTrigger>
+                                                                                        <AccordionContent className="flex flex-col gap-2">                                                                                            {/* // ? speed */}
+                                                                                            {formRender('number', 0, 4, 'speed', 'Speed', [], '')}
+                                                                                            {formRender('number', 0, 99, 'group', 'Group', [], '')}
+                                                                                        </AccordionContent>
+                                                                                    </AccordionItem>
+                                                                                </>
+                                                                            )
+                                                                        }
+
+                                                                        {/* // ? github fine */}
+                                                                        {(user?.user?.role.includes("githubController") ||
+                                                                            (user?.user?.role.includes("miniLeaderController")) ||
+                                                                            (user?.user?.role.includes("admin"))) && (
+                                                                                <>
+                                                                                    <AccordionItem value="edit-student-4">
+
+                                                                                        <AccordionTrigger className="capitalize  leading-[1px] text-md text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar mb-2">Fines</AccordionTrigger>
+                                                                                        <AccordionContent className="flex flex-col gap-2">
+                                                                                            {formRender('number', 0, 99, 'fines.githubFine', 'Github Fine', [], '')}
+                                                                                            {/* // ? mini leader fine */}
+                                                                                            {formRender('number', 0, 99, 'fines.miniLeaderFine', 'Mini Leader Fine', [], '')}
+                                                                                            {/* // ? mini student fine */}
+                                                                                            {formRender('number', 0, 99, 'fines.miniStudentFine', 'Mini Student Fine', [], '')}
+                                                                                        </AccordionContent>
+                                                                                    </AccordionItem>
+                                                                                </>
+                                                                            )}
+                                                                        {/* //* mentor */}
+                                                                        {(
+                                                                            user?.user?.role.includes("admin") ||
+                                                                            user?.user?.role.includes("mentorAssistant") ||
+                                                                            user?.user?.role.includes("mentor")) && (
+                                                                                <>
+                                                                                    <AccordionItem value="edit-student-5">
+
+                                                                                        <AccordionTrigger className="capitalize  leading-[5px] text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar mb-2">Mentor Section</AccordionTrigger>
+                                                                                        <AccordionContent className="flex flex-col gap-2">
+                                                                                            <div className="flex gap-3 p-2 items-center">
+                                                                                                <FormLabel className="grid-cols-2">Step</FormLabel>
+                                                                                                <FormField
+                                                                                                    control={form.control}
+                                                                                                    name={""}
+                                                                                                    render={({ field, fieldState: { error } }) => (
+                                                                                                        <FormItem className="">
+                                                                                                            <Select onValueChange={(value) => { field.onChange(value); setStep(Number(value)) }} defaultValue={typeof field.value === 'string' ? field.value : undefined}>
+                                                                                                                <SelectTrigger>
+                                                                                                                    <SelectValue placeholder="Pick a number" />
+                                                                                                                </SelectTrigger>
+                                                                                                                <SelectContent>
+                                                                                                                    <SelectGroup >
+                                                                                                                        {stepArr.map(i => (
+                                                                                                                            <SelectItem key={i} value={i.toString()}>
+                                                                                                                                {i}
+                                                                                                                            </SelectItem>
+                                                                                                                        ))}
+                                                                                                                    </SelectGroup>
+                                                                                                                </SelectContent>
+                                                                                                            </Select>
+                                                                                                            <FormMessage className="col-span-3">{error?.message}</FormMessage>
+                                                                                                        </FormItem>
+                                                                                                    )}
+                                                                                                />
+                                                                                            </div>
+                                                                                            {/* // ? aura classwork */}
+                                                                                            {formRender('number', 0, 999999, 'aura.classwork', 'Classwork', [], '')}
+
+                                                                                            {/* // ? aura attendance */}
+                                                                                            {formRender('number', 0, 999999, 'aura.attendance', 'Attendance', [], '')}
+
+                                                                                            {/*// ? aura help */}
+                                                                                            {formRender('number', 0, 999999, 'aura.help', 'Help', [], '')}
+
+                                                                                            {/* // ? aura camera */}
+                                                                                            {formRender('number', 0, 999999, 'aura.camera', 'Camera', [], '')}
+
+                                                                                            {/* // ? aura answers */}
+                                                                                            {formRender('number', 0, 999999, 'aura.answers', 'Answers', [], '')}
+                                                                                            {/* // ? payed info */}
+                                                                                            {formRender('boolean', 0, 0, 'payedInfo', 'Payed Info', [], '')}
                                                                                         </AccordionContent>
                                                                                     </AccordionItem>
                                                                                 </>)}
+                                                                        {(
+                                                                            user?.user?.role.includes("admin") ||
+                                                                            (user?.user?.role.includes("leader") && (student.leaderId == user?.user?._id)) ||
+                                                                            user?.user?.role.includes("admin")
+                                                                        ) && (
+                                                                                <>
+                                                                                    <AccordionItem value="edit-student-12">
 
-                                                                            {/* // ? group */}
-                                                                            {
-                                                                                (user?.user?.role.includes("leaderController") ||
-                                                                                    user?.user?.role.includes("mentor") ||
-                                                                                    user?.user?.role.includes("mentorAssistant") ||
-                                                                                    user?.user?.role.includes("leader") ||
-                                                                                    user?.user?.role.includes("admin")) && (
-                                                                                    <>
-                                                                                        <AccordionItem value="edit-student-3">
-                                                                                            <AccordionTrigger className="font-bold  leading-[5px] text-slate-400">Group</AccordionTrigger>
-                                                                                            <AccordionContent className="flex flex-col gap-2">                                                                                            {/* // ? speed */}
-                                                                                                {formRender('number', 0, 4, 'speed', 'Speed', [], '')}
-                                                                                                {formRender('number', 0, 99, 'group', 'Group', [], '')}
-                                                                                            </AccordionContent>
-                                                                                        </AccordionItem>
-                                                                                    </>
-                                                                                )
-                                                                            }
-
-                                                                            {/* // ? github fine */}
-                                                                            {(user?.user?.role.includes("githubController") ||
-                                                                                (user?.user?.role.includes("miniLeaderController")) ||
-                                                                                (user?.user?.role.includes("admin"))) && (
-                                                                                    <>
-                                                                                        <AccordionItem value="edit-student-4">
-
-                                                                                            <AccordionTrigger className="capitalize font-bold leading-[1px] text-md text-slate-400">Fines</AccordionTrigger>
-                                                                                            <AccordionContent className="flex flex-col gap-2">
-                                                                                                {formRender('number', 0, 99, 'fines.githubFine', 'Github Fine', [], '')}
-                                                                                                {/* // ? mini leader fine */}
-                                                                                                {formRender('number', 0, 99, 'fines.miniLeaderFine', 'Mini Leader Fine', [], '')}
-                                                                                                {/* // ? mini student fine */}
-                                                                                                {formRender('number', 0, 99, 'fines.miniStudentFine', 'Mini Student Fine', [], '')}
-                                                                                            </AccordionContent>
-                                                                                        </AccordionItem>
-                                                                                    </>
-                                                                                )}
-                                                                            {/* //* mentor */}
-                                                                            {(
-                                                                                user?.user?.role.includes("admin") ||
-                                                                                user?.user?.role.includes("mentorAssistant") ||
-                                                                                user?.user?.role.includes("mentor")) && (
-                                                                                    <>
-                                                                                        <AccordionItem value="edit-student-5">
-
-                                                                                            <AccordionTrigger className="capitalize font-bold leading-[5px] text-slate-400">Mentor Section</AccordionTrigger>
-                                                                                            <AccordionContent className="flex flex-col gap-2">
-                                                                                                <div className="flex gap-3 p-2 items-center">
-                                                                                                    <FormLabel className="grid-cols-2">Step</FormLabel>
-                                                                                                    <FormField
-                                                                                                        control={form.control}
-                                                                                                        name={""}
-                                                                                                        render={({ field, fieldState: { error } }) => (
-                                                                                                            <FormItem className="">
-                                                                                                                <Select onValueChange={(value) => { field.onChange(value); setStep(Number(value)) }} defaultValue={typeof field.value === 'string' ? field.value : undefined}>
-                                                                                                                    <SelectTrigger>
-                                                                                                                        <SelectValue placeholder="Pick a number" />
-                                                                                                                    </SelectTrigger>
-                                                                                                                    <SelectContent>
-                                                                                                                        <SelectGroup >
-                                                                                                                            {stepArr.map(i => (
-                                                                                                                                <SelectItem key={i} value={i.toString()}>
-                                                                                                                                    {i}
-                                                                                                                                </SelectItem>
-                                                                                                                            ))}
-                                                                                                                        </SelectGroup>
-                                                                                                                    </SelectContent>
-                                                                                                                </Select>
-                                                                                                                <FormMessage className="col-span-3">{error?.message}</FormMessage>
-                                                                                                            </FormItem>
-                                                                                                        )}
-                                                                                                    />
-                                                                                                </div>
-                                                                                                {/* // ? aura classwork */}
-                                                                                                {formRender('number', 0, 999999, 'aura.classwork', 'Classwork', [], '')}
-
-                                                                                                {/* // ? aura attendance */}
-                                                                                                {formRender('number', 0, 999999, 'aura.attendance', 'Attendance', [], '')}
-
-                                                                                                {/*// ? aura help */}
-                                                                                                {formRender('number', 0, 999999, 'aura.help', 'Help', [], '')}
-
-                                                                                                {/* // ? aura camera */}
-                                                                                                {formRender('number', 0, 999999, 'aura.camera', 'Camera', [], '')}
-
-                                                                                                {/* // ? aura answers */}
-                                                                                                {formRender('number', 0, 999999, 'aura.answers', 'Answers', [], '')}
-                                                                                                {/* // ? payed info */}
-                                                                                                {formRender('boolean', 0, 0, 'payedInfo', 'Payed Info', [], '')}
-                                                                                            </AccordionContent>
-                                                                                        </AccordionItem>
-                                                                                    </>)}
-                                                                            {(
-                                                                                user?.user?.role.includes("admin") ||
-                                                                                (user?.user?.role.includes("leader") && (student.leaderId == user?.user?._id)) ||
-                                                                                user?.user?.role.includes("admin")
-                                                                            ) && (
-                                                                                    <>
-                                                                                        <AccordionItem value="edit-student-12">
-
-                                                                                            {/* // ? leader comment */}
-                                                                                            <AccordionTrigger className="capitalize font-bold leading-[5px] text-slate-400">Leader Comment</AccordionTrigger>
-                                                                                            <AccordionContent className="flex flex-col gap-2">
-                                                                                                {formRender('string', 0, 0, 'comment.leaderComment', 'Leader Comment', [], '')}
-                                                                                                {/* // ? leader proof */}
-                                                                                                {formRender('string', 0, 0, 'comment.leaderProof', 'Leader Proof', [], '')}
-                                                                                                {/* // ? mini leader controller */}
-                                                                                            </AccordionContent>
-                                                                                        </AccordionItem>
-                                                                                    </>
-                                                                                )}
-
-                                                                            {(
-                                                                                user?.user?.role.includes("admin") ||
-                                                                                (user?.user?.role.includes("leader") && (student.leaderId == user?.user?._id)) ||
-                                                                                (user?.user?.role.includes("miniLeader") && (student.leaderId == user?.user?.miniLeaderId)) ||
-                                                                                user?.user?.role.includes("admin")
-                                                                            ) && (
-                                                                                    <>
-                                                                                        <AccordionItem value="edit-student-11">
-
-                                                                                            {/* // ? mini leader comment */}
-                                                                                            <AccordionTrigger className="capitalize font-bold  text-slate-400">Mini Leader Comment</AccordionTrigger>
-                                                                                            <AccordionContent className="flex flex-col gap-2">
-                                                                                                {formRender('string', 0, 0, 'comment.miniLeaderComment', 'Mini Leader Comment', [], '')}
-                                                                                            </AccordionContent>
-                                                                                        </AccordionItem>
-                                                                                    </>
-                                                                                )}
-
-                                                                            {(
-                                                                                user?.user?.role.includes("miniLeaderController") ||
-                                                                                user?.user?.role.includes("githubController") ||
-                                                                                user?.user?.role.includes("admin")
-                                                                            ) &&
-                                                                                (
-                                                                                    <>
-                                                                                        <AccordionItem value="edit-student-7">
-                                                                                            <AccordionTrigger className="capitalize font-bold leading-[5px] text-slate-400">Control comment</AccordionTrigger>
-                                                                                            <AccordionContent className="flex flex-col gap-2">
-                                                                                                {formRender('string', 0, 0, 'comment.controller.miniLeaderController', 'Mini Leader Controller', [], '')}
-                                                                                                {/* // ? leader controller */}
-                                                                                                {formRender('string', 0, 0, 'comment.controller.githubController', 'Github Controller', [], '')}
-                                                                                            </AccordionContent>
-                                                                                        </AccordionItem>
-                                                                                    </>
-                                                                                )
-                                                                            }
-                                                                        </Accordion>
-                                                                        <br />
-                                                                        <div className=" h- flex gap-2 sticky bottom-12 bg-background z-[9999] right-0 p-6 border-t-2">
-                                                                            <Button
-                                                                                type="submit"
-                                                                                variant={"green"}
-                                                                                className=" flex-2"
-                                                                                onClick={() =>
-                                                                                    toast("Student has been updated", {
-                                                                                        description: `${student.updatedAt}`,
-                                                                                        action: {
-                                                                                            label: "Close",
-                                                                                            onClick: () => console.log("Close"),
-                                                                                        }
-                                                                                    })}
-
-                                                                            > Save changes</Button>
-                                                                        </div>
-                                                                    </form>
-                                                                </Form>)
-
-                                                                    :
-                                                                    <>
-                                                                        <div>
-                                                                            <Accordion type="single" collapsible className="grid gap-4 py-4 px-6">
-                                                                                {accordionData.map((item) => (
-                                                                                    <AccordionItem key={item.value} value={item.value} title={item.title}>
-                                                                                        <AccordionTrigger className=" leading-[5px] text-foreground capitalize">
-                                                                                            <b className="text-secondary">{item.triggerText}</b>
-                                                                                        </AccordionTrigger>
-                                                                                        {
-                                                                                            ["Student Personal Information", "Comments"].includes(item.triggerText) &&
-                                                                                            item.contents.map((content, index) => (
-                                                                                                <AccordionContent key={index} className="grid grid-cols-4 items-center w-full justify-start gap-2">
-                                                                                                    <span className="col-span-2 font-bold capitalize  text-secondary">{content.label}</span>
-                                                                                                    <span className="col-start-1 text-secondary    font-bold">{content.value}</span>
-                                                                                                    <Separator className="row-start-2 col-span-4" />
-                                                                                                </AccordionContent>
-                                                                                            ))
-                                                                                        }
-                                                                                        {
-                                                                                            !["Student Personal Information", "Comments"].includes(item.triggerText) &&
-                                                                                            item.contents.map((content, index) => (
-                                                                                                <AccordionContent key={index} className="grid grid-cols-4 items-center w-full justify-start gap-2">
-                                                                                                    <span className="col-span-2 font-bold capitalize">{content.label}</span>
-                                                                                                    <span className="col-start-3 font-bold">{content.value}</span>
-                                                                                                    {index !== item.contents.length - 1 && (<Separator className="row-start-2 col-span-4 my-4" />)}
-                                                                                                </AccordionContent>
-                                                                                            ))
-                                                                                        }
-
+                                                                                        {/* // ? leader comment */}
+                                                                                        <AccordionTrigger className="capitalize  leading-[5px] text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar mb-2">Leader Comment</AccordionTrigger>
+                                                                                        <AccordionContent className="flex flex-col gap-2">
+                                                                                            {formRender('string', 0, 0, 'comment.leaderComment', 'Leader Comment', [], '')}
+                                                                                            {/* // ? leader proof */}
+                                                                                            {formRender('string', 0, 0, 'comment.leaderProof', 'Leader Proof', [], '')}
+                                                                                            {/* // ? mini leader controller */}
+                                                                                        </AccordionContent>
                                                                                     </AccordionItem>
-                                                                                ))}
-                                                                                <div className="flex gap-2 items-center">
-                                                                                    <h2 className="  ">last update</h2>
-                                                                                    <p className="font-bold">{student?.githubLastUpdate}</p>
-                                                                                </div>
+                                                                                </>
+                                                                            )}
 
-                                                                            </Accordion>
-                                                                        </div>
-                                                                    </>
-                                                                }
-                                                            </ScrollArea>
-                                                        )}
+                                                                        {(
+                                                                            user?.user?.role.includes("admin") ||
+                                                                            (user?.user?.role.includes("leader") && (student.leaderId == user?.user?._id)) ||
+                                                                            (user?.user?.role.includes("miniLeader") && (student.leaderId == user?.user?.miniLeaderId)) ||
+                                                                            user?.user?.role.includes("admin")
+                                                                        ) && (
+                                                                                <>
+                                                                                    <AccordionItem value="edit-student-11">
+
+                                                                                        {/* // ? mini leader comment */}
+                                                                                        <AccordionTrigger className="capitalize   text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar mb-2">Mini Leader Comment</AccordionTrigger>
+                                                                                        <AccordionContent className="flex flex-col gap-2">
+                                                                                            {formRender('string', 0, 0, 'comment.miniLeaderComment', 'Mini Leader Comment', [], '')}
+                                                                                        </AccordionContent>
+                                                                                    </AccordionItem>
+                                                                                </>
+                                                                            )}
+
+                                                                        {(
+                                                                            user?.user?.role.includes("miniLeaderController") ||
+                                                                            user?.user?.role.includes("githubController") ||
+                                                                            user?.user?.role.includes("admin")
+                                                                        ) &&
+                                                                            (
+                                                                                <>
+                                                                                    <AccordionItem value="edit-student-7">
+                                                                                        <AccordionTrigger className="capitalize  leading-[5px] text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar mb-2">Control comment</AccordionTrigger>
+                                                                                        <AccordionContent className="flex flex-col gap-2">
+                                                                                            {formRender('string', 0, 0, 'comment.controller.miniLeaderController', 'Mini Leader Controller', [], '')}
+                                                                                            {/* // ? leader controller */}
+                                                                                            {formRender('string', 0, 0, 'comment.controller.githubController', 'Github Controller', [], '')}
+                                                                                        </AccordionContent>
+                                                                                    </AccordionItem>
+                                                                                </>
+                                                                            )
+                                                                        }
+                                                                    </Accordion>
+                                                                    <br />
+                                                                    <div className=" flex gap-2 sticky bottom-12 bg-background z-[9999] right-0 p-6 border-t-2">
+                                                                        <Button
+                                                                            type="submit"
+                                                                            variant={"green"}
+                                                                            className=" flex-2 text-background"
+                                                                        > {!isLoading ? "Save changes" :<>Save changes <RefreshCw className='animate-spin'/></>}</Button>
+                                                                    </div>
+                                                                </form>
+                                                            </Form>)
+
+                                                                :
+                                                                <>
+                                                                    <div>
+                                                                        <Accordion type="single" collapsible className="grid gap-4 py-4 px-6 ">
+                                                                            {accordionData.map((item) => (
+                                                                                <AccordionItem key={item.value} value={item.value} title={item.title}>
+                                                                                    <AccordionTrigger className=" font-bold text-secondary text-md leading-[5px]  capitalize aria-expanded:bg-sidebar px-2 mb-4">
+                                                                                        {item.triggerText}
+                                                                                    </AccordionTrigger>
+                                                                                    {
+                                                                                        ["Student Personal Information", "Comments"].includes(item.triggerText) &&
+                                                                                        item.contents.map((content, index) => (
+                                                                                            <AccordionContent key={index} className="grid grid-cols-4 items-center w-full justify-start gap-2 ">
+                                                                                                <span className="col-span-2 capitalize  text-secondary">{content.label}</span>
+                                                                                                <p className="col-span-2 text-secondary font-semibold break-words">{content.value}</p>
+                                                                                                <Separator className="row-start-2 col-span-4 my-4" />
+                                                                                            </AccordionContent>
+                                                                                        ))
+                                                                                    }
+                                                                                    {
+                                                                                        !["Student Personal Information", "Comments"].includes(item.triggerText) &&
+                                                                                        item.contents.map((content, index) => (
+                                                                                            <AccordionContent key={index} className="grid grid-cols-4 items-center w-full justify-start gap-2">
+                                                                                                <span className="col-span-2  capitalize">{content.label}</span>
+                                                                                                {
+                                                                                                    ["Controller", "Aura"].includes(item.triggerText) ? (
+                                                                                                        <span className="col-start-3 text-end break-words">{content.value}</span>
+                                                                                                    ) : (
+                                                                                                        <span className="col-span-2 break-words ">{content.value}</span>
+                                                                                                    )
+                                                                                                }
+
+                                                                                                {index !== item.contents.length - 1 && (<Separator className="row-start-2 col-span-4 my-4" />)}
+                                                                                            </AccordionContent>
+                                                                                        ))
+                                                                                    }
+
+                                                                                </AccordionItem>
+                                                                            ))}
+                                                                            <div className="flex gap-2 items-center">
+                                                                                <h2 className="font-bold ">last update</h2>
+                                                                                <p className="">{student?.githubLastUpdate}</p>
+                                                                            </div>
+
+                                                                        </Accordion>
+                                                                    </div>
+                                                                </>
+                                                            }
+                                                        </ScrollArea>
                                                     </SheetContent>
                                                 </Sheet>
                                             ))

@@ -7,6 +7,7 @@ import path from 'path'
 import { connectDB } from './db/connectDB.js'
 import authRouters from './routes/api.auth.js'
 import apiRoutes from './routes/api.routes.js'
+import { generateTokenAndSetCookie } from './utils/generateTokenAndSetCookie.js'
 
 dotenv.config()
 

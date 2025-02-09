@@ -149,7 +149,7 @@ export function Default() {
     const savedSelection = localStorage.getItem('oneRowSelection');
     return savedSelection ? JSON.parse(savedSelection) : null;
   });
-  const [studentInfo, setStudentInfo] = React.useState(false)
+  const [studentInfo, setStudentInfo] = React.useState(true)
 
   React.useEffect(() => {
     localStorage.setItem('sortingStudents', JSON.stringify(sorting));
@@ -163,9 +163,9 @@ export function Default() {
     localStorage.setItem('columnVisibilityStudents', JSON.stringify(columnVisibility));
   }, [columnVisibility]);
 
-  const { user, isLoading } = useAuthStore()
-  const { getAllStudents, AllStudents } = useAllStudents()
-  const { student, getStudent, updateStudent, getLeaderStudents, leaderStudents } = useLeaderStore()
+  const { user } = useAuthStore()
+  const { getAllStudents } = useAllStudents()
+  const { student, getStudent, updateStudent, getLeaderStudents, leaderStudents,isLoading } = useLeaderStore()
   const [pageSizeSet, setPageSizeSet] = React.useState(10)
   const [pagination, setPagination] = React.useState(0)
 
@@ -217,9 +217,6 @@ export function Default() {
   const onSubmit: SubmitHandler<Student> = (data) => {
     setOneRowSelection((prev: Student) => ({ ...prev, leaderId: data.leaderId }));
     updateStudent(student.leaderId, student._id, data);
-    if (!isLoading) {
-      setStudentInfo(false);
-    }
   };
   return (
     <>
