@@ -128,7 +128,7 @@ export const login = [
 
       const now = Date.now()
       // * development mode
-      if (process.env.NODE_ENV === 'development') {
+      if (process.env.NODE_ENV === 'production') {
 
         // Update last login and generate a new clientId
         user.lastLogin = now

@@ -294,10 +294,10 @@ export default function DataTable({
         },
     ];
     React.useEffect(() => {
-        if(!isLoading){
+        if (!isLoading) {
             setStudentInfo(true)
         }
-    },[isLoading])
+    }, [isLoading])
     return (
         <div className={`bg-[var(--background)] grid auto-rows-min overflow-hidden gap-4 grid-cols-1 px-2`}>
             <ResizablePanelGroup direction="horizontal" >
@@ -645,7 +645,7 @@ export default function DataTable({
                                                                             type="submit"
                                                                             variant={"green"}
                                                                             className=" flex-2 text-background"
-                                                                        > {!isLoading ? "Save changes" :<>Save changes <RefreshCw className='animate-spin'/></>}</Button>
+                                                                        > {!isLoading ? "Save changes" : <>Save changes <RefreshCw className='animate-spin' /></>}</Button>
                                                                     </div>
                                                                 </form>
                                                             </Form>)

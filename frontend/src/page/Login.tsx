@@ -17,7 +17,7 @@ import { useAuthStore } from "../store/authStore";
 import Submit from "../components/submit";
 import Loading from "../components/loading";
 import { toast } from "sonner";
-import { Check,  MailCheck, MoveLeft } from "lucide-react";
+import { Check, MailCheck, MoveLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function Login() {
@@ -29,12 +29,13 @@ export default function Login() {
     resolver: zodResolver(formSchemaEmail),
     defaultValues: {
       email: "",
+      password: "",
     },
   });
   // Handle form submission
-  const handleEmailSubmit = async (data: { email: string }) => {
+  const handleEmailSubmit = async (data: { email: string, password : string }) => {
     try {
-      await login(data.email);
+      await login(data.email, data.password);
       form.reset()
     } catch (error) {
       console.error("Error logging in:", error);
@@ -49,9 +50,9 @@ export default function Login() {
   return (
     (localStorage.getItem?.("authLogin") == "true") ? <Loading className="h-screen " /> : (
       <div className="absolute top-0 right-0 left-0 max-w-[400px] h-full mx-auto w-full flex flex-col items-center justify-center">
-        <div className="">
+        <div >
 
-          <p className="text-center text-[35px] pb-4 font-bold text-green-500">Goal Oriented Academy</p>
+          <p className="text-center text-[32px] p-2 pb-4 font-bold text-green-500">Goal Oriented Academy</p>
           {sendInfo ? (
             <>
               <div className="p-2 w-full ">
@@ -71,9 +72,24 @@ export default function Login() {
                               type="email"
                             />
                           </FormControl>
-                          <FormDescription>
-                            Enter your Goal-Oriented Academy email.
-                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="password"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>password</FormLabel>
+                          <FormControl>
+                            <Input
+                              className="p-2 px-4"
+                              placeholder="Enter your password"
+                              {...field}
+                              type="password"
+                            />
+                          </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -119,7 +135,7 @@ export default function Login() {
                   type="submit"
                   className={`w-full py-6 dark:bg-green-400 dark:hover:bg-green-500  dark:text-black bg-green-300 hover:bg-green-400 cursor-not-allowed"}`}
                 >
-                  Click to go to email <MailCheck/>
+                  Click to go to email <MailCheck />
                 </Button>
               </Link>
             </div>

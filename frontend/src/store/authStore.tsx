@@ -9,6 +9,7 @@ const API_URL = import.meta.env.MODE === "development" ? 'http://localhost:5000'
 const useAuthStore = create<AuthState>((set) => ({
   user: null,
   oneLeaderStudentArr: [],
+  password: "",
   isLogin: false,
   isCheckingAuth: false,
   isLoading: false,
@@ -37,11 +38,11 @@ const useAuthStore = create<AuthState>((set) => ({
     }
   },
 
-  login: async (email: string) => {
+  login: async (email: string, password: string) => {
     set({ isLoading: true, isLogin: false });
     try {
       console.log('Attempting to log in with email:', email);
-      const response = await axios.post(`${API_URL}/auth/login`, { email }, {
+      const response = await axios.post(`${API_URL}/auth/login`, { email, password }, {
         headers: {
           'Content-Type': 'application/json',
         },
