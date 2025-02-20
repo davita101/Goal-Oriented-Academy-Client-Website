@@ -156,8 +156,8 @@ export function MentorGroup() {
         localStorage.setItem('columnVisibility', JSON.stringify(columnVisibility));
     }, [columnVisibility]);
 
-    const { user, isLoading, } = useAuthStore()
-    const { student, getStudent, updateStudent } = useLeaderStore()
+    const { user } = useAuthStore()
+    const { student, getStudent, updateStudent, isLoading, } = useLeaderStore()
     const { getGroup, group } = useMentorStore()
     const { groupId } = useParams()
 

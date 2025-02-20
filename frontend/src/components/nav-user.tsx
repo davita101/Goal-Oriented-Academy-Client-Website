@@ -51,7 +51,7 @@ export function NavUser() {
     React.useEffect(() => {
       getLeaderStudents(user?.user?.miniLeaderId)
     }, [user?.user.miniLeaderId, getLeaderStudents])
-  }else {
+  } else {
     React.useEffect(() => {
       getLeaderStudents(user?.user?._id)
     }, [user?.user._id, getLeaderStudents])
@@ -66,13 +66,13 @@ export function NavUser() {
 
   }
   return (
-    <SidebarMenu className="data-[state=open]:mt-2">
+    <SidebarMenu className="data-[state=open]:mt-2 ">
       <SidebarMenuItem >
         <DropdownMenu>
-          <DropdownMenuTrigger asChild className="dark:bg-background bg-slate-50 mt-0">
+          <DropdownMenuTrigger asChild className="dark:bg-sidebar bg-sidebar mt-0">
             <SidebarMenuButton
               size="lg"
-              className=" data-[state=open]:bg-gray-100 data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              className="  data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg ">
                 <AvatarImage className="object-cover" src={user?.user?.avatar} alt={`Goal oriented academy user ${user?.user?.name}`} />
@@ -86,10 +86,10 @@ export function NavUser() {
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-[--radix-dropdown-menu-trigger-width] min-w-[330px] rounded-lg"
+            className="w-[--radix-dropdown-menu-trigger-width] min-w-[330px] rounded-r-2xl"
             side={isMobile ? "bottom" : "right"}
             align="end"
-            sideOffset={4}
+            sideOffset={8}
           >
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
@@ -116,7 +116,7 @@ export function NavUser() {
                     <HoverCardTrigger asChild>
                       <Button className=" w-[140px]"><Bolt size={18} />{t("role")} <span>{user?.user?.role.length}</span></Button>
                     </HoverCardTrigger>
-                    <HoverCardContent className="w-40 duration-100">
+                    <HoverCardContent className="w-40 duration-100 ">
                       {user?.user?.role.map((role: string) =>
                         <div key={`${role}`} className="flex justify-between">
                           <span>{t(role)}</span>
@@ -137,7 +137,7 @@ export function NavUser() {
             <DropdownMenuGroup className="grid grid-cols-2 w-full">
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup className="grid grid-cols-2  ">
+            <DropdownMenuGroup className="grid grid-cols-2  font-primary">
               <DropdownMenuItem>
                 {leaderStudents.length} <span>{t("squad member")}</span>
               </DropdownMenuItem>

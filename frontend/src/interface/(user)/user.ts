@@ -3,6 +3,7 @@ export interface User {
     nickname: string;
     avatar: string;
     email: string;
+    password: string;
     miniLeaderId: string;
     social: {
         facebook: string;

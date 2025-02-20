@@ -138,9 +138,9 @@ export function AllStudents() {
         localStorage.setItem('columnVisibilityAllStudents', JSON.stringify(columnVisibility));
     }, [columnVisibility]);
 
-    const { user, isLoading } = useAuthStore()
+    const { user } = useAuthStore()
     const { getAllStudents, AllStudents } = useAllStudents()
-    const { student, getStudent, updateStudent } = useLeaderStore()
+    const { student, getStudent, updateStudent, isLoading, } = useLeaderStore()
     const [pageSizeSet, setPageSizeSet] = React.useState(10)
     const [pagination, setPagination] = React.useState(0)
 

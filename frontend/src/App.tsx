@@ -59,6 +59,7 @@ export default function AppRoutes() {
                         "--sidebar-width": "250px",
                     } as React.CSSProperties
                 }
+                className="font-primary"
             >
                 {localStorage?.getItem("authLogin") == "true" && (<AppSidebar />)}
 
