@@ -120,7 +120,7 @@ export const login = [
 
       const now = Date.now()
       // * development mode
-      if (process.env.NODE_ENV === 'production') {
+      if (process.env.NODE_ENV === 'development') {
         // Update last login and generate a new clientId
         user.lastLogin = now
         const clientId = generateVerificationToken() // Replace with a better clientId generation method if needed
