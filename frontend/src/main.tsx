@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import AppRoutes from './App'
 import { BrowserRouter } from 'react-router-dom'
-import { Toaster } from './components/ui/sonner'
+import { Toaster } from './components/ui/toaster'
 import { I18nextProvider } from 'react-i18next'
 import i18n from './i18n'
 

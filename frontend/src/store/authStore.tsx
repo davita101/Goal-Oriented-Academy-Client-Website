@@ -5,7 +5,6 @@ import { AuthState } from '../interface/(login)/auth';
 
 const API_URL = import.meta.env.MODE === "development" ? 'http://localhost:5000' : "";
 
-
 const useAuthStore = create<AuthState>((set) => ({
   user: null,
   oneLeaderStudentArr: [],
@@ -55,7 +54,7 @@ const useAuthStore = create<AuthState>((set) => ({
       }
     } catch (error) {
       localStorage.setItem('authLogin', "false")
-      set({ user: null, isLoading: false, isLogin: true });
+      set({ user: null, isLoading: false, isLogin: false });
       console.error('Error logging in:', error);
     }
   },

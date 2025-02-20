@@ -35,7 +35,6 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "../components/ui/form"
 import Loading from "../components/loading"
-import { toast } from "sonner"
 
 import { Button } from "../components/ui/button"
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "../components/ui/resizable"
@@ -92,13 +91,10 @@ export default function DataTable({
         }
     }
     const formRender = (typeMain: string, minNum: number, maxNum: number, id: string, label: string, roles: string[], row: string) => {
-
-
-
         if (typeMain === 'number') {
             return (
                 <>
-                    <Separator className="my-4 bg-secondary" />
+                    <Separator className="my-4 bg-secondary bg-black"  />
 
                     <FormField
                         control={form.control}
@@ -157,7 +153,7 @@ export default function DataTable({
         } else if (typeMain === 'string') {
             return (
                 <>
-                    <Separator className="my-4 bg-secondary" />
+                    <Separator className="my-4 bg-secondary bg-black" />
                     <FormField
                         control={form.control}
                         name={id as keyof Student}
@@ -186,7 +182,7 @@ export default function DataTable({
         } else if (typeMain === 'role') {
             return (
                 <>
-                    <Separator className="my-4 bg-secondary" />
+                    <Separator className="my-4 bg-secondary bg-black" />
                     <FormField
                         control={form.control}
                         name={id as keyof Student}
@@ -426,7 +422,7 @@ export default function DataTable({
                                                                                 <>
                                                                                     <AccordionItem value="edit-student-1 p-2">
 
-                                                                                        <AccordionTrigger className="  leading-[5px] text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar mb-2">ID</AccordionTrigger>
+                                                                                        <AccordionTrigger className="leading-[5px] text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar">ID</AccordionTrigger>
                                                                                         <AccordionContent>
                                                                                             {formRender('string', 0, 0, 'leaderId', 'Leader ID', [], '')}
                                                                                         </AccordionContent>
@@ -441,7 +437,7 @@ export default function DataTable({
                                                                                 user?.user?.role.includes("admin")) && (
                                                                                 <>
                                                                                     <AccordionItem value="edit-student-9">
-                                                                                        <AccordionTrigger className="  leading-[5px] text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar mb-2">Student ID</AccordionTrigger>
+                                                                                        <AccordionTrigger className="leading-[5px] text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar">Student ID</AccordionTrigger>
                                                                                         <AccordionContent className="flex flex-col gap-2">                                                                                            {/* // ? speed */}
                                                                                             {formRender('string', 0, 0, 'parentName', 'parent Name', [], '')}
                                                                                             {formRender('string', 0, 0, 'studentPersonalInfo.studentId', 'ID', [], '')}
@@ -461,7 +457,7 @@ export default function DataTable({
                                                                             (<>
                                                                                 <AccordionItem value="edit-student-2">
 
-                                                                                    <AccordionTrigger className=" leading-[5px] text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar mb-2">Student Info</AccordionTrigger>
+                                                                                    <AccordionTrigger className=" leading-[5px] text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar">Student Info</AccordionTrigger>
                                                                                     <AccordionContent className="flex flex-col gap-3">
                                                                                         {/* // ? name */}
                                                                                         {formRender('string', 0, 0, 'name', 'Name', [], '')}
@@ -499,7 +495,7 @@ export default function DataTable({
                                                                                 user?.user?.role.includes("admin")) && (
                                                                                 <>
                                                                                     <AccordionItem value="edit-student-3">
-                                                                                        <AccordionTrigger className="  leading-[5px] text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar mb-2">Group</AccordionTrigger>
+                                                                                        <AccordionTrigger className="leading-[5px] text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar">Group</AccordionTrigger>
                                                                                         <AccordionContent className="flex flex-col gap-2">                                                                                            {/* // ? speed */}
                                                                                             {formRender('number', 0, 4, 'speed', 'Speed', [], '')}
                                                                                             {formRender('number', 0, 99, 'group', 'Group', [], '')}
@@ -516,7 +512,7 @@ export default function DataTable({
                                                                                 <>
                                                                                     <AccordionItem value="edit-student-4">
 
-                                                                                        <AccordionTrigger className="capitalize  leading-[1px] text-md text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar mb-2">Fines</AccordionTrigger>
+                                                                                        <AccordionTrigger className="capitalize  leading-[1px] text-md text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar">Fines</AccordionTrigger>
                                                                                         <AccordionContent className="flex flex-col gap-2">
                                                                                             {formRender('number', 0, 99, 'fines.githubFine', 'Github Fine', [], '')}
                                                                                             {/* // ? mini leader fine */}
@@ -535,7 +531,7 @@ export default function DataTable({
                                                                                 <>
                                                                                     <AccordionItem value="edit-student-5">
 
-                                                                                        <AccordionTrigger className="capitalize  leading-[5px] text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar mb-2">Mentor Section</AccordionTrigger>
+                                                                                        <AccordionTrigger className="capitalizeleading-[5px] text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar">Mentor Section</AccordionTrigger>
                                                                                         <AccordionContent className="flex flex-col gap-2">
                                                                                             <div className="flex gap-3 p-2 items-center">
                                                                                                 <FormLabel className="grid-cols-2">Step</FormLabel>
@@ -591,7 +587,7 @@ export default function DataTable({
                                                                                     <AccordionItem value="edit-student-12">
 
                                                                                         {/* // ? leader comment */}
-                                                                                        <AccordionTrigger className="capitalize  leading-[5px] text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar mb-2">Leader Comment</AccordionTrigger>
+                                                                                        <AccordionTrigger className="capitalizeleading-[5px] text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar">Leader Comment</AccordionTrigger>
                                                                                         <AccordionContent className="flex flex-col gap-2">
                                                                                             {formRender('string', 0, 0, 'comment.leaderComment', 'Leader Comment', [], '')}
                                                                                             {/* // ? leader proof */}
@@ -612,7 +608,7 @@ export default function DataTable({
                                                                                     <AccordionItem value="edit-student-11">
 
                                                                                         {/* // ? mini leader comment */}
-                                                                                        <AccordionTrigger className="capitalize   text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar mb-2">Mini Leader Comment</AccordionTrigger>
+                                                                                        <AccordionTrigger className="capitalize   text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar">Mini Leader Comment</AccordionTrigger>
                                                                                         <AccordionContent className="flex flex-col gap-2">
                                                                                             {formRender('string', 0, 0, 'comment.miniLeaderComment', 'Mini Leader Comment', [], '')}
                                                                                         </AccordionContent>
@@ -628,7 +624,7 @@ export default function DataTable({
                                                                             (
                                                                                 <>
                                                                                     <AccordionItem value="edit-student-7">
-                                                                                        <AccordionTrigger className="capitalize  leading-[5px] text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar mb-2">Control comment</AccordionTrigger>
+                                                                                        <AccordionTrigger className="capitalizeleading-[5px] text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar">Control comment</AccordionTrigger>
                                                                                         <AccordionContent className="flex flex-col gap-2">
                                                                                             {formRender('string', 0, 0, 'comment.controller.miniLeaderController', 'Mini Leader Controller', [], '')}
                                                                                             {/* // ? leader controller */}
@@ -655,24 +651,24 @@ export default function DataTable({
                                                                     <div>
                                                                         <Accordion type="single" collapsible className="grid gap-4 py-4 px-6 ">
                                                                             {accordionData.map((item) => (
-                                                                                <AccordionItem key={item.value} value={item.value} title={item.title}>
-                                                                                    <AccordionTrigger className=" font-bold text-secondary text-md leading-[5px]  capitalize aria-expanded:bg-sidebar px-2 mb-4">
+                                                                                <AccordionItem key={item.value} value={item.value} title={item.title} >
+                                                                                    <AccordionTrigger className=" font-bold text-secondary text-md leading-[5px] aria-expanded:bg-sidebar hover:bg-sidebar  capitalize  py-6 px-2">
                                                                                         {item.triggerText}
                                                                                     </AccordionTrigger>
                                                                                     {
                                                                                         ["Student Personal Information", "Comments"].includes(item.triggerText) &&
                                                                                         item.contents.map((content, index) => (
-                                                                                            <AccordionContent key={index} className="grid grid-cols-4 items-center w-full justify-start gap-2 ">
+                                                                                            <AccordionContent key={index} className="grid grid-cols-4 items-center w-full justify-start gap-2 mt-4 ">
                                                                                                 <span className="col-span-2 capitalize  text-secondary">{content.label}</span>
                                                                                                 <p className="col-span-2 text-secondary font-semibold break-words">{content.value}</p>
-                                                                                                <Separator className="row-start-2 col-span-4 my-4" />
+                                                                                                <Separator className="row-start-2 col-span-4 my-4 bg-black" />
                                                                                             </AccordionContent>
                                                                                         ))
                                                                                     }
                                                                                     {
                                                                                         !["Student Personal Information", "Comments"].includes(item.triggerText) &&
                                                                                         item.contents.map((content, index) => (
-                                                                                            <AccordionContent key={index} className="grid grid-cols-4 items-center w-full justify-start gap-2">
+                                                                                            <AccordionContent key={index} className="grid grid-cols-4 items-center w-full justify-start gap-2  mt-4">
                                                                                                 <span className="col-span-2  capitalize">{content.label}</span>
                                                                                                 {
                                                                                                     ["Controller", "Aura"].includes(item.triggerText) ? (
@@ -682,7 +678,7 @@ export default function DataTable({
                                                                                                     )
                                                                                                 }
 
-                                                                                                {index !== item.contents.length - 1 && (<Separator className="row-start-2 col-span-4 my-4" />)}
+                                                                                                {index !== item.contents.length - 1 && (<Separator className="row-start-2 col-span-4 my-4 bg-black" />)}
                                                                                             </AccordionContent>
                                                                                         ))
                                                                                     }

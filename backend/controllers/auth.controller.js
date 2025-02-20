@@ -4,6 +4,7 @@ import { generateTokenAndSetCookie } from '../utils/generateTokenAndSetCookie.js
 import { generateVerificationToken } from '../utils/generateVerificationToken.js'
 import { sendVerificationEmail } from '../utils/sendVerificationEmail.js'
 import rateLimit from 'express-rate-limit'
+import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import path from 'path'
 
@@ -100,22 +101,13 @@ export const signup = [
 export const login = [
   signupLimiter,
   async (req, res) => {
-    const { email } = req.body
+    const { email, password } = req.body
 
     try {
       if (!email) {
         return res
           .status(400)
           .json({ success: false, message: 'Email is required' })
-      }
-
-      // Helper function for sending verification email and updating the user
-      const handleVerification = async (user, message) => {
-        user.verificationToken = generateVerificationToken()
-        user.verificationTokenExpiresAt = Date.now() + ONE_HOUR
-        await user.save()
-        await sendVerificationEmail({ email, token: user.verificationToken })
-        res.status(400).json({ success: false, message })
       }
 
       // Find user by email
@@ -129,7 +121,6 @@ export const login = [
       const now = Date.now()
       // * development mode
       if (process.env.NODE_ENV === 'production') {
-
         // Update last login and generate a new clientId
         user.lastLogin = now
         const clientId = generateVerificationToken() // Replace with a better clientId generation method if needed
@@ -158,67 +149,37 @@ export const login = [
 
         return
       }
-      // Check if last login was more than 7 days ago
-      if (user.lastLogin && now - user.lastLogin.getTime() > TIME_PER_LOGIN) {
-        user.lastLogin = undefined
-        user.clientId = undefined
-        user.isVerified = false
-        await handleVerification(
-          user,
-          'User has been inactive for more than 7 days. Verification token sent.'
-        )
-        return
-      }
 
-      // Check if verification token is expired
-      if (user.verificationToken && user.verificationTokenExpiresAt < now) {
-        await handleVerification(
-          user,
-          'Verification token expired. New token sent.'
-        )
-        return
-      }
+      if (await bcrypt.compare(password, user.password)) {
+        // Update last login and generate a new clientId
+        user.lastLogin = now
+        const clientId = generateVerificationToken() // Replace with a better clientId generation method if needed
+        user.clientId = clientId
+        user.isVerified = true
+        await user.save()
 
-      // Check if email is not verified
-      if (!user.isVerified) {
-        await handleVerification(
-          user,
-          'Email not verified. Verification token sent.'
-        )
-        return
+        // Set cookies and respond with success
+        res.cookie('clientId', clientId, {
+          httpOnly: true,
+          maxAge: TIME_PER_LOGIN
+        })
+        generateTokenAndSetCookie(res, user._id)
+        res.cookie('goa_auth_is_verified', user.isVerified, {
+          httpOnly: true,
+          maxAge: ONE_HOUR
+        })
+        res.status(200).json({
+          success: true,
+          message: 'Login successful',
+          user: {
+            ...user._doc
+          }
+        })
+        console.log('User login successful')
+      }else{
+        console.log('Invalid password')
+        res.status(400).json({ success: false, message: 'Invalid password' })
       }
-
-      // Check if user is already logged in from another device
-      if (user.clientId) {
-        await handleVerification(
-          user,
-          'User already logged in from another device. Verification token sent.'
-        )
-        return
-      }
-      // Update last login and generate a new clientId
-      user.lastLogin = now
-      const clientId = generateVerificationToken() // Replace with a better clientId generation method if needed
-      user.clientId = clientId
-      await user.save()
-
-      // Set cookies and respond with success
-      res.cookie('clientId', clientId, {
-        httpOnly: true,
-        maxAge: TIME_PER_LOGIN
-      })
-      generateTokenAndSetCookie(res, user._id)
-      res.cookie('goa_auth_is_verified', user.isVerified, {
-        httpOnly: true,
-        maxAge: ONE_HOUR
-      })
-      res.status(200).json({
-        success: true,
-        message: 'Login successful',
-        user: {
-          ...user._doc
-        }
-      })
     } catch (error) {
       console.error('Login error:', error)
       res
@@ -387,7 +348,6 @@ export const checkAuth = async (req, res) => {
   }
   user.lastLogin = new Date()
   await user.save()
-  
 
   res.status(200).json({ success: true, user })
 }

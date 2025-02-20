@@ -4,7 +4,6 @@ export const userSchema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters "),
     nickname: z.string().min(2, "Nickname must be at least 2 characters"),
     avatar: z.string().url("Invalid URL"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
     email: z.string().email("Invalid email"),
     miniLeaderId: z.string().min(2, "MiniLeaderId must be at least 2 characters"),
     social: z.object({
