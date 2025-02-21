@@ -1,5 +1,6 @@
 # Logs
 logs
+app.js
 *.log
 group47
 group48
