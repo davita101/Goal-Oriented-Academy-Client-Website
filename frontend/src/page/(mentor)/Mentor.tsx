@@ -21,7 +21,7 @@ import { useLeaderStore } from "../../store/studentStore"
 import { Button } from "../../components/ui/button"
 import { useMentorStore } from "../../store/mentorStore"
 import { Student } from "../../interface/(student)/student-Inteface"
-import { userSchema } from "../../interface/(student)/form"
+import { userSchema } from "../../schema/(student)/form"
 import DataTable from "../../hooks/use-data-table"
 import { t } from "i18next"
 

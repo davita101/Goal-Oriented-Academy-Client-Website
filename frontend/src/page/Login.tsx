@@ -10,7 +10,6 @@ import {
   FormMessage,
 } from "../components/ui/form"
 import { Input } from "../components/ui/input"
-import { formSchemaEmail } from "../interface/(login)/login-form"
 import { set, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useAuthStore } from "../store/authStore"
@@ -18,6 +17,7 @@ import Submit from "../components/submit"
 import Loading from "../components/loading"
 import { useToast } from "../hooks/use-toast"
 import { Navigate } from "react-router-dom"
+import { formSchemaEmail } from "../schema/(login)/login-form"
 
 
 export default function Login() {

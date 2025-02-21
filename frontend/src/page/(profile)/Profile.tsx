@@ -4,13 +4,13 @@ import { Input } from '../../components/ui/input'
 import { Form, FormControl, FormField, FormItem, FormLabel, } from '../../components/ui/form'
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { userSchema } from '../../interface/(user)/form';
 import { useAuthStore } from '../../store/authStore';
 import { User } from '../../interface/(user)/user';
 import { useLeaderStore } from '../../store/leaderStore';
 import { Button } from '../../components/ui/button';
 import { RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
+import { userSchema } from '../../schema/(user)/form';
 
 export default function Profile() {
   const { user } = useAuthStore();
