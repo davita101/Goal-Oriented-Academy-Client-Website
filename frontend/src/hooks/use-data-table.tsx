@@ -94,7 +94,7 @@ export default function DataTable({
         if (typeMain === 'number') {
             return (
                 <>
-                    <Separator className="my-4 bg-secondary bg-black"  />
+                    <Separator className="my-4 bg-secondary bg-black" />
 
                     <FormField
                         control={form.control}
@@ -292,7 +292,9 @@ export default function DataTable({
     React.useEffect(() => {
         if (!isLoading) {
             setStudentInfo(true)
+
         }
+
     }, [isLoading])
     return (
         <div className={`bg-[var(--background)] grid auto-rows-min overflow-hidden gap-4 grid-cols-1 px-2`}>
@@ -747,7 +749,7 @@ export default function DataTable({
                                     variant="outline"
                                     size="sm"
                                     onClick={() => setPagination(pagination + 1)}
-                                    disabled={pagination === Math.ceil(paginationAllStudents.length / pageSizeSet) - 1}
+                                // disabled={pagination === Math.ceil(paginationAllStudents.length / pageSizeSet) - 1}
                                 >
                                     Next
                                 </Button>

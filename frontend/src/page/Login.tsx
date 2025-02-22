@@ -40,7 +40,7 @@ export default function Login() {
   const handleEmailSubmit = async (data: { email: string; password: string; }) => {
     try {
       await login(data.email, data.password)
-      const { isLogin } = useAuthStore.getState() // ✅ Get the updated state
+      const { isLogin } = useAuthStore.getInitialState()
 
       if (isLogin) {
         toast({

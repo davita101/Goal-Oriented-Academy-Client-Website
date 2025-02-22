@@ -1,6 +1,5 @@
 import { UserModel } from '../models/user.models.js'
 import { StudentModel } from '../models/student.models.js'
-import mongoose from 'mongoose';
 export const getAllLeaders = async (req, res) => {
 
   try {

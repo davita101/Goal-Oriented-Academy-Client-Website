@@ -24,6 +24,7 @@ import { Student } from "../../interface/(student)/student-Inteface"
 import { userSchema } from "../../schema/(student)/form"
 import DataTable from "../../hooks/use-data-table"
 import { t } from "i18next"
+import { useLessonEventStore } from "../../store/lessonEventStore"
 
 
 export const columns: ColumnDef<Student>[] = [
@@ -159,17 +160,19 @@ export function MentorGroup() {
     const { user } = useAuthStore()
     const { student, getStudent, updateStudent, isLoading, } = useLeaderStore()
     const { getGroup, group } = useMentorStore()
-    const { groupId } = useParams()
+    const { groupId, lessonEventId } = useParams()
+    const { getLessonEvent, lessonsEvent } = useLessonEventStore()
 
     React.useEffect(() => {
         getGroup(groupId as string)
+        getLessonEvent(lessonEventId as string)
         if (oneRowSelection) {
             getStudent(oneRowSelection.leaderId, oneRowSelection._id)
         }
-    }, [oneRowSelection, user?.user?._id, getStudent, getGroup])
-
+    }, [oneRowSelection, user?.user?._id, getStudent, getGroup, getLessonEvent])
+    console.log(lessonsEvent)
     const table = useReactTable({
-        data: group.sort((a, b) => a?.aura?.points < b?.aura?.points ? 1 : -1),
+        data: lessonsEvent?.students?.sort((a, b) => a?.aura?.points < b?.aura?.points ? 1 : -1) || [],
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,

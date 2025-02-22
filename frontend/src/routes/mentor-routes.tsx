@@ -4,7 +4,7 @@ import { MentorGroup } from '../page/(mentor)/Mentor'
 import Groups from '../page/(mentor)/Groups'
 import { useAuthStore } from '../store/authStore';
 import Loading from '../components/loading';
-import EventGroup from '../page/(mentor)/EventGroup';
+import LessonEventGroup from '../page/(mentor)/LessonEventGroup';
 
 export default function MentorRoutes() {
   const { user } = useAuthStore()
@@ -23,8 +23,8 @@ export default function MentorRoutes() {
     <>
       <Routes>
         <Route path="/group" element={<Groups />} />
-        <Route path="/event/:eventId/:groupId" element={<EventGroup />} />
-        <Route path="/group/:groupId" element={<MentorGroup />} />
+        <Route path="/group/:groupId/:lessonEventId" element={<LessonEventGroup />} />
+        <Route path="/group/startEvent/:groupId/:lessonEventId" element={<MentorGroup />} />
       </Routes>
     </>
   )

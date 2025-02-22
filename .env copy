@@ -2,14 +2,11 @@
 PORT = 5000
 MONGODB_URI = mongod.com
 JWT_SECRET = jwt key
+NODE_ENV = development
 
-TIME_PER_LOGIN = 7 * 24 * 60 * 60 * 1000 # 7 DAYS
-TOKEN_EXPIRATION = 1 * 24 * 60 * 60 * 1000 # 1 days
-BLOCK_IP_TIME = 6 * 60 * 60 * 1000 # 1 hour
-
+# //! EMAIL SEND USER
 ADMIN_USER = example@gmail.com
 SMTP_PASS = 4444 4444 4444 4444
-NODE_ENV = development
 
 FRONT_URL = http://localhost:5173
 WEB_URL = https://example
