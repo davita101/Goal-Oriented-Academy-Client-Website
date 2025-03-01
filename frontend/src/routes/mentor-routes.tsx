@@ -23,8 +23,8 @@ export default function MentorRoutes() {
     <>
       <Routes>
         <Route path="/group" element={<Groups />} />
-        <Route path="/group/:groupId/:lessonEventId" element={<LessonEventGroup />} />
-        <Route path="/group/startEvent/:groupId/:lessonEventId" element={<MentorGroup />} />
+        <Route path="/group/:groupId" element={<LessonEventGroup />} />
+        <Route path="/group/:groupId/:lessonEventId" element={<MentorGroup />} />
       </Routes>
     </>
   )

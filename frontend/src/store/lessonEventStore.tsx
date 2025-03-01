@@ -8,13 +8,12 @@ const API_URL = import.meta.env.MODE === "development" ? 'http://localhost:5000'
 const useLessonEventStore = create<LessonEventState>((set) => ({
     isLoading: false,
     status: 500,
-    students: [],
     lessonsEvent: [],
-    createLessonEvent: async (groupId, lessonEventId, lessonEventData) => {
+    createLessonEvent: async (groupId, lessonEventData) => {
         set({ isLoading: true });
         try {
             const token = localStorage.getItem('authToken');
-            const response = await axios.post(`${API_URL}/api/lessonEvent/${lessonEventId}/${groupId}`, (lessonEventData), {
+            const response = await axios.post(`${API_URL}/api/lessonEvent/${groupId}`, (lessonEventData), {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`,
@@ -45,14 +44,44 @@ const useLessonEventStore = create<LessonEventState>((set) => ({
                     "Authorization": `Bearer ${token}`,
                 },
                 withCredentials: true,
+            });
+            set({ lessonsEvent: response.data })
+        } catch (error) {
+            return error
+        }
+    },
+    updateLessonEvent: async (lessonEventId, lessonUpdateEventData) => {
+        try {
+            const token = localStorage.getItem('authToken');
+            const response = await axios.put(`${API_URL}/api/lessonEvent/${lessonEventId}`, (lessonUpdateEventData), {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
+                withCredentials: true,
             })
             set({ lessonsEvent: response.data })
             return
         } catch (error) {
             return error
         }
-    }
-
+    },
+    getGroupLessonEvent: async (groupId) => {
+        try {
+            const token = localStorage.getItem('authToken');
+            const response = await axios.get(`${API_URL}/api/group-events/${groupId}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
+                withCredentials: true,
+            })
+            set({ lessonsEvent: response.data })
+            return
+        } catch (error) {
+            return error
+        }
+    },
 }))
 
 export { useLessonEventStore }

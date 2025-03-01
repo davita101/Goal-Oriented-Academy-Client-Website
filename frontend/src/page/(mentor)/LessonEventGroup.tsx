@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../../components/ui/form'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { createEvent } from '../../schema/(event)/form'
-import { useParams } from 'react-router-dom'
+import { createEvent } from '../../schema/(lessonEvent)/form'
+import { Navigate, useParams } from 'react-router-dom'
 import { Button } from '../../components/ui/button'
 import { Input } from '../../components/ui/input'
 import { z } from 'zod'
@@ -14,16 +14,16 @@ import useErrorHandle from '../../hooks/use-popup-handle'
 
 export default function LessonEventGroup() {
   const startDate = new Date()
-  const endDate = new Date(startDate.getTime() + 2 * 60 * 60 * 1000) //! 2 hours later
 
-  const { groupId, lessonEventId } = useParams()
-  const { createLessonEvent } = useLessonEventStore()
-  const { getGroup } = useMentorStore()
+
+  const { groupId } = useParams()
+  const { createLessonEvent, lessonsEvent } = useLessonEventStore()
   useEffect(() => {
     if (groupId) {
-      getGroup(groupId)
+      createLessonEvent(groupId, data)
     }
-  }, [])
+    //? window.location.href = (`/mentor/group/startEvent/${groupId}/${lessonEventId}`)
+  }, [lessonsEvent, createLessonEvent])
   const form = useForm({
     resolver: zodResolver(createEvent),
     defaultValues: {
@@ -33,16 +33,16 @@ export default function LessonEventGroup() {
       isActive: true,
       description: '',
       startDate: startDate,
-      endDate: endDate,
     }
   })
   const onSubmit = async (data: z.infer<typeof createEvent>) => {
     let responseStatus
-    if (groupId && lessonEventId) {
-      responseStatus = await createLessonEvent(groupId, lessonEventId, data)
+    if (groupId) {
+      responseStatus = await createLessonEvent(groupId, data)
     }
     useErrorHandle(responseStatus)
   }
+
   const data = [
     {
       name: 'name',

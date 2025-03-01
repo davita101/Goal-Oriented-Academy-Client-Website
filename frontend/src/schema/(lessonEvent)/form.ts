@@ -8,12 +8,8 @@ export const createEvent = z.object({
     .regex(/\d/, "At least one number"),
   description: z.string().optional(),
   isActive: z.boolean().default(true),
-  group: z.preprocess((val) => Number(val), z.number().positive()),
+  group: z.preprocess((val) => Number(val), z.number()),
   startDate: z.date({
-    required_error: "Required",
-    invalid_type_error: "Invalid date",
-  }),
-  endDate: z.date({
     required_error: "Required",
     invalid_type_error: "Invalid date",
   }),

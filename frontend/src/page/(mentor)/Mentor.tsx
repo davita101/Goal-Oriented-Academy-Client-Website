@@ -13,7 +13,7 @@ import {
 } from "@tanstack/react-table"
 import { ArrowUpDown, } from "lucide-react"
 
-import { useParams } from "react-router-dom"
+import { Navigate, useParams } from "react-router-dom"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useAuthStore } from "../../store/authStore"
@@ -141,7 +141,7 @@ export function MentorGroup() {
         const savedSelection = localStorage.getItem('oneRowSelection');
         return savedSelection ? JSON.parse(savedSelection) : null;
     });
-    const [studentInfo, setStudentInfo] = React.useState(true)
+    const [studentInfo, setStudentInfo] = React.useState(false)
     const [pageSizeSet, setPageSizeSet] = React.useState(10)
     const [pagination, setPagination] = React.useState(0)
 
@@ -161,7 +161,7 @@ export function MentorGroup() {
     const { student, getStudent, updateStudent, isLoading, } = useLeaderStore()
     const { getGroup, group } = useMentorStore()
     const { groupId, lessonEventId } = useParams()
-    const { getLessonEvent, lessonsEvent } = useLessonEventStore()
+    const { getLessonEvent, lessonsEvent, updateLessonEvent } = useLessonEventStore()
 
     React.useEffect(() => {
         getGroup(groupId as string)
@@ -169,8 +169,7 @@ export function MentorGroup() {
         if (oneRowSelection) {
             getStudent(oneRowSelection.leaderId, oneRowSelection._id)
         }
-    }, [oneRowSelection, user?.user?._id, getStudent, getGroup, getLessonEvent])
-    console.log(lessonsEvent)
+    }, [oneRowSelection, user?.user?._id, getStudent, getGroup, getLessonEvent, lessonsEvent])
     const table = useReactTable({
         data: lessonsEvent?.students?.sort((a, b) => a?.aura?.points < b?.aura?.points ? 1 : -1) || [],
         columns,
@@ -252,13 +251,18 @@ export function MentorGroup() {
     }, [form, student]);
 
     const onSubmit: SubmitHandler<Student> = (data) => {
+        console.log(lessonsEvent)
         data.aura.points = (data.aura.answers || 0) + (data.aura.attendance || 0) + (data.aura.camera || 0) + (data.aura.classwork || 0) + (data.aura.help || 0);
         setOneRowSelection((prev: Student) => ({ ...prev, leaderId: data.leaderId }));
-        updateStudent(student.leaderId, student._id, data);
-        if (!isLoading) {
-            setStudentInfo(false);
+        if (lessonEventId) {
+            updateLessonEvent(lessonEventId, data);
         }
+        // updateStudent(student.leaderId, student._id, data);
+        // if (!isLoading) {
+        //     setStudentInfo(false);
+        // }
     };
+    // console.log("ddd    ")
     return (
         <>
             <DataTable

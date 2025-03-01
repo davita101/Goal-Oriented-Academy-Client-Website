@@ -292,7 +292,6 @@ export default function DataTable({
     React.useEffect(() => {
         if (!isLoading) {
             setStudentInfo(true)
-
         }
 
     }, [isLoading])
@@ -424,7 +423,7 @@ export default function DataTable({
                                                                                 <>
                                                                                     <AccordionItem value="edit-student-1 p-2">
 
-                                                                                        <AccordionTrigger className="leading-[5px] text-secondary hover:bg-sidebar px-2 text-md font-bold aria-expanded:bg-sidebar">ID</AccordionTrigger>
+                                                                                        <AccordionTrigger className="leading-[5px] text-secondary hover:bg-sidebar px-2 text-md font-bold ">ID</AccordionTrigger>
                                                                                         <AccordionContent>
                                                                                             {formRender('string', 0, 0, 'leaderId', 'Leader ID', [], '')}
                                                                                         </AccordionContent>

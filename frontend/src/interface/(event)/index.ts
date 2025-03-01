@@ -2,8 +2,10 @@
 export interface LessonEventState {
     isLoading: Boolean;
     status: Number;
-    students: Object;
     lessonsEvent: Object;
-    createLessonEvent: (groupId: string, lessonEventId: string, lessonEventData: object) => any;
+    createLessonEvent: (groupId: string, lessonEventData: object) => any;
     getLessonEvent: (lessonEventId: string) => any;
+    updateLessonEvent: (groupId: string, lessonEventData: object) => any;
+    getGroupLessonEvent: (groupId: string) => any;
+
 }

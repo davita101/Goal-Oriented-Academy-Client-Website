@@ -52,7 +52,7 @@ export default function Groups() {
                                             onSelect={(groupId) => {
                                                 setValue(groupId === value?.toString() ? null : Number(groupId))
                                                 setOpen(false)
-                                                window.location.href = `group/${groupId}/${generateHexId()}`
+                                                window.location.href = `group/${groupId}`
                                             }}
                                         >
                                             {framework}
